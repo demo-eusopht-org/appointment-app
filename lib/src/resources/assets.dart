@@ -5,6 +5,8 @@ class AppImages {
   static String google = "assets/images/google_logo.png";
   static String apple = "assets/images/apple_logo.png";
   static String account = "assets/images/Account.png";
+  static String camera = "assets/images/camera.png";
+
 
 
 }

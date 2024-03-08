@@ -35,6 +35,18 @@ class MyTextStyles {
       color: Colors.black,
     )
   );
-
-
+  static final TextStyle onboardingheading = GoogleFonts.poppins(
+      textStyle: TextStyle(
+        fontSize: 17.sp,
+        fontWeight: FontWeight.w800,
+        color: Colors.black,
+      )
+  );
+  static final TextStyle normalblacktext = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w400,
+      color: Colors.black,
+    ),
+  );
 }

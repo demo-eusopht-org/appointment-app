@@ -6,6 +6,7 @@ import 'package:appointment_management/src/views/auth/widgets/custom_textfield.d
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/theme/light/light_theme.dart' as Appcolors;
 import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -95,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Appcolors.lightTheme.primaryColor),
                     onPressed: () {
-                      // Implement your login logic here
+                      Get.to(OnboardingPage());
                     },
                     child: Text('Log in', style: MyTextStyles.boldTextWhite,),
                   ),
