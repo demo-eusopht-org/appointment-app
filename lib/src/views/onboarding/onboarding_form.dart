@@ -120,7 +120,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           decoration: InputDecoration(labelText: 'Email')),
                       TextFormField(
                           controller: websiteController,
-                          decoration: InputDecoration(labelText: 'Website')),
+                          decoration: InputDecoration(
+                            labelText: 'Website',
+                          )),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015),
 
@@ -159,6 +161,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           DropdownButton<String>(
                             value: selectedLanguage = "English",
                             focusColor: Colors.black,
+                            dropdownColor: Colors.white,
                             items: <String>[
                               'English',
                               'Spanish',
@@ -243,9 +246,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.1),
-
-                      // Account Icon in Circle
-
                       // Form Fields
                       TextFormField(
                           controller: locationController,
