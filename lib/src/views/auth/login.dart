@@ -6,9 +6,13 @@ import 'package:appointment_management/src/views/auth/signup.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // Background Image
@@ -87,8 +90,28 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     obscureText: true,
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ForgotPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'Forgot Password?',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
                   // Login Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -102,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                       _login(context);
                     },
                     child: Text(
-                      'Log in',
+                      'Sign in',
                       style: MyTextStyles.boldTextWhite,
                     ),
                   ),

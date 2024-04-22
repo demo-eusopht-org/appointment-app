@@ -23,36 +23,30 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: SizedBox.expand(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.rightvectordesign),
-                    fit: BoxFit.fill,
-                  ),
+      // resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // Background Image
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(AppImages.rightvectordesign),
+                  fit: BoxFit.fill,
                 ),
               ),
             ),
-          ),
 
-          // Content
-          Positioned.fill(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width *
-                  0.05), // 5% of the screen width as padding
+            // Content
+            Padding(
+              padding: EdgeInsets.all(
+                  MediaQuery.of(context).size.width * 0.05), // 5% of t
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height *
-                          0.1), // 10% of the screen height
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                   // "Sign Up" text
                   Text(
@@ -101,9 +95,7 @@ class _SignupPageState extends State<SignupPage> {
                       hintText: 'Repeat Password',
                       textStyle: MyTextStyles.formtext,
                       obscureText: true),
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height *
-                          0.06), // 6% of the screen height for spacing
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
 
                   // "Sign up" button
                   ElevatedButton(
@@ -193,8 +185,8 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

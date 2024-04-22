@@ -1,9 +1,11 @@
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
+import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -34,324 +36,316 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // Background Image
-          Positioned.fill(
-            child: SizedBox.expand(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.rightvectordesign),
-                    fit: BoxFit.fill,
-                  ),
-                ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.rightvectordesign),
+                fit: BoxFit.fill,
               ),
             ),
           ),
 
           // Content
-          Positioned.fill(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (int page) {
-                setState(() {
-                  _currentPage = page;
-                });
-              },
-              children: [
-                // Page 1
-                SingleChildScrollView(
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          PageView(
+            controller: _pageController,
+            onPageChanged: (int page) {
+              setState(() {
+                _currentPage = page;
+              });
+            },
+            children: [
+              // Page 1
+              SingleChildScrollView(
+                padding:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
-                      // Title
-                      Container(
-                        child: Text(
-                          'Onboarding Form',
-                          style: MyTextStyles.onboardingheading,
-                        ),
-                        color: Color(0xF0EFEF),
+                    // Title
+                    Container(
+                      child: Text(
+                        'Onboarding Form',
+                        style: MyTextStyles.onboardingheading,
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03),
+                      color: Color(0xF0EFEF),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
-                      // Account Icon in Circle
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
+                    // Account Icon in Circle
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Appcolors.lightTheme.primaryColor,
+                        ),
+                        child: Image(
+                          image: AssetImage(AppImages.camera),
+                        ),
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.1),
+                      ),
+                    ),
+
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.015),
+
+                    Text('Add Photo'),
+
+                    // Form Fields
+                    TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(labelText: 'Name')),
+                    TextFormField(
+                        controller: professionController,
+                        decoration: InputDecoration(labelText: 'Profession')),
+                    TextFormField(
+                        controller: addressController,
+                        decoration:
+                            InputDecoration(labelText: 'Complete Address')),
+                    TextFormField(
+                        controller: emailController,
+                        decoration: InputDecoration(labelText: 'Email')),
+                    TextFormField(
+                        controller: websiteController,
+                        decoration: InputDecoration(
+                          labelText: 'Website',
+                        )),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.015),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CountryCodePicker(
+                          showDropDownButton: true,
+                          padding: EdgeInsets.zero,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCountryCode = value.dialCode;
+                            });
+                          },
+                          initialSelection: 'Pakistan',
+                          favorite: ['+92', 'Pakistan'],
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                              controller: mobileController,
+                              decoration:
+                                  InputDecoration(hintText: 'Mobile No.')),
+                        ),
+                      ],
+                    ),
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+
+                    Row(
+                      children: [
+                        Text(
+                          'Language:',
+                          style: MyTextStyles.normalblacktext,
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.015),
+                        DropdownButton<String>(
+                          value: selectedLanguage = "English",
+                          focusColor: Colors.black,
+                          dropdownColor: Colors.white,
+                          items: <String>[
+                            'English',
+                            'Spanish',
+                            'French',
+                            'German'
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedLanguage = newValue;
+                            });
+                          },
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+
+                    // Page Indicator
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List<Widget>.generate(2, (int index) {
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          height: MediaQuery.sizeOf(context).height * 0.04,
+                          width: MediaQuery.sizeOf(context).width * 0.025,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Appcolors.lightTheme.primaryColor,
+                            color: _currentPage == index
+                                ? Colors.blue
+                                : Colors.grey,
                           ),
-                          child: Image(
-                            image: AssetImage(AppImages.camera),
-                          ),
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.width * 0.1),
-                        ),
-                      ),
+                        );
+                      }),
+                    ),
 
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015),
-
-                      Text('Add Photo'),
-
-                      // Form Fields
-                      TextFormField(
-                          controller: nameController,
-                          decoration: InputDecoration(labelText: 'Name')),
-                      TextFormField(
-                          controller: professionController,
-                          decoration: InputDecoration(labelText: 'Profession')),
-                      TextFormField(
-                          controller: addressController,
-                          decoration:
-                              InputDecoration(labelText: 'Complete Address')),
-                      TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(labelText: 'Email')),
-                      TextFormField(
-                          controller: websiteController,
-                          decoration: InputDecoration(
-                            labelText: 'Website',
-                          )),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CountryCodePicker(
-                            showDropDownButton: true,
-                            padding: EdgeInsets.zero,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedCountryCode = value.dialCode;
-                              });
-                            },
-                            initialSelection: 'Pakistan',
-                            favorite: ['+92', 'Pakistan'],
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                                controller: mobileController,
-                                decoration:
-                                    InputDecoration(hintText: 'Mobile No.')),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-
-                      Row(
-                        children: [
-                          Text(
-                            'Language:',
-                            style: MyTextStyles.normalblacktext,
-                          ),
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.015),
-                          DropdownButton<String>(
-                            value: selectedLanguage = "English",
-                            focusColor: Colors.black,
-                            dropdownColor: Colors.white,
-                            items: <String>[
-                              'English',
-                              'Spanish',
-                              'French',
-                              'German'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedLanguage = newValue;
-                              });
-                            },
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-
-                      // Page Indicator
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List<Widget>.generate(2, (int index) {
-                          return AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            height: MediaQuery.sizeOf(context).height * 0.04,
-                            width: MediaQuery.sizeOf(context).width * 0.025,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentPage == index
-                                  ? Colors.blue
-                                  : Colors.grey,
+                    // Next Button
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
+                            backgroundColor: Appcolors.lightTheme.primaryColor),
+                        onPressed: () {
+                          _pageController.nextPage(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease,
                           );
-                        }),
-                      ),
-
-                      // Next Button
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              backgroundColor:
-                                  Appcolors.lightTheme.primaryColor),
-                          onPressed: () {
-                            _pageController.nextPage(
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease,
-                            );
-                          },
-                          child: Text(
-                            'Next',
-                            style: MyTextStyles.boldTextWhite,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Page 2
-                SingleChildScrollView(
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                      Container(
+                        },
                         child: Text(
-                          'Onboarding Form',
-                          style: MyTextStyles.onboardingheading,
+                          'Next',
+                          style: MyTextStyles.boldTextWhite,
                         ),
-                        color: Color(0xF0EFEF),
                       ),
+                    ),
+                  ],
+                ),
+              ),
 
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1),
-                      // Form Fields
-                      TextFormField(
-                          controller: locationController,
-                          decoration: InputDecoration(labelText: 'Location')),
-                      TextFormField(
-                          controller: feesController,
-                          decoration: InputDecoration(labelText: 'Fees')),
-                      TextFormField(
-                          controller: whatsappNoteController,
-                          decoration:
-                              InputDecoration(labelText: 'Whatsapp Note')),
-                      TextFormField(
-                          controller: quotationController,
-                          decoration:
-                              InputDecoration(labelText: 'Quotation/Footnote')),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01),
-
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Appointment Timings: Default',
-                            textAlign: TextAlign.left,
-                          )),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DateTimePicker(
-                              type: DateTimePickerType.time,
-                              icon: Icon(Icons.access_time),
-                              timeLabelText: "Start Time",
-                              onChanged: (val) =>
-                                  setState(() => selectedStartTime = val),
-                              validator: (val) {
-                                print(val);
-                                return null;
-                              },
-                              onSaved: (val) =>
-                                  setState(() => selectedStartTime = val),
-                            ),
-                          ),
-                          Expanded(
-                            child: DateTimePicker(
-                              type: DateTimePickerType.time,
-                              icon: Icon(Icons.access_time),
-                              timeLabelText: "End Time",
-                              onChanged: (val) =>
-                                  setState(() => selectedEndTime = val),
-                              validator: (val) {
-                                print(val);
-                                return null;
-                              },
-                              onSaved: (val) =>
-                                  setState(() => selectedEndTime = val),
-                            ),
-                          ),
-                        ],
+              // Page 2
+              SingleChildScrollView(
+                padding:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    Container(
+                      child: Text(
+                        'Onboarding Form',
+                        style: MyTextStyles.onboardingheading,
                       ),
+                      color: Color(0xF0EFEF),
+                    ),
 
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.23),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    // Form Fields
+                    TextFormField(
+                        controller: locationController,
+                        decoration: InputDecoration(labelText: 'Location')),
+                    TextFormField(
+                        controller: feesController,
+                        decoration: InputDecoration(labelText: 'Fees')),
+                    TextFormField(
+                        controller: whatsappNoteController,
+                        decoration:
+                            InputDecoration(labelText: 'Whatsapp Note')),
+                    TextFormField(
+                        controller: quotationController,
+                        decoration:
+                            InputDecoration(labelText: 'Quotation/Footnote')),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
-                      // Page Indicator
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List<Widget>.generate(2, (int index) {
-                          return AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            height: MediaQuery.sizeOf(context).height * 0.04,
-                            width: MediaQuery.sizeOf(context).width * 0.025,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentPage == index
-                                  ? Colors.blue
-                                  : Colors.grey,
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Appointment Timings: Default',
+                          textAlign: TextAlign.left,
+                        )),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DateTimePicker(
+                            type: DateTimePickerType.time,
+                            icon: Icon(Icons.access_time),
+                            timeLabelText: "Start Time",
+                            onChanged: (val) =>
+                                setState(() => selectedStartTime = val),
+                            validator: (val) {
+                              print(val);
+                              return null;
+                            },
+                            onSaved: (val) =>
+                                setState(() => selectedStartTime = val),
+                          ),
+                        ),
+                        Expanded(
+                          child: DateTimePicker(
+                            type: DateTimePickerType.time,
+                            icon: Icon(Icons.access_time),
+                            timeLabelText: "End Time",
+                            onChanged: (val) =>
+                                setState(() => selectedEndTime = val),
+                            validator: (val) {
+                              print(val);
+                              return null;
+                            },
+                            onSaved: (val) =>
+                                setState(() => selectedEndTime = val),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.23),
+
+                    // Page Indicator
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List<Widget>.generate(2, (int index) {
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          height: MediaQuery.sizeOf(context).height * 0.04,
+                          width: MediaQuery.sizeOf(context).width * 0.025,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentPage == index
+                                ? Colors.blue
+                                : Colors.grey,
+                          ),
+                        );
+                      }),
+                    ),
+
+                    // Done Button
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            backgroundColor: Appcolors.lightTheme.primaryColor),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => HomeScreen(),
                             ),
                           );
-                        }),
-                      ),
-
-                      // Done Button
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              backgroundColor:
-                                  Appcolors.lightTheme.primaryColor),
-                          onPressed: () {
-                            // Implement your done logic here
-                          },
-                          child: Text(
-                            'Done',
-                            style: MyTextStyles.boldTextWhite,
-                          ),
+                        },
+                        child: Text(
+                          'Done',
+                          style: MyTextStyles.boldTextWhite,
                         ),
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ],
       ),
