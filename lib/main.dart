@@ -1,4 +1,5 @@
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
+import 'package:appointment_management/src/views/appointments/appointments.dart';
 import 'package:appointment_management/src/views/auth/bloc/loader_bloc.dart';
 import 'package:appointment_management/theme/dark/dark_theme.dart';
 import 'package:appointment_management/theme/light/light_theme.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
               );
             });
       },
-      child: const AddConsultant(),
+      child: const Appointments(),
     );
   }
 }

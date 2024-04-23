@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../resources/app_colors.dart';
 import '../Consultant/consultant_details.dart';
 import '../auth/widgets/custom_appbar.dart';
+import '../auth/widgets/custom_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,18 +16,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Map<String, String>> popularLocations = [
     {'name': 'New York', 'image': AppImages.doctor1},
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: customAppBar(
         context: context,
         title: 'Hi, Ali!',
         leadingIcon: Image.asset(
           AppImages.menuIcon,
         ),
+        leadingIconOnTap: () {
+          scaffoldKey.currentState!.openDrawer();
+        },
         action: [
           Image.asset(
             AppImages.notification,
@@ -34,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(

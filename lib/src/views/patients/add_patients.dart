@@ -1,26 +1,28 @@
-import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../resources/assets.dart';
 import '../auth/widgets/custom_textfield.dart';
 
-class AddConsultant extends StatefulWidget {
-  const AddConsultant({super.key});
+class AddPatients extends StatefulWidget {
+  const AddPatients({super.key});
 
   @override
-  State<AddConsultant> createState() => _AddConsultantState();
+  State<AddPatients> createState() => _AddPatientsState();
 }
 
-class _AddConsultantState extends State<AddConsultant> {
+class _AddPatientsState extends State<AddPatients> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController fieldController = TextEditingController();
+  final TextEditingController mobileNoController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController patientsController = TextEditingController();
-  final TextEditingController expController = TextEditingController();
+  final TextEditingController dateofBirthController = TextEditingController();
+  final TextEditingController referenceController = TextEditingController();
   final TextEditingController aboutController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
+  final TextEditingController optionalController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,7 +34,7 @@ class _AddConsultantState extends State<AddConsultant> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: textWidget(
-              text: 'Add Consultant',
+              text: 'Add Patient',
               color: Colors.black,
               fSize: 17.0,
               fWeight: FontWeight.w800,
@@ -128,8 +130,8 @@ class _AddConsultantState extends State<AddConsultant> {
                           height: 10,
                         ),
                         CustomTextField(
-                          hintText: "Field",
-                          controller: fieldController,
+                          hintText: "Mobile No.",
+                          controller: mobileNoController,
                         ),
                         CustomTextField(
                           hintText: "Email",
@@ -139,34 +141,58 @@ class _AddConsultantState extends State<AddConsultant> {
                           height: 10,
                         ),
                         CustomTextField(
-                          hintText: "Total Patients",
-                          controller: patientsController,
+                          hintText: "D.O.B",
+                          controller: dateofBirthController,
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         CustomTextField(
-                          hintText: "Experience",
-                          controller: expController,
+                          hintText: "Reference No.",
+                          controller: referenceController,
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        CustomTextField(
-                          hintText: "About",
-                          controller: aboutController,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 40,
-                          width: 106,
-                          child: RoundedElevatedButton(
-                            borderRadius: 6,
-                            onPressed: () {},
-                            text: 'Add',
+                        TextFormField(
+                          controller: notesController,
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                            hintText: 'Notes....',
+                            hintStyle: GoogleFonts.montserrat(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: textWidget2(
+                            text: 'Optional:',
+                            fSize: 15.0,
+                            fWeight: FontWeight.w800,
+                            color: Colors.grey.withOpacity(0.9),
+                          ),
+                        ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
+                        CustomTextField(
+                          hintText: "Height",
+                          controller: optionalController,
+                        ),
+                        SizedBox(
+                          height: 15,
                         ),
                       ],
                     ),
@@ -181,16 +207,6 @@ class _AddConsultantState extends State<AddConsultant> {
           child: SafeArea(
             child: Image.asset(
               "assets/images/add_consultant_vector10.png",
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          child: SafeArea(
-            child: Image.asset(
-              "assets/images/Vector 8.png",
               fit: BoxFit.fill,
             ),
           ),

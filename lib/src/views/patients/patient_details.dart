@@ -1,5 +1,5 @@
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
-import 'package:appointment_management/src/views/patieents/patient_history.dart';
+import 'package:appointment_management/src/views/patients/patient_history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

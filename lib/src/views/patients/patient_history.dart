@@ -1,6 +1,6 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
-import 'package:appointment_management/src/views/patieents/view_details.dart';
+import 'package:appointment_management/src/views/patients/view_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

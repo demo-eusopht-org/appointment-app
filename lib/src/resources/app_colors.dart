@@ -13,4 +13,5 @@ class AppColors {
   static const Color ratingbarColor = Color(0xffF0EFEF);
   static const Color starColor = Color(0xffFFFF00);
   static const Color borderColor = Color(0xffF0EFEF);
+  static const Color todayBoxColor = Color(0xffD9D9D9);
 }
