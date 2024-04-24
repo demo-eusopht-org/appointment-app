@@ -22,4 +22,9 @@ class AppImages {
   static String men = 'assets/images/men.png';
   static String whatsapp = "assets/images/WhatsApp.png";
   static String men3 = "assets/images/men3.png";
+  static String location = "assets/images/Place Marker.png";
+  static String hospital = "assets/images/Hospital.png";
+  static String email = "assets/images/Email.png";
+  static String phone = "assets/images/Call.png";
+  static String earth = "assets/images/Earth Planet.png";
 }
