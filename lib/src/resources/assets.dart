@@ -18,4 +18,8 @@ class AppImages {
   static String patient = "assets/images/patient.png";
   static String button = 'assets/images/button.png';
   static String vectorPatient = 'assets/images/vector_patient.png';
+  static String men2 = 'assets/images/men2.png';
+  static String men = 'assets/images/men.png';
+  static String whatsapp = "assets/images/WhatsApp.png";
+  static String men3 = "assets/images/men3.png";
 }

@@ -41,7 +41,9 @@ class _AddPatientsState extends State<AddPatients> {
             ),
             centerTitle: true,
             leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(
                 Icons.arrow_back,
               ),

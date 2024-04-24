@@ -1,5 +1,13 @@
+import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
+import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
+import 'package:appointment_management/src/views/appointments/appointments.dart';
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/patients/add_patients.dart';
+import 'package:appointment_management/src/views/patients/patient_directory.dart';
+import 'package:appointment_management/src/views/procedure/procedure_list.dart';
+import 'package:appointment_management/src/views/settings/settings_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -31,70 +39,119 @@ class CustomDrawer extends StatelessWidget {
             ),
             SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
               child: textWidget2(
                 text: 'Settings',
-                fSize: 16.0,
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => AddConsultant(),
+                  ),
+                );
+              },
               child: textWidget2(
-                text: 'Add Doctor',
-                fSize: 16.0,
+                text: 'Add Consultant',
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             InkWell(
-              onTap: () {},
-              child: textWidget2(
-                text: 'Settings',
-                fSize: 16.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 15),
-            InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => AddPatients(),
+                  ),
+                );
+              },
               child: textWidget2(
                 text: 'Add Patient',
-                fSize: 16.0,
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => PatientDirectory(),
+                  ),
+                );
+              },
               child: textWidget2(
                 text: 'Patient Directory',
-                fSize: 16.0,
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => AppointmentBooking(),
+                  ),
+                );
+              },
               child: textWidget2(
                 text: 'Add Appoitment',
-                fSize: 16.0,
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => ProcedureList(),
+                  ),
+                );
+              },
               child: textWidget2(
                 text: 'Procedures',
-                fSize: 16.0,
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => Appointments(),
+                  ),
+                );
+              },
+              child: textWidget2(
+                text: 'Appointments',
+                fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
               ),

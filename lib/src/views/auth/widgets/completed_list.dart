@@ -2,6 +2,7 @@ import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../resources/app_colors.dart';
+import '../../../resources/assets.dart';
 
 class CompletedList extends StatelessWidget {
   @override
@@ -17,7 +18,6 @@ class CompletedList extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Stack(
                           children: [
@@ -30,7 +30,7 @@ class CompletedList extends StatelessWidget {
                                   color: Colors.grey.shade100,
                                 ),
                               ),
-                              child: Image.asset('assets/images/men.png'),
+                              child: Image.asset(AppImages.men),
                             ),
                             Positioned(
                               right: 0,
@@ -59,6 +59,9 @@ class CompletedList extends StatelessWidget {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -82,26 +85,22 @@ class CompletedList extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Container(
-                          height: 25,
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.buttonColor,
-                              foregroundColor: Colors.white,
-                            ),
-                            onPressed: () {},
-                            child: textWidget(
-                              text: "Reschedule",
-                              fSize: 10,
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.15,
+                        ),
+                        Row(
+                          children: [
+                            textWidget(
+                              text: 'Complete',
+                              fSize: 11.0,
+                              color: Colors.green,
                               fWeight: FontWeight.w800,
                             ),
-                          ),
-                        ),
-                        textWidget(
-                          text: 'Cancel',
-                          fSize: 10.0,
-                          fWeight: FontWeight.w800,
+                            Icon(
+                              Icons.done,
+                              color: Colors.green,
+                            )
+                          ],
                         ),
                       ],
                     ),

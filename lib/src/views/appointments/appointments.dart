@@ -1,7 +1,9 @@
+import 'package:appointment_management/src/views/auth/widgets/completed_list.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/app_colors.dart';
+import '../auth/widgets/cancel_list.dart';
 import '../auth/widgets/custom_appbar.dart';
 import '../auth/widgets/schedule_list.dart';
 
@@ -13,15 +15,19 @@ class Appointments extends StatefulWidget {
 }
 
 class _AppointmentsState extends State<Appointments> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: scaffoldKey,
       appBar: customAppBar(
         context: context,
         leadingIcon: IconButton(
           onPressed: () {
+            Navigator.pop(context);
             Navigator.pop(context);
           },
           icon: Icon(
@@ -178,22 +184,44 @@ class _AppointmentsState extends State<Appointments> {
                   ),
                 )
               : SizedBox(),
+          selectedIndex == 1
+              ? Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.todayBoxColor,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      width: 90,
+                      height: 30,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textWidget2(
+                            text: 'Last 7 days',
+                            fSize: 10.0,
+                            fWeight: FontWeight.w400,
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            size: 16,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
           SizedBox(height: 20),
           selectedIndex == 0
               ? ScheduleList()
               : selectedIndex == 1
-                  ? Expanded(
-                      child: ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Icon(Icons.done),
-                            title: Text('Completed Appointment $index'),
-                          );
-                        },
-                      ),
-                    )
-                  : SizedBox(), // Placeholder for Cancel option
+                  ? CompletedList()
+                  : SizedBox(),
+          selectedIndex == 2 ? CancelList() : SizedBox()
         ],
       ),
     );

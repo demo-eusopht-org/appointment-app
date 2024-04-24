@@ -1,7 +1,6 @@
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-
 import '../../../resources/app_colors.dart';
 
 class RoundedElevatedButton extends StatelessWidget {
@@ -42,7 +41,7 @@ class RoundedElevatedButton extends StatelessWidget {
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               ),
             )
-          : textWidget(
+          : textWidget2(
               text: text,
               color: Colors.white,
               fSize: 15.0,
