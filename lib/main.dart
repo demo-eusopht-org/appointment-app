@@ -5,6 +5,7 @@ import 'package:appointment_management/theme/light/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:timetable/timetable.dart';
 
 import 'src/views/auth/bloc/login_bloc.dart';
 
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
+            localizationsDelegates: [
+              TimetableLocalizationsDelegate(),
+            ],
             debugShowCheckedModeBanner: false,
             title: "Appointment Management",
             theme: lightTheme,

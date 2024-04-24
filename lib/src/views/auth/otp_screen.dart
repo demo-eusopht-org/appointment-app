@@ -1,3 +1,4 @@
+import 'package:appointment_management/src/views/auth/login.dart';
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,7 +105,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => OtpScreen(),
+                              builder: (context) => LoginPage(),
                             ),
                           );
                         },

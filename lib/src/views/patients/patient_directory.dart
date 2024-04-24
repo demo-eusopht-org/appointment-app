@@ -1,4 +1,6 @@
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/patients/patient_details.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/app_colors.dart';
@@ -44,60 +46,65 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                 child: ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Divider(
-                          color: Colors.grey.shade300,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 75,
-                              width: 75,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.grey.shade100,
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(context, CupertinoPageRoute(builder: (context)=>PatientDetails(),),);
+                      },
+                      child: Column(
+                        children: [
+                          Divider(
+                            color: Colors.grey.shade300,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 75,
+                                width: 75,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.grey.shade100,
+                                  ),
+                                ),
+                                child: Image.asset(
+                                  AppImages.men2,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              child: Image.asset(
-                                AppImages.men2,
-                                fit: BoxFit.cover,
+                              SizedBox(
+                                width: 10,
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            textWidget(
-                              text: 'Abid',
-                              fSize: 18.0,
-                              fWeight: FontWeight.w600,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.3,
-                            ),
-                            CircleAvatar(
-                              backgroundColor: AppColors.buttonColor,
-                              radius: 22,
-                              child: Icon(
-                                Icons.phone,
-                                color: Colors.white,
+                              textWidget(
+                                text: 'Abid',
+                                fSize: 18.0,
+                                fWeight: FontWeight.w600,
                               ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            CircleAvatar(
-                              backgroundColor: AppColors.buttonColor,
-                              radius: 22,
-                              child: Icon(
-                                Icons.mail,
-                                color: Colors.white,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.3,
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              CircleAvatar(
+                                backgroundColor: AppColors.buttonColor,
+                                radius: 22,
+                                child: Icon(
+                                  Icons.phone,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              CircleAvatar(
+                                backgroundColor: AppColors.buttonColor,
+                                radius: 22,
+                                child: Icon(
+                                  Icons.mail,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),

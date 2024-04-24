@@ -177,16 +177,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                ClinicItem(
-                  name: '+92 3217285635',
-                  imagePath: AppImages.phone,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColors.buttonColor,
+                        child: Image.asset(
+                          AppImages.phone,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      textWidget2(
+                        text: '+92 3217285635',
+                        fSize: 14.0,
+                        fWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                ClinicItem(
-                  name: 'Ali@gmail.com',
-                  imagePath: AppImages.email,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColors.buttonColor,
+                        child: Image.asset(
+                          AppImages.email,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      textWidget2(
+                        text: 'Ali@gmail.com',
+                        fSize: 14.0,
+                        fWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,
@@ -195,9 +231,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () {
                     _launchUrl('https://www.example.com/');
                   },
-                  child: ClinicItem(
-                    name: 'https://www.example.com/',
-                    imagePath: AppImages.earth,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColors.buttonColor,
+                          child: Image.asset(
+                            AppImages.earth,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        textWidget2(
+                          text: 'https://www.example.com/',
+                          fSize: 14.0,
+                          fWeight: FontWeight.w700,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -233,8 +287,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         height: 10,
                       ),
                       InkWell(
-                        onTap: (){
-                          Navigator.push(context, CupertinoPageRoute(builder: (context)=>PrivacyPolicy(),),);
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => PrivacyPolicy(),
+                            ),
+                          );
                         },
                         child: textWidget2(
                           text: "Privacy Policy",

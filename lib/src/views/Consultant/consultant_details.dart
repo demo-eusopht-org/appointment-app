@@ -1,4 +1,6 @@
+import 'package:appointment_management/src/views/appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -565,7 +567,12 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                   ),
                   InkWell(
                     onTap: () {
-                      print('heelo');
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AppointmentBookingDoctor(),
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
