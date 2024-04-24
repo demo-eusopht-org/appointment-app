@@ -1,5 +1,7 @@
 import 'package:appointment_management/src/views/auth/widgets/clinic_item.dart';
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/settings/privacy_policy.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -230,10 +232,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      textWidget2(
-                        text: "Privacy Policy",
-                        fSize: 18.0,
-                        fWeight: FontWeight.w700,
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, CupertinoPageRoute(builder: (context)=>PrivacyPolicy(),),);
+                        },
+                        child: textWidget2(
+                          text: "Privacy Policy",
+                          fSize: 18.0,
+                          fWeight: FontWeight.w700,
+                        ),
                       ),
                     ],
                   ),

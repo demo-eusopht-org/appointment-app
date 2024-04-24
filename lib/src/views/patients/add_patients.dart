@@ -49,31 +49,11 @@ class _AddPatientsState extends State<AddPatients> {
               ),
             ),
           ),
-          // customAppBar(
-          //   context: context,
-          //   leadingIcon: IconButton(
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //     icon: Icon(
-          //       Icons.arrow_back,
-          //     ),
-          //   ),
-          //   title: 'Add Consultant',
-          // ),
           body: Container(
             height: MediaQuery.sizeOf(context).height,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                // Positioned(
-                //   top: 0,
-                //   right: 0,
-                //   child: Image.asset(
-                //     "assets/images/add_consultant_vector10.png",
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
                 SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
