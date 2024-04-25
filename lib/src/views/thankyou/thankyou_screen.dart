@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 import '../auth/widgets/custom_button.dart';
 import '../auth/widgets/text_widget.dart';
+import '../home/home_screen.dart';
 
 class ThankYouScreen extends StatefulWidget {
   const ThankYouScreen({super.key});
@@ -26,9 +29,13 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.done,
-                    size: 40,
+                  Lottie.asset(
+                    'assets/images/animation.json',
+                    height: 200,
+                    options: LottieOptions(
+                      enableApplyingOpacityToLayers: true,
+                      enableMergePaths: true,
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -79,7 +86,14 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
               width: MediaQuery.of(context).size.width * 0.8,
               child: RoundedElevatedButton(
                 borderRadius: 6,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  );
+                },
                 text: "Done",
               ),
             ),

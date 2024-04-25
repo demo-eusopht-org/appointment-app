@@ -1,5 +1,3 @@
-import 'package:appointment_management/src/resources/assets.dart';
-import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/views/auth/bloc/loader_bloc.dart';
 import 'package:appointment_management/src/views/auth/bloc/login_bloc.dart';
 import 'package:appointment_management/src/views/auth/signup.dart';
@@ -12,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../resources/assets.dart';
+import '../../resources/textstyle.dart';
 import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,28 +26,24 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: SizedBox.expand(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.rightvectordesign),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-            ),
+      body: Stack(children: [
+        Positioned(
+          right: 0,
+          child: Image.asset(
+            AppImages.vector10,
           ),
-
-          // Content
-          Positioned.fill(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+        ),
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: Image.asset(
+            AppImages.vector9,
+          ),
+        ),
+        Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -58,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                     'Sign in',
                     style: MyTextStyles.boldtitleblack,
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.0001),
 
-                  // Account Icon in Circle
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -74,9 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(
                         MediaQuery.of(context).size.width * 0.03),
                   ),
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                  // Form Fields
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
@@ -111,7 +103,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  SizedBox(
+                    height: 10,
+                  ),
                   // Login Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -122,15 +116,18 @@ class _LoginPageState extends State<LoginPage> {
                               0.06), // 40% width, 6% height
                     ),
                     onPressed: () {
-                      _login(context);
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => OnboardingPage(),
+                        ),
+                      );
                     },
                     child: Text(
                       'Sign in',
                       style: MyTextStyles.boldTextWhite,
                     ),
                   ),
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Loader
                   BlocBuilder<LoaderBloc, bool>(
@@ -143,9 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
 
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ), // Increase the gap here
+                  // Increase the gap here
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ), // Increase the gap here
@@ -155,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.04,
+                    height: 10,
                   ), // Increase the gap here
 
                   // Buttons Row
@@ -216,12 +211,15 @@ class _LoginPageState extends State<LoginPage> {
                       'Create an Account',
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 

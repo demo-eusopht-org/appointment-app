@@ -1,6 +1,7 @@
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
 import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/appointments/appointments.dart';
+import 'package:appointment_management/src/views/auth/login.dart';
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/src/views/patients/add_patients.dart';
@@ -161,7 +162,15 @@ class CustomDrawer extends StatelessWidget {
               height: 38,
               child: RoundedElevatedButton(
                 borderRadius: 38.0,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                    (_) => false,
+                  );
+                },
                 text: 'Sign Out',
               ),
             ),

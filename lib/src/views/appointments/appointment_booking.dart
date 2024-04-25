@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart';
 import '../auth/widgets/custom_appbar.dart';
 import '../auth/widgets/custom_drawer.dart';
 import '../thankyou/thankyou_screen.dart';
@@ -59,11 +58,12 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       appBar: customAppBar(
         context: context,
         title: 'Appointment Booking',
-        leadingIcon: Image.asset(
-          AppImages.menuIcon,
+        leadingIcon: Icon(
+          Icons.arrow_back_outlined,
         ),
         leadingIconOnTap: () {
-          scaffoldKey.currentState!.openDrawer();
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
         action: [
           IconButton(

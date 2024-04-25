@@ -59,23 +59,23 @@ class _ViewDetailsState extends State<ViewDetails> {
                   ),
                   Positioned(
                     top: 0,
-                    left: 0,
+                    left: 10,
                     bottom: 0,
                     right: 0,
                     child: Row(
                       children: [
                         Image.asset(
                           AppImages.patient,
-                          height: 100,
+                          height: 75,
                         ),
                         Expanded(
                           child: GridView(
+                            padding: EdgeInsets.only(top: 10, left: 8),
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
-                              childAspectRatio: 1.5,
-                              crossAxisSpacing: 1.0,
+                              childAspectRatio: 1.6,
                             ),
                             physics: NeverScrollableScrollPhysics(),
                             children: [
@@ -105,6 +105,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                 horizontal: 15,
               ),
               child: TextFormField(
+                readOnly: true,
                 maxLines: 5,
                 decoration: InputDecoration(
                     hintText:

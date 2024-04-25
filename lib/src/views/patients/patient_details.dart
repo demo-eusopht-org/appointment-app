@@ -21,6 +21,20 @@ class _PatientDetailsState extends State<PatientDetails> {
 
   int selectedDateIndex = 0;
   int selectedTimeIndex = 0;
+  DateTime? selectedDate;
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -321,8 +335,12 @@ class _PatientDetailsState extends State<PatientDetails> {
                               fWeight: FontWeight.w700,
                               color: Colors.black,
                             ),
-                            Icon(
-                              Icons.calendar_today,
+
+                            IconButton(
+                              onPressed: (){
+                                _selectDate(context);
+                              },
+                              icon: Icon( Icons.calendar_today,),
                               color: Colors.black,
                             ),
                           ],

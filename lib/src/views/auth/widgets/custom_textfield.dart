@@ -6,13 +6,11 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final bool showPasswordIcon;
   final TextStyle? textStyle;
-  final int? maxLines;
 
   const CustomTextField(
       {Key? key,
       required this.controller,
       required this.hintText,
-      this.maxLines,
       this.obscureText = false,
       this.showPasswordIcon = false,
       this.textStyle})
@@ -28,7 +26,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: widget.maxLines,
       controller: widget.controller,
       obscureText: widget.obscureText ? _obscureText : false,
       decoration: InputDecoration(

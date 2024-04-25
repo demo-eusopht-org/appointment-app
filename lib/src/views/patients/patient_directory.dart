@@ -24,12 +24,19 @@ class _PatientDirectoryState extends State<PatientDirectory> {
         appBar: customAppBar(
           context: context,
           title: 'Patient Directory',
-          leadingIcon: Image.asset(
-            AppImages.menuIcon,
+          leadingIcon: Icon(
+            Icons.arrow_back_outlined,
           ),
           leadingIconOnTap: () {
-            scaffoldKey.currentState!.openDrawer();
+            Navigator.pop(context);
+            Navigator.pop(context);
           },
+          // leadingIcon: Image.asset(
+          //   AppImages.menuIcon,
+          // ),
+          // leadingIconOnTap: () {
+          //   scaffoldKey.currentState!.openDrawer();
+          // },
           action: [
             Image.asset(
               AppImages.notification,
@@ -46,65 +53,70 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                 child: ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: (){
-                        Navigator.push(context, CupertinoPageRoute(builder: (context)=>PatientDetails(),),);
-                      },
-                      child: Column(
-                        children: [
-                          Divider(
-                            color: Colors.grey.shade300,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 75,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.grey.shade100,
+                    return Column(
+                      children: [
+                        Divider(
+                          color: Colors.grey.shade300,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 75,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.grey.shade100,
+                                ),
+                              ),
+                              child: Image.asset(
+                                AppImages.men2,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => PatientDetails(),
                                   ),
-                                ),
-                                child: Image.asset(
-                                  AppImages.men2,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              textWidget(
+                                );
+                              },
+                              child: textWidget(
                                 text: 'Abid',
                                 fSize: 18.0,
                                 fWeight: FontWeight.w600,
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.3,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: AppColors.buttonColor,
+                              radius: 22,
+                              child: Icon(
+                                Icons.phone,
+                                color: Colors.white,
                               ),
-                              CircleAvatar(
-                                backgroundColor: AppColors.buttonColor,
-                                radius: 22,
-                                child: Icon(
-                                  Icons.phone,
-                                  color: Colors.white,
-                                ),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: AppColors.buttonColor,
+                              radius: 22,
+                              child: Icon(
+                                Icons.mail,
+                                color: Colors.white,
                               ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: AppColors.buttonColor,
-                                radius: 22,
-                                child: Icon(
-                                  Icons.mail,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     );
                   },
                 ),

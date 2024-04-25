@@ -2,6 +2,7 @@ import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:timetable/timetable.dart';
@@ -22,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _timeController = TimeController(
     initialRange: TimeRange(
-      Duration(hours: 10),
-      Duration(hours: 16),
+      const Duration(hours: 10),
+      const Duration(hours: 16),
     ),
   );
   final List<Map<String, String>> popularLocations = [
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Stack(
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fSize: 10.0,
                                   fWeight: FontWeight.w600,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 textWidget2(
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Stack(
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fSize: 10.0,
                                     fWeight: FontWeight.w600,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                   textWidget2(
@@ -148,10 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Expanded(
+              flex: 6,
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -266,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       weekIndicatorStyleProvider: (week) => WeekIndicatorStyle(
                             context,
                             week,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.grey,
                               shape: BoxShape.circle,
                             ),
@@ -283,8 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Container(
-              height: 200,
+            Expanded(
+              flex: 4,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 2,
@@ -299,10 +301,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       alignment: Alignment.center,
                       width: 220,
-                      height: 200,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,63 +312,71 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Image.asset(
                                   AppImages.doctor1,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    textWidget(
-                                      text: 'Dr. Michael Pole ',
-                                      fSize: 15.0,
-                                      fWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    textWidget(
-                                      text: 'Cardiology,Orthopedics',
-                                      fSize: 10.0,
-                                      fWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                    ),
-                                    textWidget(
-                                      text: 'Neurology,Pediatrics',
-                                      fSize: 10.0,
-                                      fWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                )
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      textWidget(
+                                        text: 'Dr. Michael Pole ',
+                                        fSize: 15.0,
+                                        fWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      textWidget(
+                                        text: 'Cardiology,Orthopedics',
+                                        fSize: 10.0,
+                                        fWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                      ),
+                                      textWidget(
+                                        text: 'Neurology,Pediatrics',
+                                        fSize: 10.0,
+                                        fWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const RatingWidget(
+                                        initialRating: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                            SizedBox(
-                              height: 20,
+                            const SizedBox(
+                              height: 10,
                             ),
-                            Container(
+                            SizedBox(
                               width: 120,
-                              height: 35,
+                              // height: 35,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                )),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                      builder: (context) => ConsultantDetails(),
+                                      builder: (context) =>
+                                          const ConsultantDetails(),
                                     ),
                                   );
                                 },
                                 child: Row(
                                   children: [
                                     textWidget(text: 'Details', fSize: 13.0),
-                                    Icon(Icons.arrow_right_alt)
+                                    const Icon(Icons.arrow_right_alt)
                                   ],
                                 ),
                               ),
@@ -381,6 +391,79 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class RatingWidget extends StatelessWidget {
+  final double? initialRating;
+  const RatingWidget({
+    this.initialRating,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      // width: 100,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            left: 30,
+            child: Container(
+              height: 30,
+              padding: const EdgeInsets.only(left: 20, right: 5),
+              decoration: const BoxDecoration(
+                color: AppColors.ratingbarColor,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+              ),
+              alignment: Alignment.center,
+              child: RatingBar.builder(
+                updateOnDrag: true,
+                glowColor: AppColors.starColor,
+                glowRadius: 5.0,
+                initialRating: initialRating ?? 5.0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemSize: 14,
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: AppColors.starColor,
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            child: Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: AppColors.whiteColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: textWidget(
+                text: initialRating.toString(),
+                fSize: 16,
+                fWeight: FontWeight.w600,
+                color: AppColors.buttonColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

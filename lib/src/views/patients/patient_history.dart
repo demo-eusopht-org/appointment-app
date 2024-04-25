@@ -28,7 +28,7 @@ class _PatientHistoryState extends State<PatientHistory> {
             Icons.arrow_back,
           ),
         ),
-        title: 'Patient History',
+        title: 'Patient History1',
       ),
       body: Stack(children: [
         Positioned(
@@ -41,6 +41,7 @@ class _PatientHistoryState extends State<PatientHistory> {
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               margin: EdgeInsets.all(18),
@@ -60,23 +61,23 @@ class _PatientHistoryState extends State<PatientHistory> {
                   ),
                   Positioned(
                     top: 0,
-                    left: 0,
+                    left: 10,
                     bottom: 0,
                     right: 0,
                     child: Row(
                       children: [
                         Image.asset(
                           AppImages.patient,
-                          height: 100,
+                          height: 75,
                         ),
                         Expanded(
                           child: GridView(
+                            padding: EdgeInsets.only(top: 10, left: 8),
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
-                              childAspectRatio: 1.5,
-                              crossAxisSpacing: 1.0,
+                              childAspectRatio: 1.6,
                             ),
                             physics: NeverScrollableScrollPhysics(),
                             children: [
@@ -309,19 +310,17 @@ class _PatientHistoryState extends State<PatientHistory> {
 
   Widget _buildDetails(String text, String label) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         textWidget(
           text: text,
           fSize: 10.0,
           fWeight: FontWeight.w600,
         ),
-        SizedBox(
-          height: 5,
-        ),
         Expanded(
           child: textWidget(
               text: label,
-              fSize: 10.0,
+              fSize: 9.5,
               fWeight: FontWeight.w700,
               color: Colors.white),
         ),

@@ -1,6 +1,4 @@
-import 'package:appointment_management/src/resources/assets.dart';
-import 'package:appointment_management/src/resources/textstyle.dart';
-import 'package:appointment_management/src/views/home/home_screen.dart';
+import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:country_code_picker/country_code_picker.dart';
@@ -8,9 +6,15 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../resources/assets.dart';
+import '../../resources/textstyle.dart';
+import '../home/home_screen.dart';
+
 class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({super.key});
+
   @override
-  _OnboardingPageState createState() => _OnboardingPageState();
+  State<OnboardingPage> createState() => _OnboardingPageState();
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
@@ -32,26 +36,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
   String? selectedCountryCode;
   String? selectedStartTime;
   String? selectedEndTime;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.rightvectordesign),
-                fit: BoxFit.fill,
-              ),
+    return Stack(
+      children: [
+        Scaffold(
+          extendBodyBehindAppBar: false,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            scrolledUnderElevation: 0,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: textWidget(
+              text: 'Onboarding Form',
+              color: Colors.black,
+              fSize: 17.0,
+              fWeight: FontWeight.w800,
             ),
+            centerTitle: true,
           ),
-
-          // Content
-          PageView(
+          body: PageView(
             controller: _pageController,
             onPageChanged: (int page) {
               setState(() {
@@ -68,18 +72,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   children: [
                     // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
-                    // Title
-                    Container(
-                      child: Text(
-                        'Onboarding Form',
-                        style: MyTextStyles.onboardingheading,
-                      ),
-                      color: Color(0xF0EFEF),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-
                     // Account Icon in Circle
-                    InkWell(
+                    GestureDetector(
                       onTap: () {},
                       child: Container(
                         decoration: BoxDecoration(
@@ -230,15 +224,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Container(
-                      child: Text(
-                        'Onboarding Form',
-                        style: MyTextStyles.onboardingheading,
-                      ),
-                      color: Color(0xF0EFEF),
-                    ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     // Form Fields
                     TextFormField(
                         controller: locationController,
@@ -298,7 +284,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ],
                     ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.23),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                     // Page Indicator
                     Row(
@@ -347,8 +333,27 @@ class _OnboardingPageState extends State<OnboardingPage> {
               )
             ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          right: 0,
+          child: SafeArea(
+            child: Image.asset(
+              "assets/images/add_consultant_vector10.png",
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: SafeArea(
+            child: Image.asset(
+              "assets/images/Vector 8.png",
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

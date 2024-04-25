@@ -1,7 +1,9 @@
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/assets.dart';
@@ -147,7 +149,15 @@ class _AddConsultantState extends State<AddConsultant> {
                           width: 106,
                           child: RoundedElevatedButton(
                             borderRadius: 6,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                                (_) => false,
+                              );
+                            },
                             text: 'Add',
                           ),
                         ),

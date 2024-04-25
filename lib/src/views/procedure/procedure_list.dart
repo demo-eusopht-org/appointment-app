@@ -2,7 +2,6 @@ import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../resources/assets.dart';
 import '../auth/widgets/custom_appbar.dart';
 import '../auth/widgets/custom_drawer.dart';
 
@@ -23,12 +22,19 @@ class _ProcedureListState extends State<ProcedureList> {
       appBar: customAppBar(
         context: context,
         title: 'Procedure List',
-        leadingIcon: Image.asset(
-          AppImages.menuIcon,
+        leadingIcon: Icon(
+          Icons.arrow_back_outlined,
         ),
         leadingIconOnTap: () {
-          scaffoldKey.currentState!.openDrawer();
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
+        // leadingIcon: Image.asset(
+        //   AppImages.menuIcon,
+        // ),
+        // leadingIconOnTap: () {
+        //   scaffoldKey.currentState!.openDrawer();
+        // },
         action: [
           IconButton(
             onPressed: () {},

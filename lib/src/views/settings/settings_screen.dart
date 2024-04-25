@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
+import '../auth/login.dart';
 import '../auth/widgets/custom_appbar.dart';
 import '../auth/widgets/text_widget.dart';
 
@@ -43,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Container(
                   color: AppColors.buttonColor,
-                  height: MediaQuery.sizeOf(context).height * 0.18,
+                  height: MediaQuery.sizeOf(context).height * 0.15,
                   child: Stack(
                     children: [
                       Positioned(
@@ -59,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Positioned(
                         top: 0,
                         left: 10,
-                        bottom: 0,
+                        bottom: MediaQuery.sizeOf(context).height * 0.003,
                         right: 0,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -311,7 +312,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 40,
                   width: MediaQuery.sizeOf(context).width * 0.6,
                   child: RoundedElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
                     text: "Sign Out",
                   ),
                 ),
