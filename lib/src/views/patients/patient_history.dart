@@ -28,7 +28,7 @@ class _PatientHistoryState extends State<PatientHistory> {
             Icons.arrow_back,
           ),
         ),
-        title: 'Patient History1',
+        title: 'Patient History',
       ),
       body: Stack(children: [
         Positioned(

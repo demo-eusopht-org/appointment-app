@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../resources/assets.dart';
 import '../auth/widgets/custom_textfield.dart';
@@ -23,6 +26,20 @@ class _AddPatientsState extends State<AddPatients> {
   final TextEditingController aboutController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
   final TextEditingController optionalController = TextEditingController();
+  XFile? _selectedImage;
+
+  Future<void> _openImagePicker() async {
+    final imagePicker = ImagePicker();
+    final selectedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (selectedImage != null) {
+      setState(() {
+        _selectedImage = selectedImage;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -62,41 +79,59 @@ class _AddPatientsState extends State<AddPatients> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                        InkWell(
-                          onTap: () {},
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Appcolors.lightTheme.primaryColor,
-                                ),
-                                child: Image(
-                                  image: AssetImage(
-                                    AppImages.camera,
+                        Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                _openImagePicker();
+                              },
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.28,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.28,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Appcolors.lightTheme.primaryColor,
                                   ),
-                                ),
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.width * 0.1),
-                              ),
-                              Positioned(
-                                right: 10,
-                                bottom: 0,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 10,
-                                  child: Image.asset(
-                                    height: 15,
-                                    width: 15,
-                                    color: Colors.black,
-                                    AppImages.camera,
+                                  child: _selectedImage != null
+                                      ? Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
+                                          child: ClipOval(
+                                            child: Image.file(
+                                              File(_selectedImage!.path),
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
+                                              // Ensure the image covers the entire space
+                                            ),
+                                          ),
+                                        )
+                                      : Image.asset(
+                                          AppImages.account,
+                                        )
+                                  // padding: EdgeInsets.all(
+                                  //     MediaQuery.of(context).size.width * 0.1),
                                   ),
+                            ),
+                            Positioned(
+                              right: 5,
+                              bottom: 0,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 13,
+                                child: Image.asset(
+                                  height: 16,
+                                  width: 16,
+                                  color: Colors.white,
+                                  AppImages.camera,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.015),

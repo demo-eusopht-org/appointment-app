@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
@@ -5,6 +7,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../resources/assets.dart';
 import '../../resources/textstyle.dart';
@@ -36,6 +39,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
   String? selectedCountryCode;
   String? selectedStartTime;
   String? selectedEndTime;
+  XFile? _selectedImage;
+
+  // Function to open the image picker
+  Future<void> _openImagePicker() async {
+    final imagePicker = ImagePicker();
+    final selectedImage = await imagePicker.pickImage(
+        source: ImageSource
+            .gallery); // You can change ImageSource to camera if you want to capture an image
+
+    if (selectedImage != null) {
+      setState(() {
+        _selectedImage = selectedImage;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -74,17 +93,34 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
                     // Account Icon in Circle
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        _openImagePicker();
+                      },
                       child: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        height: MediaQuery.of(context).size.width * 0.3,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Appcolors.lightTheme.primaryColor,
                         ),
-                        child: Image(
-                          image: AssetImage(AppImages.camera),
-                        ),
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.1),
+                        child: _selectedImage != null
+                            ? Container(
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                child: ClipOval(
+                                  child: Image.file(
+                                    File(_selectedImage!.path),
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                    // Ensure the image covers the entire space
+                                  ),
+                                ),
+                              )
+                            : Image(
+                                image: AssetImage(AppImages.camera),
+                              ),
+                        // padding: EdgeInsets.all(
+                        //     MediaQuery.of(context).size.width * 0.1),
                       ),
                     ),
 

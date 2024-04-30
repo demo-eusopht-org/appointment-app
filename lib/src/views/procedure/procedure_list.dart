@@ -328,45 +328,65 @@ class _ProcedureListState extends State<ProcedureList> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            AppColors
-                                                                .buttonColor,
-                                                        foregroundColor:
-                                                            Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: textWidget(
-                                                        text: 'Cancel',
-                                                        fSize: 15.0,
-                                                        fWeight:
-                                                            FontWeight.w500,
+                                                    Container(
+                                                      height: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .height *
+                                                          0.04,
+                                                      width: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .width *
+                                                          0.3,
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .buttonColor,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: textWidget(
+                                                          text: 'Cancel',
+                                                          fSize: 15.0,
+                                                          fWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(width: 20),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            AppColors
-                                                                .buttonColor,
-                                                        foregroundColor:
-                                                            Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: textWidget(
-                                                        text: 'OK',
-                                                        fSize: 15.0,
-                                                        fWeight:
-                                                            FontWeight.w500,
+                                                    Container(
+                                                      height: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .height *
+                                                          0.04,
+                                                      width: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .width *
+                                                          0.3,
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .buttonColor,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: textWidget(
+                                                          text: 'OK',
+                                                          fSize: 15.0,
+                                                          fWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],

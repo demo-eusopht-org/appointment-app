@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:appointment_management/src/views/auth/widgets/clinic_item.dart';
 import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/settings/privacy_policy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../resources/app_colors.dart';
@@ -20,6 +23,17 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool switchValue = false;
+  ImageProvider? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = FileImage(File(pickedFile.path));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,24 +84,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               children: [
                                 Stack(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.red,
-                                      radius: 30,
-                                      backgroundImage:
-                                          AssetImage(AppImages.men3),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
+                                    GestureDetector(
+                                      onTap: _pickImage,
                                       child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 8,
-                                        child: Image.asset(
-                                          height: 12,
-                                          width: 12,
-                                          color: Colors.black,
-                                          AppImages.camera,
-                                        ),
+                                        radius: 30,
+                                        backgroundImage: _selectedImage != null
+                                            ? _selectedImage
+                                            : null,
+                                        backgroundColor: _selectedImage == null
+                                            ? Colors.white
+                                            : null,
+                                        child: _selectedImage == null
+                                            ? Image.asset(
+                                                AppImages.camera,
+                                                height: 25,
+                                                width: 25,
+                                                color: AppColors.buttonColor,
+                                              )
+                                            : null,
                                       ),
                                     ),
                                   ],

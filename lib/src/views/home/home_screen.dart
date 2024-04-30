@@ -1,5 +1,6 @@
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/notifications/notification_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -45,9 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
           scaffoldKey.currentState!.openDrawer();
         },
         action: [
-          Image.asset(
-            AppImages.notification,
-            width: 50,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => NotificationScreen(),
+                ),
+              );
+            },
+            child: Image.asset(
+              AppImages.notification,
+              width: 50,
+            ),
           ),
         ],
       ),
