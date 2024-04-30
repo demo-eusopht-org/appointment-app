@@ -302,13 +302,89 @@ class _ProcedureListState extends State<ProcedureList> {
                                       'assets/images/Create.png',
                                     ),
                                   ),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    radius: 12,
-                                    child: Icon(
-                                      Icons.delete,
-                                      size: 13,
-                                      color: Colors.white,
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                            ),
+                                            title: textWidget(
+                                              text:
+                                                  "Are you sure you want to delete?",
+                                              fSize: 13.0,
+                                              fWeight: FontWeight.w700,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(height: 15),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            AppColors
+                                                                .buttonColor,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: textWidget(
+                                                        text: 'Cancel',
+                                                        fSize: 15.0,
+                                                        fWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 20),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            AppColors
+                                                                .buttonColor,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: textWidget(
+                                                        text: 'OK',
+                                                        fSize: 15.0,
+                                                        fWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 14,
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: 13,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   )
                                 ],
