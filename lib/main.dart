@@ -1,15 +1,23 @@
-import 'package:appointment_management/src/views/auth/bloc/loader_bloc.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/auth/loader_bloc.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/theme/dark/dark_theme.dart';
 import 'package:appointment_management/theme/light/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:timetable/timetable.dart';
 
-import 'src/views/auth/bloc/login_bloc.dart';
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await initializeLocator();
 
-void main() {
   runApp(MyApp());
 }
 
@@ -35,9 +43,15 @@ class MyApp extends StatelessWidget {
                 providers: [
                   BlocProvider(
                     create: (context) => LoaderBloc(),
+                    lazy: true,
                   ),
                   BlocProvider(
-                    create: (context) => LoginBloc(),
+                    create: (context) => AuthBloc(),
+                    lazy: true,
+                  ),
+                  BlocProvider(
+                    create: (context) => OnBoardingBloc(),
+                    lazy: true,
                   ),
                 ],
                 child: child!,

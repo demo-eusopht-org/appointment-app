@@ -1,4 +1,9 @@
+import 'package:appointment_management/model/auth_model/auth_model.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/views/auth/login.dart';
+import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/src/views/option/option.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToNextScreen() {
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => OptionScreen()),
-      );
+      final user = locator<LocalStorageService>().getData(key: 'user');
+      print('user ${user}');
+      if (user != null && user['token'] != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => LoginPage()),
+        );
+      }
     });
   }
 

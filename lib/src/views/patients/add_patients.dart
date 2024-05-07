@@ -1,14 +1,15 @@
 import 'dart:io';
 
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+ 
+import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../resources/assets.dart';
-import '../auth/widgets/custom_textfield.dart';
+import '../../resources/assets.dart'; 
 
 class AddPatients extends StatefulWidget {
   const AddPatients({super.key});

@@ -1,12 +1,12 @@
 import 'package:appointment_management/src/views/appointments/appointment_booking_doctor.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart'; 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart';
-import '../auth/widgets/custom_appbar.dart';
+import '../../resources/assets.dart'; 
 
 class ConsultantDetails extends StatefulWidget {
   const ConsultantDetails({super.key});

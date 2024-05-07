@@ -1,4 +1,4 @@
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownFormField extends StatelessWidget {

@@ -1,13 +1,28 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/email_validator.dart';
+import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_events.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_states.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 import '../../resources/assets.dart';
 import '../../resources/textstyle.dart';
@@ -35,11 +50,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final TextEditingController whatsappNoteController = TextEditingController();
   final TextEditingController quotationController = TextEditingController();
 
-  String? selectedLanguage;
-  String? selectedCountryCode;
+  // String? selectedLanguage;
+  // String? selectedCountryCode;
   String? selectedStartTime;
   String? selectedEndTime;
   XFile? _selectedImage;
+
+  bool isLoading = false;
 
   // Function to open the image picker
   Future<void> _openImagePicker() async {
@@ -54,6 +71,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
       });
     }
   }
+
+  final formKey = GlobalKey<FormState>();
+  final dateTimeKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -83,288 +103,386 @@ class _OnboardingPageState extends State<OnboardingPage> {
             },
             children: [
               // Page 1
-              SingleChildScrollView(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
-                    // Account Icon in Circle
-                    GestureDetector(
-                      onTap: () {
-                        _openImagePicker();
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.width * 0.3,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Appcolors.lightTheme.primaryColor,
-                        ),
-                        child: _selectedImage != null
-                            ? Container(
-                                width: MediaQuery.of(context).size.width * 0.1,
-                                child: ClipOval(
-                                  child: Image.file(
-                                    File(_selectedImage!.path),
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                    // Ensure the image covers the entire space
-                                  ),
-                                ),
-                              )
-                            : Image(
-                                image: AssetImage(AppImages.camera),
-                              ),
-                        // padding: EdgeInsets.all(
-                        //     MediaQuery.of(context).size.width * 0.1),
-                      ),
-                    ),
-
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.015),
-
-                    Text('Add Photo'),
-
-                    // Form Fields
-                    TextFormField(
-                        controller: nameController,
-                        decoration: InputDecoration(labelText: 'Name')),
-                    TextFormField(
-                        controller: professionController,
-                        decoration: InputDecoration(labelText: 'Profession')),
-                    TextFormField(
-                        controller: addressController,
-                        decoration:
-                            InputDecoration(labelText: 'Complete Address')),
-                    TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(labelText: 'Email')),
-                    TextFormField(
-                        controller: websiteController,
-                        decoration: InputDecoration(
-                          labelText: 'Website',
-                        )),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.015),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CountryCodePicker(
-                          showDropDownButton: true,
-                          padding: EdgeInsets.zero,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCountryCode = value.dialCode;
-                            });
-                          },
-                          initialSelection: 'Pakistan',
-                          favorite: ['+92', 'Pakistan'],
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                              controller: mobileController,
-                              decoration:
-                                  InputDecoration(hintText: 'Mobile No.')),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-
-                    Row(
-                      children: [
-                        Text(
-                          'Language:',
-                          style: MyTextStyles.normalblacktext,
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.015),
-                        DropdownButton<String>(
-                          value: selectedLanguage = "English",
-                          focusColor: Colors.black,
-                          dropdownColor: Colors.white,
-                          items: <String>[
-                            'English',
-                            'Spanish',
-                            'French',
-                            'German'
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedLanguage = newValue;
-                            });
-                          },
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-
-                    // Page Indicator
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(2, (int index) {
-                        return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          height: MediaQuery.sizeOf(context).height * 0.04,
-                          width: MediaQuery.sizeOf(context).width * 0.025,
+                      // Account Icon in Circle
+                      GestureDetector(
+                        onTap: () {
+                          _openImagePicker();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.width * 0.3,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _currentPage == index
-                                ? Colors.blue
-                                : Colors.grey,
+                            color: Appcolors.lightTheme.primaryColor,
                           ),
-                        );
-                      }),
-                    ),
-
-                    // Next Button
-                    Container(
-                      alignment: Alignment.bottomRight,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            backgroundColor: Appcolors.lightTheme.primaryColor),
-                        onPressed: () {
-                          _pageController.nextPage(
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.ease,
-                          );
-                        },
-                        child: Text(
-                          'Next',
-                          style: MyTextStyles.boldTextWhite,
+                          child: _selectedImage != null
+                              ? Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  child: ClipOval(
+                                    child: Image.file(
+                                      File(_selectedImage!.path),
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                      // Ensure the image covers the entire space
+                                    ),
+                                  ),
+                                )
+                              : Image(
+                                  image: AssetImage(AppImages.camera),
+                                ),
+                          // padding: EdgeInsets.all(
+                          //     MediaQuery.of(context).size.width * 0.1),
                         ),
                       ),
-                    ),
-                  ],
+
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015),
+
+                      Text('Add Photo'),
+
+                      // Form Fields
+                      TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(labelText: 'Name'),
+                        validator: (String? value) {
+                          if (value == null || value == '') {
+                            return 'Please fill name field';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.text,
+                      ),
+                      TextFormField(
+                          controller: professionController,
+                          decoration: InputDecoration(labelText: 'Profession')),
+                      TextFormField(
+                          controller: addressController,
+                          decoration:
+                              InputDecoration(labelText: 'Complete Address')),
+                      TextFormField(
+                        controller: emailController,
+                        decoration: InputDecoration(labelText: 'Email'),
+                        validator: (String? value) {
+                          if (value != null && value.isNotEmpty) {
+                            return value.isValidEmail()
+                                ? null
+                                : 'Please fill correct email format';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                          controller: websiteController,
+                          decoration: InputDecoration(
+                            labelText: 'Website',
+                          )),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // CountryCodePicker(
+                          //   showDropDownButton: true,
+                          //   padding: EdgeInsets.zero,
+                          //   onChanged: (value) {
+                          //     setState(() {
+                          //       selectedCountryCode = value.dialCode;
+                          //     });
+                          //   },
+                          //   initialSelection: 'Pakistan',
+                          //   favorite: ['+92', 'Pakistan'],
+                          // ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: mobileController,
+                              decoration: InputDecoration(
+                                  hintText: 'Enter phone 0312-----67'),
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       'Language:',
+                      //       style: MyTextStyles.normalblacktext,
+                      //     ),
+                      //     SizedBox(
+                      //         width: MediaQuery.of(context).size.width * 0.015),
+                      //     DropdownButton<String>(
+                      //       value: selectedLanguage = "English",
+                      //       focusColor: Colors.black,
+                      //       dropdownColor: Colors.white,
+                      //       items: <String>[
+                      //         'English',
+                      //         'Spanish',
+                      //         'French',
+                      //         'German'
+                      //       ].map((String value) {
+                      //         return DropdownMenuItem<String>(
+                      //           value: value,
+                      //           child: Text(value),
+                      //         );
+                      //       }).toList(),
+                      //       onChanged: (newValue) {
+                      //         setState(() {
+                      //           selectedLanguage = newValue;
+                      //         });
+                      //       },
+                      //       style: TextStyle(color: Colors.black),
+                      //     ),
+                      //   ],
+                      // ),
+
+                      // Page Indicator
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List<Widget>.generate(2, (int index) {
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            height: MediaQuery.sizeOf(context).height * 0.04,
+                            width: MediaQuery.sizeOf(context).width * 0.025,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _currentPage == index
+                                  ? Colors.blue
+                                  : Colors.grey,
+                            ),
+                          );
+                        }),
+                      ),
+
+                      // Next Button
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              backgroundColor:
+                                  Appcolors.lightTheme.primaryColor),
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              _pageController.nextPage(
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.ease,
+                              );
+                            }
+                          },
+                          child: Text(
+                            'Next',
+                            style: MyTextStyles.boldTextWhite,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
               // Page 2
-              SingleChildScrollView(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              Form(
+                key: dateTimeKey,
+                child: SingleChildScrollView(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
-                    // Form Fields
-                    TextFormField(
-                        controller: locationController,
-                        decoration: InputDecoration(labelText: 'Location')),
-                    TextFormField(
-                        controller: feesController,
-                        decoration: InputDecoration(labelText: 'Fees')),
-                    TextFormField(
-                        controller: whatsappNoteController,
-                        decoration:
-                            InputDecoration(labelText: 'Whatsapp Note')),
-                    TextFormField(
-                        controller: quotationController,
-                        decoration:
-                            InputDecoration(labelText: 'Quotation/Footnote')),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                      // Form Fields
+                      TextFormField(
+                          controller: locationController,
+                          decoration: InputDecoration(labelText: 'Location')),
+                      TextFormField(
+                          controller: feesController,
+                          decoration: InputDecoration(labelText: 'Fees')),
+                      TextFormField(
+                          controller: whatsappNoteController,
+                          decoration:
+                              InputDecoration(labelText: 'Whatsapp Note')),
+                      TextFormField(
+                          controller: quotationController,
+                          decoration:
+                              InputDecoration(labelText: 'Quotation/Footnote')),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01),
 
-                    Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Appointment Timings: Default',
-                          textAlign: TextAlign.left,
-                        )),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DateTimePicker(
+                                  type: DateTimePickerType.time,
+                                  firstDate: DateTime.now(),
+                                  icon: Icon(Icons.access_time_filled),
+                                  timeLabelText: "Business Start Time",
+                                  onChanged: (String? val) =>
+                                      setState(() => selectedStartTime = val),
+                                  validator: (String? val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please select business start time';
+                                    }
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DateTimePicker(
-                            type: DateTimePickerType.time,
-                            icon: Icon(Icons.access_time),
-                            timeLabelText: "Start Time",
-                            onChanged: (val) =>
-                                setState(() => selectedStartTime = val),
-                            validator: (val) {
-                              print(val);
-                              return null;
-                            },
-                            onSaved: (val) =>
-                                setState(() => selectedStartTime = val),
+                                    return null;
+                                  },
+                                  onSaved: (String? val) =>
+                                      setState(() => selectedStartTime = val),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Expanded(
-                          child: DateTimePicker(
-                            type: DateTimePickerType.time,
-                            icon: Icon(Icons.access_time),
-                            timeLabelText: "End Time",
-                            onChanged: (val) =>
-                                setState(() => selectedEndTime = val),
-                            validator: (val) {
-                              print(val);
-                              return null;
-                            },
-                            onSaved: (val) =>
-                                setState(() => selectedEndTime = val),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DateTimePicker(
+                                  type: DateTimePickerType.time,
+                                  firstDate: DateTime.now(),
+                                  icon: const Icon(Icons.access_time_filled),
+                                  timeLabelText: "Business End Time",
+                                  onChanged: (String? val) {
+                                    setState(() => selectedEndTime = val);
+                                  },
+                                  validator: (String? val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please select business end time';
+                                    }
+
+                                    return null;
+                                  },
+                                  onSaved: (String? val) =>
+                                      setState(() => selectedEndTime = val),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
 
-                    // Page Indicator
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(2, (int index) {
-                        return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          height: MediaQuery.sizeOf(context).height * 0.04,
-                          width: MediaQuery.sizeOf(context).width * 0.025,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _currentPage == index
-                                ? Colors.blue
-                                : Colors.grey,
-                          ),
-                        );
-                      }),
-                    ),
-
-                    // Done Button
-                    Container(
-                      alignment: Alignment.bottomRight,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                      // Page Indicator
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List<Widget>.generate(2, (int index) {
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            height: MediaQuery.sizeOf(context).height * 0.04,
+                            width: MediaQuery.sizeOf(context).width * 0.025,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _currentPage == index
+                                  ? Colors.blue
+                                  : Colors.grey,
                             ),
-                            backgroundColor: Appcolors.lightTheme.primaryColor),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => HomeScreen(),
+                          );
+                        }),
+                      ),
+
+                      // Done Button
+
+                      Builder(
+                        builder: (context) {
+                          if (isLoading) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              ],
+                            );
+                          }
+                          return Container(
+                            alignment: Alignment.bottomRight,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  backgroundColor:
+                                      Appcolors.lightTheme.primaryColor),
+                              onPressed: () {
+                                if (dateTimeKey.currentState!.validate()) {
+                                  onBoarding();
+                                }
+
+                                // Navigator.push(
+                                //   context,
+                                //   CupertinoPageRoute(
+                                //     builder: (context) => HomeScreen(),
+                                //   ),
+                                // );
+                              },
+                              child: Text(
+                                'Done',
+                                style: MyTextStyles.boldTextWhite,
+                              ),
                             ),
                           );
                         },
-                        child: Text(
-                          'Done',
-                          style: MyTextStyles.boldTextWhite,
-                        ),
                       ),
-                    ),
-                  ],
+                      // BlocBuilder<OnBoardingBloc, OnBoardingStates>(
+                      //     bloc: BlocProvider.of<OnBoardingBloc>(context),
+                      //     builder: (context, state) {
+                      //       if (state is OnBoardingLoadingState) {
+                      //         return const CircularProgressIndicator();
+                      //       }
+                      //       return Container(
+                      //         alignment: Alignment.bottomRight,
+                      //         child: ElevatedButton(
+                      //           style: ElevatedButton.styleFrom(
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(8.0),
+                      //               ),
+                      //               backgroundColor:
+                      //                   Appcolors.lightTheme.primaryColor),
+                      //           onPressed: () {
+                      //             print('formKey2 ${dateTimeKey.currentState}');
+                      //             if (dateTimeKey.currentState!.validate()) {
+                      //               onBoarding();
+                      //             }
+
+                      //             // Navigator.push(
+                      //             //   context,
+                      //             //   CupertinoPageRoute(
+                      //             //     builder: (context) => HomeScreen(),
+                      //             //   ),
+                      //             // );
+                      //           },
+                      //           child: Text(
+                      //             'Done',
+                      //             style: MyTextStyles.boldTextWhite,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     }),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -392,4 +510,99 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ],
     );
   }
+
+  Future<void> onBoarding() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final user = locator<LocalStorageService>().getData(key: 'user');
+
+      if (user != null && user['token'] != null) {
+        var request = http.MultipartRequest(
+            'POST', Uri.parse(Constants.onBoardingSignUp));
+        request.headers['Authorization'] = 'Bearer ${user['token']}';
+
+        request.fields['name'] = nameController.text;
+        request.fields['profession'] = professionController.text;
+        request.fields['complete_address'] = addressController.text;
+        request.fields['phone_number'] = mobileController.text;
+        request.fields['language'] = 'English';
+        request.fields['email'] = emailController.text;
+        request.fields['website'] = websiteController.text;
+        request.fields['location'] = locationController.text;
+        request.fields['fees'] = feesController.text;
+        request.fields['whatsapp_note'] = whatsappNoteController.text;
+        request.fields['footnote'] = quotationController.text;
+
+        request.fields['user_id'] = user['user']['id'].toString();
+        request.fields['start_time'] = selectedStartTime.toString();
+        request.fields['end_time'] = selectedEndTime.toString();
+
+        // Add image file to the request
+        if (_selectedImage != null) {
+          request.files.add(await http.MultipartFile.fromPath(
+              'images', '${_selectedImage?.path}'));
+        } else {
+          request.fields['images'] = _selectedImage.toString();
+        }
+
+        // Send the request
+
+        var response = await request.send();
+        // Convert response bytes to string
+        var responseBytes = await response.stream.toBytes();
+
+        var responseBody = utf8.decode(responseBytes);
+        final res = jsonDecode(responseBody);
+
+        // Check the response status code
+
+        if (response.statusCode == 200) {
+          CustomDialogue.message(context: context, message: res['message']);
+
+          await locator<LocalStorageService>().saveData(
+            key: 'businessId',
+            value: res['business'][0]['id'],
+          );
+
+          final route = MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          );
+
+          Navigator.pushReplacement(context, route);
+        } else {
+          CustomDialogue.message(
+              context: context,
+              message: 'Business not created: ${res['message']}');
+        }
+      }
+    } on SocketException catch (e) {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Business not created\nPlease check your internet connection');
+    } catch (e, stack) {
+      CustomDialogue.message(
+          context: context, message: 'Business not created: Please try again');
+
+      print('Error in onBoarding runtimeType: ${e}');
+      setState(() {
+        isLoading = false;
+      });
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  // Future<void> onBoarding() async {
+  //   BlocProvider.of<OnBoardingBloc>(context).add(
+  //     CreateOnBoardEvent(
+  //       name: nameController.text,
+  //     ),
+  //   );
+  // }
 }

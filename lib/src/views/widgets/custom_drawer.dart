@@ -1,13 +1,15 @@
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
 import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/appointments/appointments.dart';
 import 'package:appointment_management/src/views/auth/login.dart';
-import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
 import 'package:appointment_management/src/views/patients/add_patients.dart';
 import 'package:appointment_management/src/views/patients/patient_directory.dart';
 import 'package:appointment_management/src/views/procedure/procedure_list.dart';
 import 'package:appointment_management/src/views/settings/settings_screen.dart';
+import 'package:appointment_management/src/views/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -117,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
               child: textWidget2(
-                text: 'Add Appoitment',
+                text: 'Add Appointment',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
@@ -157,12 +159,13 @@ class CustomDrawer extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               height: 38,
               child: RoundedElevatedButton(
                 borderRadius: 38.0,
-                onPressed: () {
+                onPressed: () async {
+                  await locator<LocalStorageService>().clearAll();
                   Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoPageRoute(

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyTextStyles {
-  static final TextStyle boldTextWhite = GoogleFonts.montserrat(
+  static final TextStyle boldTextWhite = GoogleFonts.poppins(
     textStyle: TextStyle(
       fontSize: 15.sp,
       fontWeight: FontWeight.w700,
@@ -17,14 +17,14 @@ class MyTextStyles {
       color: Colors.black,
     ),
   );
-  static final TextStyle continuewith = GoogleFonts.montserrat(
+  static final TextStyle continuewith = GoogleFonts.poppins(
     textStyle: TextStyle(
         fontSize: 12.sp,
         fontWeight: FontWeight.w600,
         color: const Color(0xff1e1c21)),
   );
 
-  static final TextStyle formtext = GoogleFonts.montserrat(
+  static final TextStyle formtext = GoogleFonts.poppins(
       textStyle: TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
@@ -36,11 +36,32 @@ class MyTextStyles {
     fontWeight: FontWeight.w800,
     color: Colors.black,
   ));
-  static final TextStyle normalblacktext = GoogleFonts.montserrat(
+  static final TextStyle smallBlacktext = GoogleFonts.poppins(
     textStyle: TextStyle(
-      fontSize: 15.sp,
+      fontSize: 14.sp,
       fontWeight: FontWeight.w400,
       color: Colors.black,
+    ),
+  );
+  static final TextStyle normalBlacktext = GoogleFonts.poppins(
+    textStyle: TextStyle(
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+      color: Colors.black,
+    ),
+  );
+  static final TextStyle smallWhitetext = GoogleFonts.poppins(
+    textStyle: TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      color: Colors.white,
+    ),
+  );
+  static final TextStyle normalWhitetext = GoogleFonts.poppins(
+    textStyle: TextStyle(
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+      color: Colors.white,
     ),
   );
 }

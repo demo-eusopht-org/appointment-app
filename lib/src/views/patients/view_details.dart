@@ -1,10 +1,10 @@
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart';
-import '../auth/widgets/custom_appbar.dart';
-import '../auth/widgets/text_widget.dart';
+import '../../resources/assets.dart'; 
 
 class ViewDetails extends StatefulWidget {
   const ViewDetails({super.key});

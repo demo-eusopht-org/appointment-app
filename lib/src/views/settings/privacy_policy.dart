@@ -1,7 +1,7 @@
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../resources/assets.dart';
-import '../auth/widgets/text_widget.dart';
+import '../../resources/assets.dart'; 
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({super.key});

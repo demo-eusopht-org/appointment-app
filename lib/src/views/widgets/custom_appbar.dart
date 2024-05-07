@@ -1,5 +1,6 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
+  
 import 'package:flutter/material.dart';
 
 AppBar customAppBar({

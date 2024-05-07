@@ -1,10 +1,10 @@
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+ import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+ 
 
-import '../../../resources/app_colors.dart';
-import '../../../resources/assets.dart';
-
-class CancelList extends StatelessWidget {
+class CompletedList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -89,26 +89,17 @@ class CancelList extends StatelessWidget {
                           width: MediaQuery.sizeOf(context).width * 0.15,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.red,
-                              child: textWidget(
-                                  text: "x",
-                                  fSize: 12.0,
-                                  color: Colors.white,
-                                  fWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
                             textWidget(
-                              text: 'Cancel',
+                              text: 'Complete',
                               fSize: 11.0,
-                              color: Colors.red,
+                              color: Colors.green,
                               fWeight: FontWeight.w800,
                             ),
+                            Icon(
+                              Icons.done,
+                              color: Colors.green,
+                            )
                           ],
                         ),
                       ],

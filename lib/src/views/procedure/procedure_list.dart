@@ -1,9 +1,9 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart'; 
 import 'package:flutter/material.dart';
-
-import '../auth/widgets/custom_appbar.dart';
-import '../auth/widgets/custom_drawer.dart';
+ 
 
 class ProcedureList extends StatefulWidget {
   const ProcedureList({super.key});

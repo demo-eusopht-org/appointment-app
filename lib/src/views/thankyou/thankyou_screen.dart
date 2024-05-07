@@ -1,11 +1,11 @@
+import 'package:appointment_management/src/views/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart';
-import '../auth/widgets/custom_button.dart';
-import '../auth/widgets/text_widget.dart';
+import '../../resources/assets.dart'; 
 import '../home/home_screen.dart';
 
 class ThankYouScreen extends StatefulWidget {

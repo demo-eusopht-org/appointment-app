@@ -1,10 +1,9 @@
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../resources/app_colors.dart';
-import '../../../resources/assets.dart';
-
-class ScheduleList extends StatelessWidget {
+class CancelList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -18,7 +17,6 @@ class ScheduleList extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Stack(
                           children: [
@@ -60,6 +58,9 @@ class ScheduleList extends StatelessWidget {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -83,26 +84,31 @@ class ScheduleList extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Container(
-                          height: 25,
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.buttonColor,
-                              foregroundColor: Colors.white,
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.red,
+                              child: textWidget(
+                                  text: "x",
+                                  fSize: 12.0,
+                                  color: Colors.white,
+                                  fWeight: FontWeight.bold),
                             ),
-                            onPressed: () {},
-                            child: textWidget(
-                              text: "Reschedule",
-                              fSize: 10,
+                            SizedBox(
+                              width: 5,
+                            ),
+                            textWidget(
+                              text: 'Cancel',
+                              fSize: 11.0,
+                              color: Colors.red,
                               fWeight: FontWeight.w800,
                             ),
-                          ),
-                        ),
-                        textWidget(
-                          text: 'Cancel',
-                          fSize: 10.0,
-                          fWeight: FontWeight.w800,
+                          ],
                         ),
                       ],
                     ),

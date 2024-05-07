@@ -1,8 +1,12 @@
 import 'dart:io';
 
-import 'package:appointment_management/src/views/auth/widgets/clinic_item.dart';
-import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/views/settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/widgets/clinic_item.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +15,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 import '../auth/login.dart';
-import '../auth/widgets/custom_appbar.dart';
-import '../auth/widgets/text_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -326,7 +328,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 40,
                   width: MediaQuery.sizeOf(context).width * 0.6,
                   child: RoundedElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await locator<LocalStorageService>().clearAll();
                       Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute(

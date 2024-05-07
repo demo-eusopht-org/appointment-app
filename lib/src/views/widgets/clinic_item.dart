@@ -1,5 +1,5 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart'; 
 import 'package:flutter/material.dart';
 
 class ClinicItem extends StatelessWidget {
@@ -36,7 +36,7 @@ class ClinicItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              textWidget2(
+              textWidget(
                 text: name,
                 fSize: 14.0,
                 fWeight: FontWeight.w700,

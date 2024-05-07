@@ -1,4 +1,5 @@
-import 'package:appointment_management/src/views/auth/widgets/custom_appbar.dart';
+
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {

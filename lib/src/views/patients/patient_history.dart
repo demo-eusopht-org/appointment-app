@@ -1,11 +1,11 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/views/patients/view_details.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../auth/widgets/custom_appbar.dart';
-import '../auth/widgets/text_widget.dart';
+ 
 
 class PatientHistory extends StatefulWidget {
   const PatientHistory({super.key});

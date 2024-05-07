@@ -1,10 +1,9 @@
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../resources/app_colors.dart';
-import '../../../resources/assets.dart';
-
-class CompletedList extends StatelessWidget {
+class ScheduleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -18,6 +17,7 @@ class CompletedList extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Stack(
                           children: [
@@ -59,9 +59,6 @@ class CompletedList extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -85,22 +82,26 @@ class CompletedList extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: MediaQuery.sizeOf(context).width * 0.15,
-                        ),
-                        Row(
-                          children: [
-                            textWidget(
-                              text: 'Complete',
-                              fSize: 11.0,
-                              color: Colors.green,
+                        Container(
+                          height: 25,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.buttonColor,
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () {},
+                            child: textWidget(
+                              text: "Reschedule",
+                              fSize: 10,
                               fWeight: FontWeight.w800,
                             ),
-                            Icon(
-                              Icons.done,
-                              color: Colors.green,
-                            )
-                          ],
+                          ),
+                        ),
+                        textWidget(
+                          text: 'Cancel',
+                          fSize: 10.0,
+                          fWeight: FontWeight.w800,
                         ),
                       ],
                     ),

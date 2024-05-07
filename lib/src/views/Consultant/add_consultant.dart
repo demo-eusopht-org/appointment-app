@@ -1,16 +1,23 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:appointment_management/src/views/auth/widgets/custom_button.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/email_validator.dart';
+import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/home/home_screen.dart';
+import 'package:appointment_management/src/views/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:http/http.dart' as http;
 import '../../resources/assets.dart';
-import '../auth/widgets/custom_textfield.dart';
 
 class AddConsultant extends StatefulWidget {
   const AddConsultant({super.key});
@@ -22,11 +29,17 @@ class AddConsultant extends StatefulWidget {
 class _AddConsultantState extends State<AddConsultant> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController fieldController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController patientsController = TextEditingController();
   final TextEditingController expController = TextEditingController();
   final TextEditingController aboutController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
   XFile? _selectedImage;
+
+  bool isLoading = false;
 
   Future<void> _openImagePicker() async {
     final imagePicker = ImagePicker();
@@ -67,140 +80,226 @@ class _AddConsultantState extends State<AddConsultant> {
               ),
             ),
           ),
-          body: Container(
-            height: MediaQuery.sizeOf(context).height,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                        Stack(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                _openImagePicker();
-                              },
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.28,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.28,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Appcolors.lightTheme.primaryColor,
-                                  ),
-                                  child: _selectedImage != null
-                                      ? Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1,
-                                          child: ClipOval(
-                                            child: Image.file(
-                                              File(_selectedImage!.path),
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              fit: BoxFit.cover,
-                                              // Ensure the image covers the entire space
+          body: Form(
+            key: formKey,
+            child: Container(
+              height: MediaQuery.sizeOf(context).height,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _openImagePicker();
+                                },
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.28,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.28,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Appcolors.lightTheme.primaryColor,
+                                    ),
+                                    child: _selectedImage != null
+                                        ? Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            child: ClipOval(
+                                              child: Image.file(
+                                                File(_selectedImage!.path),
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                                // Ensure the image covers the entire space
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      : Image.asset(
-                                          AppImages.account,
-                                        )
-                                  // padding: EdgeInsets.all(
-                                  //     MediaQuery.of(context).size.width * 0.1),
+                                          )
+                                        : Image.asset(
+                                            AppImages.account,
+                                          )
+                                    // padding: EdgeInsets.all(
+                                    //     MediaQuery.of(context).size.width * 0.1),
+                                    ),
+                              ),
+                              Positioned(
+                                right: 5,
+                                bottom: 0,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 13,
+                                  child: Image.asset(
+                                    height: 16,
+                                    width: 16,
+                                    color: Colors.white,
+                                    AppImages.camera,
                                   ),
-                            ),
-                            Positioned(
-                              right: 5,
-                              bottom: 0,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                                radius: 13,
-                                child: Image.asset(
-                                  height: 16,
-                                  width: 16,
-                                  color: Colors.white,
-                                  AppImages.camera,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.015),
-                        textWidget2(
-                          text: 'Add Photo',
-                          fSize: 14,
-                          fWeight: FontWeight.w400,
-                        ),
-                        CustomTextField(
-                          hintText: "Name",
-                          controller: nameController,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomTextField(
-                          hintText: "Field",
-                          controller: fieldController,
-                        ),
-                        CustomTextField(
-                          hintText: "Email",
-                          controller: emailController,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomTextField(
-                          hintText: "Total Patients",
-                          controller: patientsController,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomTextField(
-                          hintText: "Experience",
-                          controller: expController,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomTextField(
-                          hintText: "About",
-                          controller: aboutController,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 40,
-                          width: 106,
-                          child: RoundedElevatedButton(
-                            borderRadius: 6,
-                            onPressed: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => HomeScreen(),
-                                ),
-                                (_) => false,
-                              );
-                            },
-                            text: 'Add',
+                            ],
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.015),
+                          textWidget2(
+                            text: 'Add Photo',
+                            fSize: 14,
+                            fWeight: FontWeight.w400,
+                          ),
+                          TextFormField(
+                            controller: nameController,
+                            decoration: InputDecoration(labelText: 'Name'),
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill name field';
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.text,
+                          ),
+
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: fieldController,
+                            decoration: InputDecoration(labelText: 'Field'),
+                            keyboardType: TextInputType.text,
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Field value';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(labelText: 'Email'),
+                            keyboardType: TextInputType.text,
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill email address';
+                              }
+                              return value.isValidEmail()
+                                  ? null
+                                  : 'Please fill correct email format';
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          TextFormField(
+                            controller: expController,
+                            decoration:
+                                InputDecoration(labelText: 'Experience'),
+                            keyboardType: TextInputType.text,
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Experience field';
+                              }
+                              return null;
+                            },
+                          ),
+
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          TextFormField(
+                            controller: aboutController,
+                            decoration: InputDecoration(labelText: 'About'),
+                            keyboardType: TextInputType.text,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            controller: passwordController,
+                            decoration: InputDecoration(labelText: 'Password'),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Password field';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: confirmPasswordController,
+                            decoration:
+                                InputDecoration(labelText: 'Confirm Password'),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            validator: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Confirm Password field';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          Builder(builder: (context) {
+                            if (isLoading) {
+                              return Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            return Container(
+                              height: 40,
+                              width: 106,
+                              child: RoundedElevatedButton(
+                                borderRadius: 6,
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    if (passwordController.text ==
+                                        confirmPasswordController.text) {
+                                      addConsultant();
+                                    } else {
+                                      CustomDialogue.message(
+                                          context: context,
+                                          message:
+                                              'Password and confirm password does not matched');
+                                    }
+                                  }
+                                },
+                                text: 'Add',
+                              ),
+                            );
+                          }),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -225,5 +324,94 @@ class _AddConsultantState extends State<AddConsultant> {
         ),
       ],
     );
+  }
+
+  Future<void> addConsultant() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final user = locator<LocalStorageService>().getData(key: 'user');
+      final businessId =
+          locator<LocalStorageService>().getData(key: 'businessId');
+
+      if (businessId != null) {
+        if (user != null && user['token'] != null) {
+          var request =
+              http.MultipartRequest('POST', Uri.parse(Constants.addConsultant));
+          request.headers['Authorization'] = 'Bearer ${user['token']}';
+
+          request.fields['name'] = nameController.text;
+          request.fields['field'] = fieldController.text;
+          request.fields['experience'] = expController.text;
+          request.fields['about'] = aboutController.text;
+          request.fields['user_id'] = user['user']['id'].toString();
+
+          request.fields['business_id'] = businessId.toString();
+          request.fields['password'] = passwordController.text;
+          request.fields['email'] = emailController.text;
+
+          // Add image file to the request
+          if (_selectedImage != null) {
+            request.files.add(await http.MultipartFile.fromPath(
+                'images', '${_selectedImage?.path}'));
+          } else {
+            request.fields['images'] = _selectedImage.toString();
+          }
+
+          // Send the request
+
+          var response = await request.send();
+          // Convert response bytes to string
+          var responseBytes = await response.stream.toBytes();
+
+          var responseBody = utf8.decode(responseBytes);
+          final res = jsonDecode(responseBody);
+
+          // Check the response status code
+
+          if (response.statusCode == 200) {
+            CustomDialogue.message(context: context, message: res['message']);
+
+            await locator<LocalStorageService>().saveData(
+              key: 'businessId',
+              value: res['business'][0]['id'],
+            );
+
+            final route = MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            );
+
+            Navigator.pushReplacement(context, route);
+          } else {
+            CustomDialogue.message(
+                context: context,
+                message: 'Consultant not created: ${res['message']}');
+          }
+        }
+      } else {
+        CustomDialogue.message(
+            context: context, message: 'Please create your business first');
+      }
+    } on SocketException catch (e) {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Consultant not created\nPlease check your internet connection');
+    } catch (e, stack) {
+      CustomDialogue.message(
+          context: context,
+          message: 'Consultant not created: Please try again');
+
+      print('Error in addConsultant runtimeType: ${e}');
+      setState(() {
+        isLoading = false;
+      });
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 }

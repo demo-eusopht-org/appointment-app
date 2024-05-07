@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color color1 = Color(0xffF0EFEF);
   static final Color color2 = Color(0xffF0EFEF).withOpacity(0.0);
+  static const Color black = Color.fromARGB(255, 0, 0, 0);
 
   static List<Color> onBoardingGradient = [
     color1,

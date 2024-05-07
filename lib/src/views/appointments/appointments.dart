@@ -1,11 +1,11 @@
-import 'package:appointment_management/src/views/auth/widgets/completed_list.dart';
-import 'package:appointment_management/src/views/auth/widgets/text_widget.dart';
+import 'package:appointment_management/src/views/widgets/cancel_list.dart';
+import 'package:appointment_management/src/views/widgets/completed_list.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
+import 'package:appointment_management/src/views/widgets/schedule_list.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/app_colors.dart';
-import '../auth/widgets/cancel_list.dart';
-import '../auth/widgets/custom_appbar.dart';
-import '../auth/widgets/schedule_list.dart';
 
 class Appointments extends StatefulWidget {
   const Appointments({Key? key}) : super(key: key);
