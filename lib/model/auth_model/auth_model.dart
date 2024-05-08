@@ -1,13 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'auth_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class AuthResponse {
   int? status;
   String? message;
   User? user;
   String? token;
-  String? businessId;
+  int? businessId;
 
   AuthResponse({
     this.status,

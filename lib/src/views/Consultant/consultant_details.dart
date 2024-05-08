@@ -1,21 +1,34 @@
+import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/views/appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
-import 'package:appointment_management/src/views/widgets/text_widget.dart'; 
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart'; 
+import '../../resources/assets.dart';
 
 class ConsultantDetails extends StatefulWidget {
-  const ConsultantDetails({super.key});
+  final Consultant consultant;
+  const ConsultantDetails({super.key, required this.consultant});
 
   @override
   State<ConsultantDetails> createState() => _ConsultantDetailsState();
 }
 
 class _ConsultantDetailsState extends State<ConsultantDetails> {
+  Consultant? consultant;
+
+  @override
+  void initState() {
+    consultant = widget.consultant;
+    super.initState();
+  }
+
   List<String> monthTexts = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
   List<String> timeTexts = ['09:00', '11:00', '02:00', '03:00', '11:00'];
 
@@ -71,16 +84,25 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 154,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade100),
-                        ),
-                        child: Image.asset(
-                          fit: BoxFit.contain,
-                          AppImages.doctor1,
-                          width: MediaQuery.sizeOf(context).width * 0.4,
-                        ),
+                      CachedNetworkImage(
+                        imageUrl:
+                            '${Constants.consultantImageBaseUrl}${consultant!.imagename}',
+                        fit: BoxFit.cover,
+                        width: MediaQuery.sizeOf(context).width * 0.4,
+                        height: MediaQuery.sizeOf(context).height * 0.18,
+                        errorWidget: (context, url, error) {
+                          return Container(
+                            height: MediaQuery.sizeOf(context).height * 0.18,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade100),
+                            ),
+                            child: Image.asset(
+                              fit: BoxFit.contain,
+                              AppImages.noImage,
+                              width: MediaQuery.sizeOf(context).width * 0.4,
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(
                         width: 10,
@@ -89,7 +111,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           textWidget(
-                            text: 'Dr. Michael Pole ',
+                            text: '${consultant!.name}',
                             fSize: 20.0,
                             fWeight: FontWeight.w700,
                           ),
@@ -97,12 +119,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             height: 15,
                           ),
                           textWidget(
-                            text: 'Cardiology,Orthopedics',
-                            fSize: 12.0,
-                            fWeight: FontWeight.w700,
-                          ),
-                          textWidget(
-                            text: ',Neurology,Pediatrics',
+                            text: '${consultant!.field}',
                             fSize: 12.0,
                             fWeight: FontWeight.w700,
                           ),
@@ -168,7 +185,8 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                           height: 5,
                                         ),
                                         textWidget2(
-                                          text: '45 Years',
+                                          text:
+                                              '${consultant!.experience ?? '0 years'}',
                                           fSize: 12.0,
                                           fWeight: FontWeight.w700,
                                           color: Colors.white,
@@ -298,13 +316,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                           height: 10,
                         ),
                         textWidget2(
-                          text: 'Dr. Michael Pole: Expert care for childrens',
-                          fSize: 15.0,
-                          fWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                        textWidget2(
-                          text: 'health, from infancy to adolescence.',
+                          text: getAbout(),
                           fSize: 15.0,
                           fWeight: FontWeight.w600,
                           color: Colors.black,
@@ -628,5 +640,12 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
         ],
       ),
     );
+  }
+
+  getAbout() {
+    if (consultant!.about != null && consultant!.about!.isNotEmpty) {
+      return '${consultant!.about}';
+    }
+    return '--';
   }
 }

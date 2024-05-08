@@ -1,8 +1,17 @@
+import 'dart:developer';
+
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/model/auth_model/auth_model.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/views/notifications/notification_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -32,13 +41,25 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'New York', 'image': AppImages.doctor1},
   ];
   bool isSelected = true;
+
+  dynamic user;
+  dynamic businessId;
+
+  GetConsultant? consultantsData;
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: customAppBar(
         context: context,
-        title: 'Hi, Ali!',
+        title: 'Hi, ${user!['user']['username']}!',
         leadingIcon: Image.asset(
           AppImages.menuIcon,
         ),
@@ -166,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -301,115 +322,162 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 4,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.buttonColor,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        alignment: Alignment.center,
-                        width: 220,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    AppImages.doctor1,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+              if (consultantsData != null)
+                Expanded(
+                  flex: 4,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: consultantsData!.consultants.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final consultant = consultantsData!.consultants[index];
+                      print('consultant runtimeType ${consultant.runtimeType}');
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.buttonColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          alignment: Alignment.center,
+                          // width: MediaQuery.sizeOf(context).width *
+                          //     (consultantsData!.consultants.length > 1
+                          //         ? 0.6
+                          //         : 0.9),
+                          width: MediaQuery.sizeOf(context).width * 0.6,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Image.asset(
+                                    //   AppImages.doctor1,
+                                    // ),
+                                    CachedNetworkImage(
+                                      imageUrl:
+                                          '${Constants.consultantImageBaseUrl}${consultant.imagename ?? ''}',
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.2,
+                                      errorWidget: (context, url, error) {
+                                        return Image.asset(
+                                          fit: BoxFit.contain,
+                                          AppImages.noImage,
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  0.2,
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          textWidget(
+                                            text: '${consultant.name ?? ''}',
+                                            fSize: 15.0,
+                                            fWeight: FontWeight.w800,
+                                            color: Colors.white,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          textWidget(
+                                            text: '${consultant.field}',
+                                            fSize: 10.0,
+                                            fWeight: FontWeight.w800,
+                                            color: Colors.white,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const RatingWidget(
+                                            initialRating: 2.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  width: 120,
+                                  // height: 35,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              ConsultantDetails(
+                                                  consultant: consultant),
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
                                       children: [
                                         textWidget(
-                                          text: 'Dr. Michael Pole ',
-                                          fSize: 15.0,
-                                          fWeight: FontWeight.w800,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        textWidget(
-                                          text: 'Cardiology,Orthopedics',
-                                          fSize: 10.0,
-                                          fWeight: FontWeight.w800,
-                                          color: Colors.white,
-                                        ),
-                                        textWidget(
-                                          text: 'Neurology,Pediatrics',
-                                          fSize: 10.0,
-                                          fWeight: FontWeight.w800,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        const RatingWidget(
-                                          initialRating: 2.0,
-                                        ),
+                                            text: 'Details', fSize: 13.0),
+                                        const Icon(Icons.arrow_right_alt)
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                width: 120,
-                                // height: 35,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            const ConsultantDetails(),
-                                      ),
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      textWidget(text: 'Details', fSize: 13.0),
-                                      const Icon(Icons.arrow_right_alt)
-                                    ],
-                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              )
+                      );
+                    },
+                  ),
+                )
+              else
+                Expanded(
+                  flex: 4,
+                  child: Center(
+                      child: textWidget(
+                    text: 'No consultants found',
+                    fWeight: FontWeight.bold,
+                  )),
+                )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> getConsultantData() async {
+    final res = await ApiServices.getConsultant(
+      context,
+      Constants.getBusiness + businessId.toString(),
+      user,
+    );
+    if (res != null) {
+      consultantsData = res;
+    }
+    setState(() {});
+  }
+
+  Future<void> _init() async {
+    user = locator<LocalStorageService>().getData(key: 'user');
+    businessId = locator<LocalStorageService>().getData(key: 'businessId');
+    await getConsultantData();
   }
 }
 

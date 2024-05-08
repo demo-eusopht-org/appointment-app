@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -371,13 +372,8 @@ class _AddConsultantState extends State<AddConsultant> {
 
           // Check the response status code
 
-          if (response.statusCode == 200) {
+          if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
-
-            await locator<LocalStorageService>().saveData(
-              key: 'businessId',
-              value: res['business'][0]['id'],
-            );
 
             final route = MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -404,7 +400,7 @@ class _AddConsultantState extends State<AddConsultant> {
           context: context,
           message: 'Consultant not created: Please try again');
 
-      print('Error in addConsultant runtimeType: ${e}');
+      log('Error in addConsultant runtimeType: ${e}', stackTrace: stack);
       setState(() {
         isLoading = false;
       });

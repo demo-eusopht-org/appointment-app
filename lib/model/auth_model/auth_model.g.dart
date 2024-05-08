@@ -13,7 +13,7 @@ AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) => AuthResponse(
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
       token: json['token'] as String?,
-      businessId: json['businessId'] as String?,
+      businessId: (json['business_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$AuthResponseToJson(AuthResponse instance) =>
@@ -22,7 +22,7 @@ Map<String, dynamic> _$AuthResponseToJson(AuthResponse instance) =>
       'message': instance.message,
       'user': instance.user?.toJson(),
       'token': instance.token,
-      'businessId': instance.businessId,
+      'business_id': instance.businessId,
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(

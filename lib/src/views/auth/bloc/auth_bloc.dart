@@ -46,6 +46,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           key: 'user',
           value: user.toJson(),
         );
+        log('res.businessId ${res.businessId}');
         await locator<LocalStorageService>().saveData(
           key: 'businessId',
           value: res.businessId,

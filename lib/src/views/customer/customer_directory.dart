@@ -1,5 +1,5 @@
  
-import 'package:appointment_management/src/views/patients/patient_details.dart';
+import 'package:appointment_management/src/views/customer/customer_details.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';

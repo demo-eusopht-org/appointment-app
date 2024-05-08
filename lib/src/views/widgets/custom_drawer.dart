@@ -4,8 +4,8 @@ import 'package:appointment_management/src/views/Consultant/add_consultant.dart'
 import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/appointments/appointments.dart';
 import 'package:appointment_management/src/views/auth/login.dart';
-import 'package:appointment_management/src/views/patients/add_patients.dart';
-import 'package:appointment_management/src/views/patients/patient_directory.dart';
+import 'package:appointment_management/src/views/customer/add_customer.dart';
+import 'package:appointment_management/src/views/customer/customer_directory.dart';
 import 'package:appointment_management/src/views/procedure/procedure_list.dart';
 import 'package:appointment_management/src/views/settings/settings_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
@@ -18,6 +18,8 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = locator<LocalStorageService>().getData(key: 'user');
+
     return Drawer(
       width: MediaQuery.sizeOf(context).width * 0.65,
       backgroundColor: Colors.white,
@@ -34,28 +36,11 @@ class CustomDrawer extends StatelessWidget {
                 Image.asset('assets/images/Male User.png'),
                 SizedBox(width: 5),
                 textWidget2(
-                  text: 'Ali',
+                  text: '${user!['user']['username']}',
                   fSize: 20.0,
                   fWeight: FontWeight.w700,
                 ),
               ],
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => SettingsScreen(),
-                  ),
-                );
-              },
-              child: textWidget2(
-                text: 'Settings',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
             ),
             SizedBox(height: 20),
             InkWell(
@@ -80,12 +65,12 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => AddPatients(),
+                    builder: (context) => AddCustomer(),
                   ),
                 );
               },
               child: textWidget2(
-                text: 'Add Patient',
+                text: 'Add Customer',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
@@ -154,6 +139,23 @@ class CustomDrawer extends StatelessWidget {
               },
               child: textWidget2(
                 text: 'Appointments',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+              child: textWidget2(
+                text: 'Settings',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

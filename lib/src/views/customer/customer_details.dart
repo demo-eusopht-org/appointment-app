@@ -1,4 +1,4 @@
-import 'package:appointment_management/src/views/patients/patient_history.dart';
+import 'package:appointment_management/src/views/customer/customer_history.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_container_patient.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';

@@ -6,15 +6,19 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final bool showPasswordIcon;
   final TextStyle? textStyle;
+  final bool? readOnly;
+  final String? Function(String?)? validatorCondition;
 
-  const CustomTextField(
-      {Key? key,
-      required this.controller,
-      required this.hintText,
-      this.obscureText = false,
-      this.showPasswordIcon = false,
-      this.textStyle})
-      : super(key: key);
+  const CustomTextField({
+    Key? key,
+    required this.controller,
+    required this.hintText,
+    this.obscureText = false,
+    this.showPasswordIcon = false,
+    this.textStyle,
+    this.readOnly,
+    this.validatorCondition,
+  }) : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -28,6 +32,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       controller: widget.controller,
       obscureText: widget.obscureText ? _obscureText : false,
+      readOnly: widget.readOnly ?? false,
+      validator: widget.validatorCondition,
       decoration: InputDecoration(
         hintText: widget.hintText,
         suffixIcon: widget.showPasswordIcon && widget.obscureText
