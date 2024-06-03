@@ -450,10 +450,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   flex: 4,
                   child: Center(
-                      child: textWidget(
-                    text: 'No consultants found',
-                    fWeight: FontWeight.bold,
-                  )),
+                    child: textWidget(
+                      text: 'No consultants found',
+                      fWeight: FontWeight.bold,
+                    ),
+                  ),
                 )
             ],
           ),
@@ -463,13 +464,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getConsultantData() async {
-    final res = await ApiServices.getConsultant(
+    GetConsultant? tempConsultant = await ApiServices.getConsultant(
       context,
       Constants.getBusiness + businessId.toString(),
       user,
     );
-    if (res != null) {
-      consultantsData = res;
+
+    if (tempConsultant != null) {
+      consultantsData = tempConsultant;
     }
     setState(() {});
   }

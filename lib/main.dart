@@ -3,7 +3,6 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
 import 'package:appointment_management/src/views/auth/loader_bloc.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
-import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/theme/dark/dark_theme.dart';
 import 'package:appointment_management/theme/light/light_theme.dart';
@@ -17,6 +16,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await initializeLocator();
+  await locator<LocalStorageService>().initializeBox();
 
   runApp(MyApp());
 }

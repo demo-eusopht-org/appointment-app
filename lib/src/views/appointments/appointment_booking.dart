@@ -1,4 +1,3 @@
- 
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../resources/app_colors.dart'; 
+import '../../resources/app_colors.dart';
 import '../thankyou/thankyou_screen.dart';
 
 class AppointmentBooking extends StatefulWidget {
@@ -24,7 +23,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     'Consultant 2',
     'Consultant 3'
   ];
-  List<String> procedures = [
+  List<String> Services = [
     'Check Up ',
     'Treatment',
     'Guidance',
@@ -249,7 +248,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
               Row(
                 children: [
                   textWidget2(
-                    text: "Procedures",
+                    text: "Services",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
                   ),
@@ -257,14 +256,14 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                     width: MediaQuery.of(context).size.width * 0.05,
                   ),
                   CustomDropdownFormField(
-                    items: procedures,
+                    items: Services,
                     onChanged: (String? newValue) {
                       setState(() {
                         selectProcedure = newValue;
                       });
                     },
                     dropdownColor: AppColors.ratingbarColor,
-                    hintText: 'Select Procedures',
+                    hintText: 'Select Services',
                     value: selectProcedure,
                   ),
                 ],

@@ -26,7 +26,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
     "Ali",
     "Ahad",
   ];
-  List<String> procedures = [
+  List<String> Services = [
     'Check Up ',
     'Treatment',
     "Guidance",
@@ -257,7 +257,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
               Row(
                 children: [
                   textWidget2(
-                    text: "Procedures",
+                    text: "Services",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
                   ),
@@ -265,14 +265,14 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
                     width: MediaQuery.of(context).size.width * 0.05,
                   ),
                   CustomDropdownFormField(
-                    items: procedures,
+                    items: Services,
                     onChanged: (String? newValue) {
                       setState(() {
                         selectProcedure = newValue;
                       });
                     },
                     dropdownColor: AppColors.ratingbarColor,
-                    hintText: 'Select Procedures',
+                    hintText: 'Select Services',
                     value: selectProcedure,
                   ),
                 ],

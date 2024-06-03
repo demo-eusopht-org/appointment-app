@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 
-class PatientDetails extends StatefulWidget {
-  const PatientDetails({super.key});
+class CustomerDetails extends StatefulWidget {
+  const CustomerDetails({super.key});
 
   @override
-  State<PatientDetails> createState() => _PatientDetailsState();
+  State<CustomerDetails> createState() => _CustomerDetailsState();
 }
 
-class _PatientDetailsState extends State<PatientDetails> {
+class _CustomerDetailsState extends State<CustomerDetails> {
   List<String> monthTexts = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
   List<String> timeTexts = ['09:00', '11:00', '02:00', '03:00', '11:00'];
 
@@ -49,7 +49,7 @@ class _PatientDetailsState extends State<PatientDetails> {
             Icons.arrow_back,
           ),
         ),
-        title: 'Patient Details ',
+        title: 'Customer Details ',
       ),
       body: Stack(
         children: [
@@ -245,7 +245,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 textWidget2(
-                                  text: 'Patient Details ',
+                                  text: 'Customer Details ',
                                   fWeight: FontWeight.w800,
                                   fSize: 17.0,
                                   color: Colors.white,

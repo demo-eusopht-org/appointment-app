@@ -2,11 +2,8 @@ import 'package:hive/hive.dart';
 
 class LocalStorageService {
   late Box _box;
-  LocalStorageService() {
-    _initializeBox();
-  }
 
-  Future<void> _initializeBox() async {
+   Future<void> initializeBox() async {
     _box = await Hive.openBox('bookingApp');
   }
 

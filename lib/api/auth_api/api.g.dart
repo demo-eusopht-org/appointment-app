@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_api.dart';
+part of 'api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,12 +8,12 @@ part of 'auth_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _AuthApi implements AuthApi {
-  _AuthApi(
+class _Api implements Api {
+  _Api(
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.100.121:3000';
+    baseUrl ??= 'https://appointment.eusopht.com/apis';
   }
 
   final Dio _dio;
@@ -73,6 +73,33 @@ class _AuthApi implements AuthApi {
               baseUrl,
             ))));
     final value = AuthResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> createService(Map<String, dynamic> body) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/onboarding/add-service',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 

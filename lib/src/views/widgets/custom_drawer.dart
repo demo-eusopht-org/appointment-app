@@ -6,7 +6,7 @@ import 'package:appointment_management/src/views/appointments/appointments.dart'
 import 'package:appointment_management/src/views/auth/login.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
-import 'package:appointment_management/src/views/procedure/procedure_list.dart';
+import 'package:appointment_management/src/views/services/services_list.dart';
 import 'package:appointment_management/src/views/settings/settings_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
@@ -87,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
               child: textWidget2(
-                text: 'Patient Directory',
+                text: 'Customer Directory',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
@@ -121,7 +121,7 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
               child: textWidget2(
-                text: 'Procedures',
+                text: 'Services',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

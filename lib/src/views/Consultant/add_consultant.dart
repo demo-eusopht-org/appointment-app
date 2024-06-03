@@ -339,6 +339,7 @@ class _AddConsultantState extends State<AddConsultant> {
 
       if (businessId != null) {
         if (user != null && user['token'] != null) {
+          print('Constants.addConsultant ${Constants.addConsultant}');
           var request =
               http.MultipartRequest('POST', Uri.parse(Constants.addConsultant));
           request.headers['Authorization'] = 'Bearer ${user['token']}';
@@ -371,7 +372,7 @@ class _AddConsultantState extends State<AddConsultant> {
           final res = jsonDecode(responseBody);
 
           // Check the response status code
-
+          print('res ${res}');
           if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
 
@@ -381,9 +382,15 @@ class _AddConsultantState extends State<AddConsultant> {
 
             Navigator.pushReplacement(context, route);
           } else {
-            CustomDialogue.message(
-                context: context,
-                message: 'Consultant not created: ${res['message']}');
+            if (res.toString().contains('message')) {
+              CustomDialogue.message(
+                  context: context,
+                  message: 'Consultant not created: ${res['message']}');
+            } else {
+              CustomDialogue.message(
+                  context: context,
+                  message: 'Consultant not created: ${res['error']}');
+            }
           }
         }
       } else {

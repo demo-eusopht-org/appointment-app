@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:appointment_management/api/auth_api/auth_api.dart';
+import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -14,7 +14,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
-  final authApi = AuthApi(
+  final api = Api(
     dio,
     baseUrl: Constants.baseUrl,
   );
@@ -33,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(
         AuthLoadingState(),
       );
-      AuthResponse res = await authApi.login(
+      AuthResponse res = await api.login(
         {
           "email": event.email,
           "password": event.password,
@@ -66,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(
         AuthLoadingState(),
       );
-      AuthResponse res = await authApi.signUp(
+      AuthResponse res = await api.signUp(
         {
           "name": event.name,
           "email": event.email,

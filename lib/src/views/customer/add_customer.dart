@@ -45,12 +45,12 @@ class _AddCustomerState extends State<AddCustomer> {
   XFile? _selectedImage;
 
   bool isLoading = false;
-  bool findingConsultant = true;
+
   final formKey = GlobalKey<FormState>();
 
-  GetConsultant? consultantsData;
-
-  ValueNotifier<String?> selectedConsultantId = ValueNotifier<String?>(null);
+  // bool findingConsultant = true;
+  // GetConsultant? consultantsData;
+  // ValueNotifier<String?> selectedConsultantId = ValueNotifier<String?>(null);
 
   Future<void> _openImagePicker() async {
     final imagePicker = ImagePicker();
@@ -81,7 +81,7 @@ class _AddCustomerState extends State<AddCustomer> {
     referenceController.dispose();
     aboutController.dispose();
     occupationController.dispose();
-    selectedConsultantId.dispose();
+    // selectedConsultantId.dispose();
     addressController.dispose();
     super.dispose();
   }
@@ -113,277 +113,255 @@ class _AddCustomerState extends State<AddCustomer> {
               ),
             ),
           ),
-          body: findingConsultant
-              ? Loader()
-              : consultantsData == null
-                  ? Center(
-                      child: textWidget(
-                        text: 'No consultant found to assign customer',
-                        fWeight: FontWeight.bold,
-                      ),
-                    )
-                  : Form(
-                      key: formKey,
-                      child: Container(
-                        height: MediaQuery.sizeOf(context).height,
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            SingleChildScrollView(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            _openImagePicker();
-                                          },
-                                          child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.28,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.28,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Appcolors
-                                                    .lightTheme.primaryColor,
-                                              ),
-                                              child: _selectedImage != null
-                                                  ? Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1,
-                                                      child: ClipOval(
-                                                        child: Image.file(
-                                                          File(_selectedImage!
-                                                              .path),
-                                                          width:
-                                                              double.infinity,
-                                                          height:
-                                                              double.infinity,
-                                                          fit: BoxFit.cover,
-                                                          // Ensure the image covers the entire space
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Image.asset(
-                                                      AppImages.account,
-                                                    )
-                                              // padding: EdgeInsets.all(
-                                              //     MediaQuery.of(context).size.width * 0.1),
-                                              ),
-                                        ),
-                                        Positioned(
-                                          right: 5,
-                                          bottom: 0,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.black,
-                                            radius: 13,
-                                            child: Image.asset(
-                                              height: 16,
-                                              width: 16,
-                                              color: Colors.white,
-                                              AppImages.camera,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+          body:
+              // findingConsultant
+              //     ? Loader()
+              //     : consultantsData == null
+              //         ? Center(
+              //             child: textWidget(
+              //               text: 'No consultant found to assign customer',
+              //               fWeight: FontWeight.bold,
+              //             ),
+              //           )
+              //         :
+              Form(
+            key: formKey,
+            child: Container(
+              height: MediaQuery.sizeOf(context).height,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _openImagePicker();
+                                },
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.28,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.28,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Appcolors.lightTheme.primaryColor,
                                     ),
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.015),
-                                    textWidget2(
-                                      text: 'Add Photo',
-                                      fSize: 14,
-                                      fWeight: FontWeight.w400,
-                                    ),
-                                    CustomTextField(
-                                      hintText: "Name",
-                                      controller: nameController,
-                                      validatorCondition: (String? value) {
-                                        if (value == null || value == '') {
-                                          return 'Please fill Name field';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomTextField(
-                                      hintText: "Mobile No.",
-                                      controller: mobileNoController,
-                                      validatorCondition: (String? value) {
-                                        if (value == null || value == '') {
-                                          return 'Please fill Mobile No field';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    CustomTextField(
-                                      hintText: "Email",
-                                      controller: emailController,
-                                      validatorCondition: (String? value) {
-                                        if (value == null || value == '') {
-                                          return 'Please fill Email field';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    ValueListenableBuilder(
-                                      valueListenable: selectedConsultantId,
-                                      builder: (context, value, child) {
-                                        return DropdownButton<String?>(
-                                          value: selectedConsultantId.value,
-                                          dropdownColor: AppColors.whiteColor,
-                                          hint: textWidget(
-                                              text: 'Select consultant'),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          isExpanded: true,
-                                          items: consultantsData!.consultants
-                                              .map((Consultant e) =>
-                                                  DropdownMenuItem<String?>(
-                                                      value: e.id.toString(),
-                                                      child: textWidget(
-                                                          text: '${e.name}')))
-                                              .toList(),
-                                          onChanged: (String? value) {
-                                            selectedConsultantId.value = value;
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                        onTap: () {
-                                          _selectDate(context);
-                                        },
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Date of birth',
-                                              style: MyTextStyles.smallBlacktext
-                                                  .copyWith(
-                                                      color: AppColors.black
-                                                          .withOpacity(
-                                                0.5,
-                                              )),
-                                            ),
-                                            Text(
-                                              ' ${selectedDate != null ? utils.pkFormatDate(selectedDate.toString(), 'onlyDate') : 'Select date of birth'}',
-                                              style: MyTextStyles.smallBlacktext
-                                                  .copyWith(
-                                                color:
-                                                    AppColors.black.withOpacity(
-                                                  0.5,
-                                                ),
+                                    child: _selectedImage != null
+                                        ? Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            child: ClipOval(
+                                              child: Image.file(
+                                                File(_selectedImage!.path),
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                                // Ensure the image covers the entire space
                                               ),
                                             ),
-                                            Divider(
-                                              color: AppColors.black
-                                                  .withOpacity(0.2),
-                                            )
-                                          ],
-                                        )),
-                                    SizedBox(
-                                      height: 10,
+                                          )
+                                        : Image.asset(
+                                            AppImages.account,
+                                          )
+                                    // padding: EdgeInsets.all(
+                                    //     MediaQuery.of(context).size.width * 0.1),
                                     ),
-                                    CustomTextField(
-                                      hintText: "Reference No.",
-                                      controller: referenceController,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomTextField(
-                                      hintText: "address",
-                                      controller: addressController,
-                                    ),
-                                    CustomTextField(
-                                      hintText: "Occupation",
-                                      controller: occupationController,
-                                      validatorCondition: (String? value) {
-                                        if (value == null || value == '') {
-                                          return 'Please fill Occupation field';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Builder(builder: (context) {
-                                      if (isLoading) {
-                                        return Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
-                                            child:
-                                                const CircularProgressIndicator(),
-                                          ),
-                                        );
-                                      }
-                                      return Container(
-                                        height: 40,
-                                        child: RoundedElevatedButton(
-                                          borderRadius: 6,
-                                          onPressed: () {
-                                            if (selectedConsultantId.value !=
-                                                null) {
-                                              if (selectedDate != null) {
-                                                if (formKey.currentState!
-                                                    .validate()) {
-                                                  addCustomer();
-                                                }
-                                              } else {
-                                                CustomDialogue.message(
-                                                    context: context,
-                                                    message:
-                                                        'Please select Date of birth');
-                                              }
-                                            } else {
-                                              CustomDialogue.message(
-                                                  context: context,
-                                                  message:
-                                                      'Please select consultant');
-                                            }
-                                          },
-                                          text: 'Create new customer',
-                                        ),
-                                      );
-                                    }),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
+                              ),
+                              Positioned(
+                                right: 5,
+                                bottom: 0,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 13,
+                                  child: Image.asset(
+                                    height: 16,
+                                    width: 16,
+                                    color: Colors.white,
+                                    AppImages.camera,
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
+                            ],
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.015),
+                          textWidget2(
+                            text: 'Add Photo',
+                            fSize: 14,
+                            fWeight: FontWeight.w400,
+                          ),
+                          CustomTextField(
+                            hintText: "Name",
+                            controller: nameController,
+                            validatorCondition: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Name field';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextField(
+                            hintText: "Mobile No.",
+                            controller: mobileNoController,
+                            validatorCondition: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Mobile No field';
+                              }
+                              return null;
+                            },
+                          ),
+                          CustomTextField(
+                            hintText: "Email",
+                            controller: emailController,
+                            validatorCondition: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Email field';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          // ValueListenableBuilder(
+                          //   valueListenable: selectedConsultantId,
+                          //   builder: (context, value, child) {
+                          //     return DropdownButton<String?>(
+                          //       value: selectedConsultantId.value,
+                          //       dropdownColor: AppColors.whiteColor,
+                          //       hint: textWidget(text: 'Select consultant'),
+                          //       borderRadius: BorderRadius.circular(10),
+                          //       isExpanded: true,
+                          //       items: consultantsData!.consultants
+                          //           .map((Consultant e) =>
+                          //               DropdownMenuItem<String?>(
+                          //                   value: e.id.toString(),
+                          //                   child:
+                          //                       textWidget(text: '${e.name}')))
+                          //           .toList(),
+                          //       onChanged: (String? value) {
+                          //         selectedConsultantId.value = value;
+                          //       },
+                          //     );
+                          //   },
+                          // ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                _selectDate(context);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Date of birth',
+                                    style: MyTextStyles.smallBlacktext.copyWith(
+                                        color: AppColors.black.withOpacity(
+                                      0.5,
+                                    )),
+                                  ),
+                                  Text(
+                                    ' ${selectedDate != null ? utils.pkFormatDate(selectedDate.toString(), 'onlyDate') : 'Select date of birth'}',
+                                    style: MyTextStyles.smallBlacktext.copyWith(
+                                      color: AppColors.black.withOpacity(
+                                        0.5,
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: AppColors.black.withOpacity(0.2),
+                                  )
+                                ],
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextField(
+                            hintText: "Reference No.",
+                            controller: referenceController,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextField(
+                            hintText: "address",
+                            controller: addressController,
+                          ),
+                          CustomTextField(
+                            hintText: "Occupation",
+                            controller: occupationController,
+                            validatorCondition: (String? value) {
+                              if (value == null || value == '') {
+                                return 'Please fill Occupation field';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Builder(builder: (context) {
+                            if (isLoading) {
+                              return Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            return Container(
+                              height: 40,
+                              child: RoundedElevatedButton(
+                                borderRadius: 6,
+                                onPressed: () {
+                                  // if (selectedConsultantId.value != null) {
+                                  if (selectedDate != null) {
+                                    if (formKey.currentState!.validate()) {
+                                      addCustomer();
+                                    }
+                                  } else {
+                                    CustomDialogue.message(
+                                        context: context,
+                                        message: 'Please select Date of birth');
+                                  }
+                                  // }
+                                  // else {
+                                  //   CustomDialogue.message(
+                                  //       context: context,
+                                  //       message: 'Please select consultant');
+                                  // }
+                                },
+                                text: 'Create new customer',
+                              ),
+                            );
+                          }),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
                       ),
                     ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
         Positioned(
           right: 0,
@@ -424,8 +402,8 @@ class _AddCustomerState extends State<AddCustomer> {
           request.fields['occupation'] = occupationController.text;
 
           request.fields['business_id'] = businessId.toString();
-          request.fields['consultant_id'] =
-              selectedConsultantId.value.toString();
+          // request.fields['consultant_id'] =
+          //     selectedConsultantId.value.toString();
 
           // Add image file to the request
           if (_selectedImage != null) {
@@ -484,33 +462,33 @@ class _AddCustomerState extends State<AddCustomer> {
     });
   }
 
-  Future<void> getConsultantData() async {
-    try {
-      final res = await ApiServices.getConsultant(
-        context,
-        Constants.getBusiness + businessId.toString(),
-        user,
-      );
-      if (res != null) {
-        consultantsData = res;
-      }
-      setState(() {
-        findingConsultant = false;
-      });
-    } catch (e) {
-      log('Something went wrong in getConsultant Api $e');
-      setState(() {
-        findingConsultant = false;
-      });
-    }
-  }
+  // Future<void> getConsultantData() async {
+  //   try {
+  //     final res = await ApiServices.getConsultant(
+  //       context,
+  //       Constants.getBusiness + businessId.toString(),
+  //       user,
+  //     );
+  //     if (res != null) {
+  //       consultantsData = res;
+  //     }
+  //     setState(() {
+  //       findingConsultant = false;
+  //     });
+  //   } catch (e) {
+  //     log('Something went wrong in getConsultant Api $e');
+  //     setState(() {
+  //       findingConsultant = false;
+  //     });
+  //   }
+  // }
 
   DateTime? selectedDate;
 
   Future<void> _init() async {
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
-    await getConsultantData();
+    // await getConsultantData();
   }
 
   Future<void> _selectDate(BuildContext context) async {
