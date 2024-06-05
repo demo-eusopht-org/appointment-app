@@ -1,35 +1,24 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:appointment_management/api/auth_api/api.dart';
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_branches.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
-import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
+import 'package:appointment_management/src/utils/date_time_utils.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
-import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
-import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:appointment_management/theme/light/light_theme.dart'
-    as Appcolors;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:appointment_management/src/utils/date_time_utils.dart';
 
 class AssignConsultantSchedule extends StatefulWidget {
   const AssignConsultantSchedule({super.key});
@@ -50,13 +39,16 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
 
   dynamic user, businessId;
 
-  List<Service> services = [];
   List<Consultant> consultants = [];
   List<Branch> branches = [];
 
   Branch? selectedBranch;
 
   Consultant? selectedConsultant;
+
+  ConsultantBranch? selectedConsultantBranch;
+
+  DateTime? selectedDate;
 
   @override
   void initState() {
@@ -93,23 +85,12 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
               ),
             ),
           ),
-          body:
-              // findingConsultant
-              //     ? Loader()
-              //     : consultantsData == null
-              //         ? Center(
-              //             child: textWidget(
-              //               text: 'No consultant found to assign customer',
-              //               fWeight: FontWeight.bold,
-              //             ),
-              //           )
-              //         :
-              Form(
+          body: Form(
             key: formKey,
             child: Container(
               height: MediaQuery.sizeOf(context).height,
@@ -127,9 +108,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                               textWidget2(
                                 text: 'Consultant',
                                 fSize: 14.sp,
-                                fWeight: FontWeight.bold,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -169,9 +149,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                               textWidget2(
                                 text: 'Business Branch',
                                 fSize: 14.sp,
-                                fWeight: FontWeight.bold,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -198,7 +177,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                   onChanged: (Branch? value) {
                                     if (value != null) {
                                       selectedBranch = value;
-                                      log('message ${selectedBranch!.toJson()}');
+
                                       setState(() {});
                                     }
                                   },
@@ -206,7 +185,169 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                               ),
                             ],
                           ),
+                          if (selectedBranch != null)
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 5.sp,
+                                vertical: 5.sp,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'Branch Start time',
+                                        style: MyTextStyles.smallBlacktext
+                                            .copyWith(
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${selectedBranch!.startTime}',
+                                        style: MyTextStyles.smallBlacktext
+                                            .copyWith(
+                                          fontSize: 12.sp,
+                                          // fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'Branch End time',
+                                        style: MyTextStyles.smallBlacktext
+                                            .copyWith(
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' ${selectedBranch!.endTime}',
+                                        style: MyTextStyles.smallBlacktext
+                                            .copyWith(
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                              onTap: () async {
+                                selectedStartTime =
+                                    await utils.selectTime(context);
+                                setState(() {});
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    selectedStartTime != null
+                                        ? selectedStartTime!.toFormattedTime()
+                                        : 'Select Start time',
+                                    style: MyTextStyles.smallBlacktext.copyWith(
+                                      color: AppColors.black.withOpacity(
+                                        0.5,
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: AppColors.black.withOpacity(0.2),
+                                  )
+                                ],
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                              onTap: () async {
+                                selectedEndTime =
+                                    await utils.selectTime(context);
+
+                                setState(() {});
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    selectedEndTime != null
+                                        ? selectedEndTime!.toFormattedTime()
+                                        : 'Select End time',
+                                    style: MyTextStyles.smallBlacktext.copyWith(
+                                      color: AppColors.black.withOpacity(
+                                        0.5,
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: AppColors.black.withOpacity(0.2),
+                                  )
+                                ],
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              textWidget2(
+                                text: "Date",
+                                fSize: 14.sp,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width * 0.07,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  selectedDate =
+                                      await utils.selectDate(context);
+
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  height: 36,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.ratingbarColor,
+                                    borderRadius: BorderRadius.circular(38),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      textWidget(
+                                        text: selectedDate != null
+                                            ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                                            : 'Select Date',
+                                        fSize: 12.sp,
+                                        fWeight: FontWeight.w400,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                      SizedBox(
+                                        width: 5.sp,
+                                      ),
+                                      const Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.black,
+                                        size: 15,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
                             height: 10,
                           ),
                           Builder(builder: (context) {
@@ -225,9 +366,12 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                 borderRadius: 6,
                                 onPressed: () {
                                   if (selectedConsultant != null &&
-                                      selectedBranch != null) {
+                                      selectedBranch != null &&
+                                      selectedStartTime != null &&
+                                      selectedEndTime != null &&
+                                      selectedDate != null) {
                                     if (formKey.currentState!.validate()) {
-                                      assignBranch();
+                                      assignConsultantBranch();
                                     }
                                   } else if (selectedConsultant == null) {
                                     CustomDialogue.message(
@@ -237,9 +381,21 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                     CustomDialogue.message(
                                         context: context,
                                         message: 'Please Select Branch');
+                                  } else if (selectedStartTime == null) {
+                                    CustomDialogue.message(
+                                        context: context,
+                                        message: 'Please Select Start Time');
+                                  } else if (selectedEndTime == null) {
+                                    CustomDialogue.message(
+                                        context: context,
+                                        message: 'Please Select End Time');
+                                  } else if (selectedDate == null) {
+                                    CustomDialogue.message(
+                                        context: context,
+                                        message: 'Please Select Date');
                                   }
                                 },
-                                text: 'Assign branch',
+                                text: 'Assign Schedule',
                               ),
                             );
                           }),
@@ -268,36 +424,48 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
     );
   }
 
-  Future<void> assignBranch() async {
+  Future<void> assignConsultantBranch() async {
     try {
       setState(() {
         isLoading = true;
       });
+      await getConsultantBranches();
 
-      dynamic res = await api!.assignBranch(
-        {
-          "consultant_id": selectedConsultant!.id,
-          "business_id": businessId,
-          "branch_id": [selectedBranch!.id]
-        },
-      );
+      if (selectedConsultantBranch != null) {
+        dynamic res = await api!.assignConsultantBranchSchedule(
+          {
+            "branch_id": selectedBranch!.id,
+            "start_time": selectedStartTime!.toFormattedTime(),
+            "end_time": selectedEndTime!.toFormattedTime(),
+            "day": selectedDate!.convertDateToDay(),
+            "consultant_id": selectedConsultant!.id,
+            "consultant_branch_id": selectedConsultantBranch!.id,
+          },
+        );
 
-      if (res['status'] == 200) {
-        // ignore: use_build_context_synchronously
-        CustomDialogue.message(context: context, message: res['message']);
-        selectedStartTime = null;
-        selectedEndTime = null;
-        nameController.clear();
-        addressController.clear();
-      } else {
-        if (res.toString().contains('message')) {
+        if (res['status'] == 200) {
           // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['message']);
+          selectedStartTime = null;
+          selectedEndTime = null;
+          nameController.clear();
+          addressController.clear();
         } else {
-          // ignore: use_build_context_synchronously
-          CustomDialogue.message(context: context, message: res['error']);
+          if (res.toString().contains('message')) {
+            // ignore: use_build_context_synchronously
+            CustomDialogue.message(context: context, message: res['message']);
+          } else {
+            // ignore: use_build_context_synchronously
+            CustomDialogue.message(context: context, message: res['error']);
+          }
         }
+      } else {
+        CustomDialogue.message(
+            context: context,
+            message:
+                'This branch is not assigned to ${selectedConsultant!.name}');
       }
+
       setState(() {
         isLoading = false;
       });
@@ -307,30 +475,11 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
       });
       log('Something went wrong in assign branch api $e');
       CustomDialogue.message(
-          context: context, message: 'Branch not assigned $e');
+          // ignore: use_build_context_synchronously
+          context: context,
+          message: 'Branch not assigned $e');
     }
   }
-
-  // Future<void> getConsultantData() async {
-  //   try {
-  //     final res = await ApiServices.getConsultant(
-  //       context,
-  //       Constants.getBusiness + businessId.toString(),
-  //       user,
-  //     );
-  //     if (res != null) {
-  //       consultantsData = res;
-  //     }
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   } catch (e) {
-  //     log('Something went wrong in getConsultant Api $e');
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   }
-  // }
 
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
@@ -346,12 +495,37 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
       isLoading = true;
     });
 
-    services = GetLocalData.getServices();
     consultants = GetLocalData.getConsultants();
     branches = GetLocalData.getBranches();
+    // await getConsultantBranches();
 
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> getConsultantBranches() async {
+    try {
+      final res = await ApiServices.getConsultantBranches(
+        context,
+        Constants.getConsultantBranches + selectedConsultant!.id.toString(),
+        user,
+      );
+
+      if (res != null) {
+        selectedConsultantBranch = null;
+        final tempConsultantBranch = res.consultant!
+            .where(
+              (element) => element.cbid == selectedBranch!.id,
+            )
+            .toList();
+        if (tempConsultantBranch.isNotEmpty) {
+          selectedConsultantBranch = tempConsultantBranch.first;
+        }
+      }
+    } catch (e, stack) {
+      log('Something went wrong in getConsultantBranches Api $e',
+          stackTrace: stack);
+    }
   }
 }

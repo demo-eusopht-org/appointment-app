@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
@@ -45,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   dynamic user;
   dynamic businessId;
 
-  GetConsultant? consultantsData;
+  // GetConsultant? consultantsData;
+
+  List<Consultant> consultants = [];
 
   @override
   void initState() {
@@ -322,16 +325,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if (consultantsData != null)
+              if (consultants.isNotEmpty)
                 Expanded(
                   flex: 4,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: consultantsData!.consultants.length,
+                    itemCount: consultants.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      final consultant = consultantsData!.consultants[index];
-                      print('consultant runtimeType ${consultant.runtimeType}');
+                      final consultant = consultants[index];
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -463,23 +465,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> getConsultantData() async {
-    GetConsultant? tempConsultant = await ApiServices.getConsultant(
-      context,
-      Constants.getBusiness + businessId.toString(),
-      user,
-    );
+  // Future<void> getConsultantData() async {
+  //   GetConsultant? tempConsultant = await ApiServices.getConsultant(
+  //     context,
+  //     Constants.getBusiness + businessId.toString(),
+  //     user,
+  //   );
 
-    if (tempConsultant != null) {
-      consultantsData = tempConsultant;
-    }
-    setState(() {});
-  }
+  //   if (tempConsultant != null) {
+  //     consultantsData = tempConsultant;
+  //     log('tempConsultant ${tempConsultant}');
+
+  //     await locator<LocalStorageService>().delete('consultants');
+  //     await locator<LocalStorageService>().saveData(
+  //       key: 'consultants',
+  //       value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
+  //     );
+  //   }
+  //   setState(() {});
+  // }
 
   Future<void> _init() async {
     user = locator<LocalStorageService>().getData(key: 'user');
-    businessId = locator<LocalStorageService>().getData(key: 'businessId');
-    await getConsultantData();
+    // businessId = locator<LocalStorageService>().getData(key: 'businessId');
+    // await getConsultantData();
+    consultants = GetLocalData.getConsultants();
   }
 }
 

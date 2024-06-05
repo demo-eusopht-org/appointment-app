@@ -12,6 +12,15 @@ extension DateTimeUtils on DateTime {
   String toPkFormattedDate() {
     return DateFormat('dd-MM-yyyy').format(this);
   }
+
+  String toFormattedDate() {
+    return DateFormat('yyyy-MM-dd').format(this);
+  }
+
+  String convertDateToDay() {
+    final dayFormatter = DateFormat('EEEE'); // EEEE for full weekday name
+    return dayFormatter.format(this);
+  }
 }
 
 extension TimeFormat on TimeOfDay {
@@ -20,6 +29,6 @@ extension TimeFormat on TimeOfDay {
     final minute = this.minute.toString().padLeft(2, '0');
 
     final period = this.hour >= 12 ? 'PM' : 'AM';
-    return '${hour == 0 ? 12 : hour}:$minute $period';
+    return '${hour == 0 ? 12 : hour}:$minute:00 $period';
   }
 }

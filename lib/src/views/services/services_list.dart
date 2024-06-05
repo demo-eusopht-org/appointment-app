@@ -407,7 +407,6 @@ class _ProcedureListState extends State<ProcedureList> {
         servicesData = res;
 
         await locator<LocalStorageService>().delete('services');
-
         await locator<LocalStorageService>().saveData(
           key: 'services',
           value: res.services!.map((e) => e.toJson()).toList(),

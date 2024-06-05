@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
@@ -42,6 +44,8 @@ class _AddConsultantState extends State<AddConsultant> {
 
   bool isLoading = false;
 
+  dynamic user, businessId;
+
   Future<void> _openImagePicker() async {
     final imagePicker = ImagePicker();
     final selectedImage =
@@ -52,6 +56,12 @@ class _AddConsultantState extends State<AddConsultant> {
         _selectedImage = selectedImage;
       });
     }
+  }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
   }
 
   @override
@@ -333,10 +343,6 @@ class _AddConsultantState extends State<AddConsultant> {
     });
 
     try {
-      final user = locator<LocalStorageService>().getData(key: 'user');
-      final businessId =
-          locator<LocalStorageService>().getData(key: 'businessId');
-
       if (businessId != null) {
         if (user != null && user['token'] != null) {
           print('Constants.addConsultant ${Constants.addConsultant}');
@@ -371,10 +377,9 @@ class _AddConsultantState extends State<AddConsultant> {
           var responseBody = utf8.decode(responseBytes);
           final res = jsonDecode(responseBody);
 
-          // Check the response status code
-          print('res ${res}');
           if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
+            await getConsultantData();
 
             final route = MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -416,5 +421,29 @@ class _AddConsultantState extends State<AddConsultant> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> getConsultantData() async {
+    log('waiting here');
+    GetConsultant? tempConsultant = await ApiServices.getConsultant(
+      context,
+      Constants.getBusiness + businessId.toString(),
+      user,
+    );
+
+    if (tempConsultant != null) {
+      await locator<LocalStorageService>().delete('consultants');
+      await locator<LocalStorageService>().saveData(
+        key: 'consultants',
+        value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
+      );
+      log('waiting here done');
+    }
+    setState(() {});
+  }
+
+  Future<void> _init() async {
+    user = locator<LocalStorageService>().getData(key: 'user');
+    businessId = locator<LocalStorageService>().getData(key: 'businessId');
   }
 }

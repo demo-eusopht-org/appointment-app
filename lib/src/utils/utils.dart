@@ -61,4 +61,16 @@ class utils {
     }
     return null;
   }
+
+  static Future<DateTime?> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      return picked;
+    }
+  }
 }

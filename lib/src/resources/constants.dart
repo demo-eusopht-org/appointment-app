@@ -24,4 +24,6 @@ class Constants {
 
   static const String consultantImageBaseUrl =
       '${baseUrl}/consultant-image/?imageName=';
+  static const String getConsultantBranches =
+      '${baseUrl}/consultant/get-consultant-branches?consultant_id=';
 }

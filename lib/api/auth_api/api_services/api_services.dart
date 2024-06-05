@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_branches.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
@@ -151,6 +152,44 @@ class ApiServices {
       //     message: 'Business branch not found: Please try again');
 
       print('Business branch not found: Please try again : ${e}');
+      return null;
+    }
+  }
+
+  static Future<GetConsultantBranches?> getConsultantBranches(
+    BuildContext context,
+    String uri,
+    dynamic user,
+  ) async {
+    try {
+      final res = await http.get(Uri.parse(uri), headers: {
+        'Authorization': 'Bearer ${user['token']}',
+      });
+
+      if (res.statusCode == 200) {
+        GetConsultantBranches tempConsultantBranches =
+            GetConsultantBranches.fromJson(jsonDecode(res.body));
+
+        if (tempConsultantBranches.consultant!.isEmpty) {
+          return null;
+        }
+
+        return tempConsultantBranches;
+      }
+      return null;
+    } on SocketException {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Consultant Branches not found\nPlease check your internet connection');
+      return null;
+    } catch (e, stack) {
+      CustomDialogue.message(
+          context: context,
+          message: 'Consultant Branches not found: Please try again');
+
+      log('Consultant Branches not found: Please try again : ${e}',
+          stackTrace: stack);
       return null;
     }
   }

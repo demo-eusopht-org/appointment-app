@@ -30,19 +30,20 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen() {
-    Future.delayed(const Duration(seconds: 5), () {
-      final user = locator<LocalStorageService>().getData(key: 'user');
-      print('user ${user}');
-      if (user != null && user['token'] != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      } else {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => LoginPage()),
-        );
-      }
-    });
+    // Future.delayed(const Duration(seconds: 5), () {
+
+    // });
+    final user = locator<LocalStorageService>().getData(key: 'user');
+
+    if (user != null && user['token'] != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => LoginPage()),
+      );
+    }
   }
 
   @override
@@ -79,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
       );
       if (res != null) {
         if (res.services!.isNotEmpty) {
-          locator<LocalStorageService>().saveData(
+          await locator<LocalStorageService>().saveData(
             key: 'services',
             value: res.services!.map((e) => e.toJson()).toList(),
           );
@@ -99,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (tempConsultant != null) {
       if (tempConsultant.consultants.isNotEmpty) {
-        locator<LocalStorageService>().saveData(
+        await locator<LocalStorageService>().saveData(
           key: 'consultants',
           value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
         );
@@ -116,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (tempBranch != null) {
       if (tempBranch.businessBranches!.isNotEmpty) {
-        locator<LocalStorageService>().saveData(
+        await locator<LocalStorageService>().saveData(
           key: 'branches',
           value: tempBranch.businessBranches!.map((e) => e.toJson()).toList(),
         );

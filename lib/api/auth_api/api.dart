@@ -22,6 +22,8 @@ abstract class Api {
   Future<dynamic> createBranch(@Body() Map<String, dynamic> body);
   @POST('/consultant/assign-consultant')
   Future<dynamic> assignBranch(@Body() Map<String, dynamic> body);
+  @POST('/consultant/assign-consultant-shedule')
+  Future<dynamic> assignConsultantBranchSchedule(@Body() Map<String, dynamic> body);
   @POST('/customer/create-appointment')
   Future<dynamic> createAppointment(@Body() Map<String, dynamic> body);
 }

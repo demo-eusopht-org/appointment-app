@@ -50,7 +50,6 @@ class AssigneBranchState extends State<AssignBranch> {
 
   dynamic user, businessId;
 
-  List<Service> services = [];
   List<Consultant> consultants = [];
   List<Branch> branches = [];
 
@@ -93,7 +92,7 @@ class AssigneBranchState extends State<AssignBranch> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
               ),
             ),
@@ -129,7 +128,7 @@ class AssigneBranchState extends State<AssignBranch> {
                                 fSize: 14.sp,
                                 fWeight: FontWeight.bold,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -171,7 +170,7 @@ class AssigneBranchState extends State<AssignBranch> {
                                 fSize: 14.sp,
                                 fWeight: FontWeight.bold,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -206,7 +205,7 @@ class AssigneBranchState extends State<AssignBranch> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Builder(builder: (context) {
@@ -346,7 +345,6 @@ class AssigneBranchState extends State<AssignBranch> {
       isLoading = true;
     });
 
-    services = GetLocalData.getServices();
     consultants = GetLocalData.getConsultants();
     branches = GetLocalData.getBranches();
 

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:appointment_management/api/auth_api/api.dart';
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
+import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
@@ -37,8 +39,6 @@ class _CreateBranchState extends State<CreateBranch> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
-  XFile? _selectedImage;
-
   bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
@@ -49,19 +49,7 @@ class _CreateBranchState extends State<CreateBranch> {
   // GetConsultant? consultantsData;
   // ValueNotifier<String?> selectedConsultantId = ValueNotifier<String?>(null);
 
-  Future<void> _openImagePicker() async {
-    final imagePicker = ImagePicker();
-    final selectedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (selectedImage != null) {
-      setState(() {
-        _selectedImage = selectedImage;
-      });
-    }
-  }
-
-  dynamic businessId;
+  dynamic user, businessId;
 
   @override
   void initState() {
@@ -151,7 +139,6 @@ class _CreateBranchState extends State<CreateBranch> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    // ' ${selectedStartTime != null ? utils.pkFormatDate(selectedStartTime.toString(), 'onlyDate') : 'Select Branch Start time'}',
                                     selectedStartTime != null
                                         ? selectedStartTime!.toFormattedTime()
                                         : 'Select Branch Start time',
@@ -181,7 +168,7 @@ class _CreateBranchState extends State<CreateBranch> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    // ' ${selectedStartTime != null ? utils.pkFormatDate(selectedEndTime.toString(), 'onlyDate') : 'Select Branch End time'}',
+                                     
                                     selectedEndTime != null
                                         ? '${selectedEndTime!.toFormattedTime()}'
                                         : 'Select Branch End time',
@@ -290,10 +277,12 @@ class _CreateBranchState extends State<CreateBranch> {
       if (res['status'] == 200) {
         // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
+
         selectedStartTime = null;
         selectedEndTime = null;
         nameController.clear();
         addressController.clear();
+        await getBusinessBranch();
       } else {
         if (res.toString().contains('message')) {
           // ignore: use_build_context_synchronously
@@ -316,27 +305,6 @@ class _CreateBranchState extends State<CreateBranch> {
     }
   }
 
-  // Future<void> getConsultantData() async {
-  //   try {
-  //     final res = await ApiServices.getConsultant(
-  //       context,
-  //       Constants.getBusiness + businessId.toString(),
-  //       user,
-  //     );
-  //     if (res != null) {
-  //       consultantsData = res;
-  //     }
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   } catch (e) {
-  //     log('Something went wrong in getConsultant Api $e');
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   }
-  // }
-
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
 
@@ -346,6 +314,25 @@ class _CreateBranchState extends State<CreateBranch> {
       baseUrl: Constants.baseUrl,
     );
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
-    // await getConsultantData();
+    user = locator<LocalStorageService>().getData(key: 'user');
+  }
+
+  Future<void> getBusinessBranch() async {
+    GetBranch? tempBranch = await ApiServices.getBusinessBranch(
+      context,
+      Constants.getBusinessBranch + businessId.toString(),
+      user,
+    );
+
+    if (tempBranch != null) {
+      if (tempBranch.businessBranches!.isNotEmpty) {
+        await locator<LocalStorageService>().delete('branches');
+        await locator<LocalStorageService>().saveData(
+          key: 'branches',
+          value: tempBranch.businessBranches!.map((e) => e.toJson()).toList(),
+        );
+      }
+    }
+    setState(() {});
   }
 }
