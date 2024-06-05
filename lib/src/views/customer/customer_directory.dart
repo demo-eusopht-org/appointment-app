@@ -33,9 +33,9 @@ class _PatientDirectoryState extends State<PatientDirectory> {
   dynamic user, businessId;
 
   GetCustomer? customerData;
-  // bool findingConsultant = true;
-  // GetConsultant? consultantsData;
-  ValueNotifier<String?> selectedConsultantId = ValueNotifier<String?>(null);
+  bool findingCustomer = true;
+  GetCustomer? consultantsData;
+  // ValueNotifier<String?> selectedConsultantId = ValueNotifier<String?>(null);
 
   @override
   @override
@@ -71,177 +71,189 @@ class _PatientDirectoryState extends State<PatientDirectory> {
           ],
         ),
         drawer: CustomDrawer(),
-        body:
-            //  findingConsultant
-            //     ? const Loader()
-            //     :
-            // consultantsData == null
-            //     ? Center(
-            //         child: textWidget(
-            //           text: 'No consultant found to fetch their customers',
-            //           fWeight: FontWeight.bold,
-            //         ),
-            //       )
-            //     :
-            Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              // ValueListenableBuilder(
-              //   valueListenable: selectedConsultantId,
-              //   builder: (context, value, child) {
-              //     return DropdownButton<String?>(
-              //       value: selectedConsultantId.value,
-              //       dropdownColor: AppColors.whiteColor,
-              //       hint: textWidget(text: 'Select consultant'),
-              //       borderRadius: BorderRadius.circular(10),
-              //       isExpanded: true,
-              //       items: consultantsData!.consultants
-              //           .map((Consultant e) => DropdownMenuItem<String?>(
-              //               value: e.id.toString(),
-              //               child: textWidget(text: '${e.name}')))
-              //           .toList(),
-              //       onChanged: (String? value) async {
-              //         selectedConsultantId.value = value;
-              //         await getCustomerData(selectedConsultantId.value!);
-              //       },
-              //     );
-              //   },
-              // ),
-              customerData == null
-                  ? Expanded(
-                      child: Center(
-                        child: textWidget(
-                          text: 'No customer found for this consultant',
-                          fWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  : Expanded(
-                      child: ListView.builder(
-                        itemCount: customerData!.customers?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final customer = customerData!.customers![index];
-                          return Column(
-                            children: [
-                              Divider(
-                                color: Colors.grey.shade300,
-                              ),
-                              Row(
-                                children: [
-                                  CachedNetworkImage(
-                                    imageUrl:
-                                        '${Constants.consultantImageBaseUrl}${customer.imagename}',
-                                    fit: BoxFit.cover,
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.4,
-                                    height: MediaQuery.sizeOf(context).height *
-                                        0.18,
-                                    errorWidget: (context, url, error) {
-                                      return Container(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.18,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade100),
+        body: findingCustomer
+            ? const Loader()
+            : consultantsData == null
+                ? Center(
+                    child: textWidget(
+                      text: 'No consultant found to fetch their customers',
+                      fWeight: FontWeight.bold,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        // ValueListenableBuilder(
+                        //   valueListenable: selectedConsultantId,
+                        //   builder: (context, value, child) {
+                        //     return DropdownButton<String?>(
+                        //       value: selectedConsultantId.value,
+                        //       dropdownColor: AppColors.whiteColor,
+                        //       hint: textWidget(text: 'Select consultant'),
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       isExpanded: true,
+                        //       items: consultantsData!.consultants
+                        //           .map((Consultant e) => DropdownMenuItem<String?>(
+                        //               value: e.id.toString(),
+                        //               child: textWidget(text: '${e.name}')))
+                        //           .toList(),
+                        //       onChanged: (String? value) async {
+                        //         selectedConsultantId.value = value;
+                        //         await getCustomerData(selectedConsultantId.value!);
+                        //       },
+                        //     );
+                        //   },
+                        // ),
+                        customerData == null
+                            ? Expanded(
+                                child: Center(
+                                  child: textWidget(
+                                    text:
+                                        'No customer found for this consultant',
+                                    fWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: ListView.builder(
+                                  itemCount:
+                                      customerData!.customers?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    final customer =
+                                        customerData!.customers![index];
+                                    return Column(
+                                      children: [
+                                        Divider(
+                                          color: Colors.grey.shade300,
                                         ),
-                                        child: Image.asset(
-                                          fit: BoxFit.contain,
-                                          AppImages.noImage,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
+                                        Row(
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl:
+                                                  '${Constants.consultantImageBaseUrl}${customer.imagename}',
+                                              fit: BoxFit.cover,
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
                                                   0.4,
+                                              height: MediaQuery.sizeOf(context)
+                                                      .height *
+                                                  0.18,
+                                              errorWidget:
+                                                  (context, url, error) {
+                                                return Container(
+                                                  height:
+                                                      MediaQuery.sizeOf(context)
+                                                              .height *
+                                                          0.18,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors
+                                                            .grey.shade100),
+                                                  ),
+                                                  child: Image.asset(
+                                                    fit: BoxFit.contain,
+                                                    AppImages.noImage,
+                                                    width: MediaQuery.sizeOf(
+                                                                context)
+                                                            .width *
+                                                        0.4,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            // Container(
+                                            //   height: 75,
+                                            //   width: 75,
+                                            //   decoration: BoxDecoration(
+                                            //     shape: BoxShape.circle,
+                                            //     border: Border.all(
+                                            //       color: Colors.grey.shade100,
+                                            //     ),
+                                            //   ),
+                                            //   child: Image.asset(
+                                            //     AppImages.men2,
+                                            //     fit: BoxFit.cover,
+                                            //   ),
+                                            // ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        const CustomerDetails(),
+                                                  ),
+                                                );
+                                              },
+                                              child: textWidget(
+                                                text: '${customer.name}',
+                                                fSize: 18.0,
+                                                fWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                            ),
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  AppColors.buttonColor,
+                                              radius: 22,
+                                              child: Icon(
+                                                Icons.phone,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                utils.launchPhoneApp(
+                                                  context,
+                                                  customer.mobile!,
+                                                );
+                                              },
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    AppColors.buttonColor,
+                                                radius: 22,
+                                                child: Icon(
+                                                  Icons.phone,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                  // Container(
-                                  //   height: 75,
-                                  //   width: 75,
-                                  //   decoration: BoxDecoration(
-                                  //     shape: BoxShape.circle,
-                                  //     border: Border.all(
-                                  //       color: Colors.grey.shade100,
-                                  //     ),
-                                  //   ),
-                                  //   child: Image.asset(
-                                  //     AppImages.men2,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  // ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) =>
-                                              const CustomerDetails(),
-                                        ),
-                                      );
-                                    },
-                                    child: textWidget(
-                                      text: '${customer.name}',
-                                      fSize: 18.0,
-                                      fWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.3,
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: AppColors.buttonColor,
-                                    radius: 22,
-                                    child: Icon(
-                                      Icons.phone,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      utils.launchPhoneApp(
-                                        context,
-                                        customer.mobile!,
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      backgroundColor: AppColors.buttonColor,
-                                      radius: 22,
-                                      child: Icon(
-                                        Icons.phone,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    )
-            ],
-          ),
-        ));
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )
+                      ],
+                    ),
+                  ));
   }
 
   Future<void> _init() async {
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
-    // await getConsultantData();
+
+    await getCustomerData(businessId);
   }
 
-  Future<void> getCustomerData(String consultantId) async {
+  Future<void> getCustomerData(int businessId) async {
+    log('message data ${businessId}');
     GetCustomer? tempCustomer = await ApiServices.getCustomer(
       context,
-      Constants.getCustomers + consultantId,
+      Constants.getCustomers + businessId.toString(),
       user,
     );
 
@@ -253,7 +265,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
 
   // Future<void> getConsultantData() async {
   //   try {
-  //     final res = await ApiServices.getConsultant(
+  //     final res = await ApiServices.getCustomer(
   //       context,
   //       Constants.getBusiness + businessId.toString(),
   //       user,
@@ -262,12 +274,12 @@ class _PatientDirectoryState extends State<PatientDirectory> {
   //       consultantsData = res;
   //     }
   //     setState(() {
-  //       findingConsultant = false;
+  //       findingCustomer = false;
   //     });
   //   } catch (e) {
   //     log('Something went wrong in getConsultant Api $e');
   //     setState(() {
-  //       findingConsultant = false;
+  //       findingCustomer = false;
   //     });
   //   }
   // }

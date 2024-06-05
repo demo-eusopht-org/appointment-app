@@ -1,5 +1,6 @@
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/views/consultant%20branch/create_branch.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 part 'api.g.dart';
@@ -13,4 +14,14 @@ abstract class Api {
   Future<AuthResponse> signUp(@Body() Map<String, dynamic> body);
   @POST('/onboarding/add-service')
   Future<dynamic> createService(@Body() Map<String, dynamic> body);
+  @DELETE('/onboarding/delete-service')
+  Future<dynamic> deleteService(@Body() Map<String, dynamic> body);
+  @POST('/onboarding/edit-service')
+  Future<dynamic> updateService(@Body() Map<String, dynamic> body);
+  @POST('/onboarding/add-branches')
+  Future<dynamic> createBranch(@Body() Map<String, dynamic> body);
+  @POST('/consultant/assign-consultant')
+  Future<dynamic> assignBranch(@Body() Map<String, dynamic> body);
+  @POST('/customer/create-appointment')
+  Future<dynamic> createAppointment(@Body() Map<String, dynamic> body);
 }

@@ -1,9 +1,12 @@
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
+import 'package:appointment_management/src/views/Assign%20branch/assign_branch.dart';
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
 import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/appointments/appointments.dart';
 import 'package:appointment_management/src/views/auth/login.dart';
+import 'package:appointment_management/src/views/consultant%20branch/create_branch.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
 import 'package:appointment_management/src/views/services/services_list.dart';
@@ -71,6 +74,57 @@ class CustomDrawer extends StatelessWidget {
               },
               child: textWidget2(
                 text: 'Add Customer',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const CreateBranch(),
+                  ),
+                );
+              },
+              child: textWidget2(
+                text: 'Create Branch',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const AssignBranch(),
+                  ),
+                );
+              },
+              child: textWidget2(
+                text: 'Assign Branch',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const AssignConsultantSchedule(),
+                  ),
+                );
+              },
+              child: textWidget2(
+                text: 'Assign Consultant Schedule',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

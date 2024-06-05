@@ -1,5 +1,6 @@
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,5 +46,19 @@ class utils {
       CustomDialogue.message(
           context: context, message: 'Phone No. doesn\'t found');
     }
+  }
+
+  static Future<TimeOfDay?> selectTime(
+    BuildContext context,
+  ) async {
+    TimeOfDay? pickedDate = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedDate != null) {
+      return pickedDate;
+    }
+    return null;
   }
 }

@@ -45,7 +45,7 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       roleId: (json['role_id'] as num?)?.toInt(),
       businessId: (json['business_id'] as num?)?.toInt(),
       consultantId: (json['consultant_id'] as num?)?.toInt(),
-      registrationId: (json['registration_id'] as num?)?.toInt(),
+      registrationId: json['registration_id'] as String?,
     );
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{

@@ -9,12 +9,18 @@ class Constants {
 
   static const String addConsultant = '${baseUrl}/consultant/add-consultant';
   static const String addCustomer = '${baseUrl}/customer/add-customer';
+
   static const String getCustomers =
-      '$baseUrl/customer/consultant-patients/?consultant_id=';
+      '$baseUrl/customer/business-patients/?business_id=';
+
   static const String getBusiness =
       '$baseUrl/consultant/get-consultant-business-id/?business_id=';
+  static const String getBusinessBranch =
+      '$baseUrl/onboarding/get-business-branches?business_id=';
+
   static const String getService =
       '$baseUrl/onboarding/get-services?business_id=';
+  static const String deleteService = '$baseUrl/onboarding/delete-service';
 
   static const String consultantImageBaseUrl =
       '${baseUrl}/consultant-image/?imageName=';

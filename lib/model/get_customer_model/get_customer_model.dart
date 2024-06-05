@@ -41,7 +41,7 @@ class Customer {
   int? roleId;
   int? businessId;
   int? consultantId;
-  int? registrationId;
+  String? registrationId;
 
   Customer({
     this.id,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
@@ -54,30 +55,32 @@ class ApiServices {
     dynamic user,
   ) async {
     try {
+      log('uri ${uri}');
       final res = await http.get(Uri.parse(uri), headers: {
         'Authorization': 'Bearer ${user['token']}',
       });
 
       if (res.statusCode == 200) {
-        GetCustomer tempConsutlant = GetCustomer.fromJson(jsonDecode(res.body));
+        final resBody = jsonDecode(res.body);
 
-        if (tempConsutlant.customers!.isEmpty) {
+        GetCustomer tempCustomer = GetCustomer.fromJson(resBody);
+        if (tempCustomer.customers!.isEmpty) {
           return null;
         }
 
-        return tempConsutlant;
+        return tempCustomer;
       }
       return null;
-    } on SocketException catch (e) {
+    } on SocketException {
       CustomDialogue.message(
           context: context,
           message: 'Customer not found\nPlease check your internet connection');
       return null;
     } catch (e, stack) {
-      CustomDialogue.message(
-          context: context, message: 'Customer not found: Please try again');
+      // CustomDialogue.message(
+      //     context: context, message: 'Customer not found: Please try again');
 
-      print('Customer not found: Please try again : ${e}');
+      log('Customer not found: Please try again : ${e}', stackTrace: stack);
       return null;
     }
   }
@@ -112,6 +115,42 @@ class ApiServices {
           context: context, message: 'Services not found: Please try again');
 
       print('Services not found: Please try again : ${e}');
+      return null;
+    }
+  }
+
+  static Future<GetBranch?> getBusinessBranch(
+    BuildContext context,
+    String uri,
+    dynamic user,
+  ) async {
+    try {
+      final res = await http.get(Uri.parse(uri), headers: {
+        'Authorization': 'Bearer ${user['token']}',
+      });
+      log('res ${res.statusCode}');
+      log('res ${res.body}');
+      if (res.statusCode == 200) {
+        GetBranch tempBranch = GetBranch.fromJson(jsonDecode(res.body));
+
+        if (tempBranch.businessBranches!.isEmpty) {
+          return null;
+        }
+        return tempBranch;
+      }
+      return null;
+    } on SocketException {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Business branch not found\nPlease check your internet connection');
+      return null;
+    } catch (e, stack) {
+      // CustomDialogue.message(
+      //     context: context,
+      //     message: 'Business branch not found: Please try again');
+
+      print('Business branch not found: Please try again : ${e}');
       return null;
     }
   }
