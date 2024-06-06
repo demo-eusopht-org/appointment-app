@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                     value: selectedRole.value,
                                     underline: const SizedBox(),
                                     isExpanded: true,
-                                    dropdownColor: AppColors.whiteColor,
+                                    dropdownColor: AppColors.white,
                                     hint: textWidget(text: 'Select role'),
                                     items: roles
                                         .map(

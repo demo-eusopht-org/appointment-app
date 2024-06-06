@@ -1,5 +1,13 @@
-import 'package:appointment_management/src/views/widgets/cancel_list.dart';
-import 'package:appointment_management/src/views/widgets/completed_list.dart';
+import 'dart:developer';
+
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/auth_model/auth_model.dart';
+import 'package:appointment_management/services/get_services.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/schedule_list.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
@@ -17,6 +25,27 @@ class Appointments extends StatefulWidget {
 class _AppointmentsState extends State<Appointments> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 0;
+
+  dynamic user, businessId;
+
+  List<Appointment>? allAppointments;
+
+  bool isLoading = false;
+
+  User? userData;
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  bool isBooked = false;
+  bool isConducted = false;
+  bool isCancelled = false;
+  List<Appointment> isBookedList = [];
+  List<Appointment> isConductedList = [];
+  List<Appointment> isCancelledList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +69,7 @@ class _AppointmentsState extends State<Appointments> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             height: 61,
             width: MediaQuery.of(context).size.width * 0.95,
             decoration: BoxDecoration(
@@ -71,7 +100,7 @@ class _AppointmentsState extends State<Appointments> {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: selectedIndex == 0
-                          ? AppColors.buttonColor
+                          ? AppColors.primary
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -79,9 +108,8 @@ class _AppointmentsState extends State<Appointments> {
                       text: 'Schedule',
                       fWeight: FontWeight.w800,
                       fSize: 12.0,
-                      color: selectedIndex == 0
-                          ? Colors.white
-                          : AppColors.buttonColor,
+                      color:
+                          selectedIndex == 0 ? Colors.white : AppColors.primary,
                     ),
                   ),
                 ),
@@ -98,7 +126,7 @@ class _AppointmentsState extends State<Appointments> {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: selectedIndex == 1
-                          ? AppColors.buttonColor
+                          ? AppColors.primary
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -106,9 +134,8 @@ class _AppointmentsState extends State<Appointments> {
                       text: 'Completed',
                       fWeight: FontWeight.w800,
                       fSize: 12.0,
-                      color: selectedIndex == 1
-                          ? Colors.white
-                          : AppColors.buttonColor,
+                      color:
+                          selectedIndex == 1 ? Colors.white : AppColors.primary,
                     ),
                   ),
                 ),
@@ -125,17 +152,16 @@ class _AppointmentsState extends State<Appointments> {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: selectedIndex == 2
-                          ? AppColors.buttonColor
+                          ? AppColors.primary
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: textWidget2(
-                      text: 'Cancel',
+                      text: 'Cancelled',
                       fSize: 12.0,
                       fWeight: FontWeight.w800,
-                      color: selectedIndex == 2
-                          ? Colors.white
-                          : AppColors.buttonColor,
+                      color:
+                          selectedIndex == 2 ? Colors.white : AppColors.primary,
                     ),
                   ),
                 ),
@@ -145,85 +171,169 @@ class _AppointmentsState extends State<Appointments> {
           SizedBox(
             height: 20,
           ),
-          selectedIndex == 0
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      textWidget(
-                        text: 'Febuary 15, 2024',
-                        fSize: 14.0,
-                        fWeight: FontWeight.w500,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.todayBoxColor,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        width: 70,
-                        height: 30,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            textWidget2(
-                              text: 'Today',
-                              fSize: 10.0,
-                              fWeight: FontWeight.w400,
-                            ),
-                            Icon(
-                              Icons.keyboard_arrow_down_outlined,
-                              size: 16,
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : SizedBox(),
-          selectedIndex == 1
-              ? Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.todayBoxColor,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      width: 90,
-                      height: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          textWidget2(
-                            text: 'Last 7 days',
-                            fSize: 10.0,
-                            fWeight: FontWeight.w400,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            size: 16,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : SizedBox(),
-          SizedBox(height: 20),
-          selectedIndex == 0
-              ? ScheduleList()
-              : selectedIndex == 1
-                  ? CompletedList()
-                  : SizedBox(),
-          selectedIndex == 2 ? CancelList() : SizedBox()
+          // selectedIndex == 0
+          //     ? Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 15),
+          //         child: Row(
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             textWidget(
+          //               text: 'Febuary 15, 2024',
+          //               fSize: 14.0,
+          //               fWeight: FontWeight.w500,
+          //             ),
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 color: AppColors.todayBoxColor,
+          //                 borderRadius: BorderRadius.circular(3),
+          //               ),
+          //               width: 70,
+          //               height: 30,
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.center,
+          //                 children: [
+          //                   textWidget2(
+          //                     text: 'Today',
+          //                     fSize: 10.0,
+          //                     fWeight: FontWeight.w400,
+          //                   ),
+          //                   Icon(
+          //                     Icons.keyboard_arrow_down_outlined,
+          //                     size: 16,
+          //                     color: Colors.black,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       )
+          //     : SizedBox(),
+          // selectedIndex == 1
+          //     ? Align(
+          //         alignment: Alignment.centerRight,
+          //         child: Padding(
+          //           padding: const EdgeInsets.symmetric(horizontal: 12),
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               color: AppColors.todayBoxColor,
+          //               borderRadius: BorderRadius.circular(3),
+          //             ),
+          //             width: 90,
+          //             height: 30,
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 textWidget2(
+          //                   text: 'Last 7 days',
+          //                   fSize: 10.0,
+          //                   fWeight: FontWeight.w400,
+          //                 ),
+          //                 Icon(
+          //                   Icons.keyboard_arrow_down_outlined,
+          //                   size: 16,
+          //                   color: Colors.black,
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       )
+          //     : SizedBox(),
+          // SizedBox(height: 20),
+
+          isLoading
+              ? const Loader()
+              : selectedIndex == 0
+                  ? !isBooked
+                      ? const Text('No Schedule Appointments found')
+                      : ScheduleList(
+                          allAppointments: isBookedList,
+                        )
+                  : selectedIndex == 1
+                      ? !isConducted
+                          ? const Text('No Completed Appointments found')
+                          : ScheduleList(
+                              allAppointments: isConductedList,
+                            )
+                      : SizedBox(),
+          selectedIndex == 2
+              ? !isCancelled
+                  ? const Text('No Completed Appointments found')
+                  : ScheduleList(
+                      allAppointments: isCancelledList,
+                    )
+              : SizedBox()
+          //     : selectedIndex == 1
+          //         ? CompletedList()
+          //         : SizedBox(),
+          // selectedIndex == 2 ? CancelList() : SizedBox()
         ],
       ),
     );
+  }
+
+  Future<void> _init() async {
+    user = locator<LocalStorageService>().getData(key: 'user');
+    businessId = locator<LocalStorageService>().getData(key: 'businessId');
+    setState(() {
+      isLoading = true;
+    });
+
+    userData = GetLocalData.getUser();
+
+    if (userData!.roleId == 1) {
+      await getAllAppointments();
+    } else if (userData!.roleId == 2) {
+      // await getAllAppointments();
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> getAllAppointments() async {
+    try {
+      final res = await ApiServices.getAllAppointments(
+        context,
+        Constants.getAllAppointments + businessId.toString(),
+        user,
+      );
+
+      if (res != null) {
+        if (res.appointments!.isNotEmpty) {
+          allAppointments = res.appointments;
+          setBoolValues();
+
+          for (var i = 0; i < allAppointments!.length; i++) {
+            log('allAppointments ${allAppointments![i].toJson()}');
+          }
+        }
+      }
+    } catch (e, stack) {
+      log('Something went wrong in getAllAppointments Api $e',
+          stackTrace: stack);
+    }
+  }
+
+  void setBoolValues() {
+    isBooked = allAppointments!
+        .any((element) => element.status!.toLowerCase() == 'booked');
+    isConducted = allAppointments!
+        .any((element) => element.status!.toLowerCase() == 'conducted');
+    isCancelled = allAppointments!
+        .any((element) => element.status!.toLowerCase() == 'cancelled');
+
+    isBookedList = allAppointments!
+        .where((element) => element.status!.toLowerCase() == 'booked')
+        .toList();
+    isConductedList = allAppointments!
+        .where((element) => element.status!.toLowerCase() == 'conducted')
+        .toList();
+    isCancelledList = allAppointments!
+        .where((element) => element.status!.toLowerCase() == 'cancelled')
+        .toList();
   }
 }

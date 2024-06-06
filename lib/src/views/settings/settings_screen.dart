@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  color: AppColors.buttonColor,
+                  color: AppColors.primary,
                   height: MediaQuery.sizeOf(context).height * 0.15,
                   child: Stack(
                     children: [
@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                 AppImages.camera,
                                                 height: 25,
                                                 width: 25,
-                                                color: AppColors.buttonColor,
+                                                color: AppColors.primary,
                                               )
                                             : null,
                                       ),
@@ -200,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       CircleAvatar(
                         radius: 20,
-                        backgroundColor: AppColors.buttonColor,
+                        backgroundColor: AppColors.primary,
                         child: Image.asset(
                           AppImages.phone,
                         ),
@@ -225,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       CircleAvatar(
                         radius: 20,
-                        backgroundColor: AppColors.buttonColor,
+                        backgroundColor: AppColors.primary,
                         child: Image.asset(
                           AppImages.email,
                         ),
@@ -254,7 +254,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         CircleAvatar(
                           radius: 20,
-                          backgroundColor: AppColors.buttonColor,
+                          backgroundColor: AppColors.primary,
                           child: Image.asset(
                             AppImages.earth,
                           ),
@@ -290,7 +290,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             width: 10,
                           ),
                           Switch.adaptive(
-                            activeTrackColor: AppColors.buttonColor,
+                            activeTrackColor: AppColors.primary,
                             value: switchValue,
                             onChanged: (newValue) {
                               setState(() {

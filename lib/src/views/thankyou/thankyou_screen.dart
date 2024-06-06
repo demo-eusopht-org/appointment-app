@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart'; 
+import '../../resources/assets.dart';
 import '../home/home_screen.dart';
 
 class ThankYouScreen extends StatefulWidget {
@@ -44,7 +44,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                     text: 'Thank You!',
                     fSize: 23.0,
                     fWeight: FontWeight.w700,
-                    color: AppColors.buttonColor,
+                    color: AppColors.primary,
                   ),
                   SizedBox(
                     height: 2,

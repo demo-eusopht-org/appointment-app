@@ -130,7 +130,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
+                                  color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 width: 66,
@@ -165,7 +165,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
+                                  color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 width: 66,
@@ -257,7 +257,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                     height: 50,
                                     width: 50,
                                     decoration: BoxDecoration(
-                                      color: AppColors.buttonColor,
+                                      color: AppColors.primary,
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: textWidget(
@@ -277,7 +277,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                           height: 41,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: AppColors.buttonColor,
+                            color: AppColors.primary,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -482,7 +482,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       color: isSelected
-                                          ? AppColors.buttonColor
+                                          ? AppColors.primary
                                           : AppColors.ratingbarColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -559,7 +559,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       color: isSelected
-                                          ? AppColors.buttonColor
+                                          ? AppColors.primary
                                           : AppColors.ratingbarColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -615,7 +615,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               return LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
-                                colors: [Colors.white, AppColors.buttonColor],
+                                colors: [Colors.white, AppColors.primary],
                                 stops: [0.4, 0.4], // Halfway
                               ).createShader(bounds);
                             },

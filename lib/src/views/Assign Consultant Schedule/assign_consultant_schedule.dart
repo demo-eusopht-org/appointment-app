@@ -11,7 +11,7 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
-import 'package:appointment_management/src/utils/date_time_utils.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
@@ -114,7 +114,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                               ),
                               Expanded(
                                 child: DropdownButton<Consultant?>(
-                                  dropdownColor: AppColors.buttonColor,
+                                  dropdownColor: AppColors.primary,
                                   value: selectedConsultant,
                                   hint: Text(
                                     'Select consultant',
@@ -155,7 +155,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                               ),
                               Expanded(
                                 child: DropdownButton<Branch?>(
-                                  dropdownColor: AppColors.buttonColor,
+                                  dropdownColor: AppColors.primary,
                                   value: selectedBranch,
                                   hint: Text(
                                     'Select branch',

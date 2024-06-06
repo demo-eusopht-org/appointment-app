@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           BasicEvent(
                             id: 1,
                             title: "Abid",
-                            backgroundColor: AppColors.buttonColor,
+                            backgroundColor: AppColors.primary,
                             start: dates.copyWith(
                               hour: 14,
                               minute: 0,
@@ -339,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.buttonColor,
+                            color: AppColors.primary,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           alignment: Alignment.center,
@@ -549,14 +549,14 @@ class RatingWidget extends StatelessWidget {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                color: AppColors.whiteColor,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: textWidget(
                 text: initialRating.toString(),
                 fSize: 16,
                 fWeight: FontWeight.w600,
-                color: AppColors.buttonColor,
+                color: AppColors.primary,
               ),
             ),
           ),

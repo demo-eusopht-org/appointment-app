@@ -47,7 +47,7 @@ class CustomDialogue {
                     width: MediaQuery.sizeOf(context).width * 0.3,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonColor,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {
@@ -66,7 +66,7 @@ class CustomDialogue {
                     width: MediaQuery.sizeOf(context).width * 0.3,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonColor,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {

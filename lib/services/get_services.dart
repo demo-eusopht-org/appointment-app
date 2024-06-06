@@ -1,5 +1,7 @@
+import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
@@ -21,5 +23,25 @@ class GetLocalData {
     List<Map<String, dynamic>> tempServices =
         locator<LocalStorageService>().getData(key: 'branches');
     return tempServices.map((e) => Branch.fromJson(e)).toList();
+  }
+
+  static List<Customer> getCustomers() {
+    List<Map<String, dynamic>> tempServices =
+        locator<LocalStorageService>().getData(key: 'customers');
+    return tempServices.map((e) => Customer.fromJson(e)).toList();
+  }
+
+  static User getUser() {
+    final user = locator<LocalStorageService>().getData(key: 'user');
+    final userData = user['user'];
+
+    return User(
+        username: userData['username'],
+        email: userData['email'],
+        createdAt: userData['created_at'],
+        updatedAt: userData['updated_at'],
+        id: userData['id'],
+        verified: userData['verified'],
+        roleId: userData['role_id']);
   }
 }

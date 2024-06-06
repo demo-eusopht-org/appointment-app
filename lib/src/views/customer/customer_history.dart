@@ -5,7 +5,6 @@ import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
- 
 
 class PatientHistory extends StatefulWidget {
   const PatientHistory({super.key});
@@ -45,7 +44,7 @@ class _PatientHistoryState extends State<PatientHistory> {
           children: [
             Container(
               margin: EdgeInsets.all(18),
-              color: AppColors.buttonColor,
+              color: AppColors.primary,
               height: MediaQuery.sizeOf(context).height * 0.18,
               child: Stack(
                 children: [
@@ -105,7 +104,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                   // height: 33,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: AppColors.buttonColor,
+                    color: AppColors.primary,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -136,7 +135,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                   // height: ,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: AppColors.buttonColor,
+                    color: AppColors.primary,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -167,7 +166,7 @@ class _PatientHistoryState extends State<PatientHistory> {
             Container(
               height: 30,
               // width: 360,
-              color: AppColors.buttonColor,
+              color: AppColors.primary,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
@@ -237,7 +236,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6),
                                       ),
-                                      backgroundColor: AppColors.buttonColor,
+                                      backgroundColor: AppColors.primary,
                                       foregroundColor: Colors.white,
                                     ),
                                   ),
@@ -285,7 +284,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(47),
                                       ),
-                                      backgroundColor: AppColors.buttonColor,
+                                      backgroundColor: AppColors.primary,
                                       foregroundColor: Colors.white,
                                     ),
                                   ),

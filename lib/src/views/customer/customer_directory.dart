@@ -203,7 +203,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                                             ),
                                             CircleAvatar(
                                               backgroundColor:
-                                                  AppColors.buttonColor,
+                                                  AppColors.primary,
                                               radius: 22,
                                               child: Icon(
                                                 Icons.phone,
@@ -222,7 +222,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                                               },
                                               child: CircleAvatar(
                                                 backgroundColor:
-                                                    AppColors.buttonColor,
+                                                    AppColors.primary,
                                                 radius: 22,
                                                 child: Icon(
                                                   Icons.phone,

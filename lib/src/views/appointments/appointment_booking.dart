@@ -5,13 +5,14 @@ import 'package:appointment_management/api/auth_api/api_services/api_services.da
 import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
-import 'package:appointment_management/src/utils/date_time_utils.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
@@ -49,14 +50,16 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
 
   Api? api;
 
-  GetCustomer? customerData;
+  // GetCustomer? customerData;
   Customer? selectedCustomer;
   // GetConsultant? consultantsData;
   Consultant? selectedConsultant;
+
   // GetBranch? branchData;
   Branch? selectedBranch;
 
   List<Service>? services;
+  List<Customer>? customers;
   List<Consultant>? consultants;
   Service? selectedService;
   bool isLoading = false;
@@ -65,6 +68,11 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
   List<Branch>? branches;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<ConsultantSchedule>? consultantSchedule;
+  ConsultantSchedule? selectedConsultantSchedule;
+  String? selectedDay;
+
   @override
   void initState() {
     _init();
@@ -89,7 +97,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       drawer: CustomDrawer(),
       body: isLoading
           ? const Loader()
-          : customerData == null
+          : customers == null
               ? Expanded(
                   child: Center(
                     child: textWidget(
@@ -146,8 +154,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         ),
                                         Expanded(
                                           child: DropdownButton<Customer>(
-                                            dropdownColor:
-                                                AppColors.buttonColor,
+                                            dropdownColor: AppColors.white,
+                                            iconEnabledColor: AppColors.primary,
                                             value: selectedCustomer,
                                             hint: Text(
                                               'Select customer',
@@ -156,12 +164,13 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             ),
                                             style: MyTextStyles.smallBlacktext,
                                             isExpanded: true,
-                                            items: customerData!.customers!
+                                            items: customers!
                                                 .map(
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.name!,
+                                                      e.name!
+                                                          .toUpperCaseFirst(),
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
@@ -190,8 +199,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         ),
                                         Expanded(
                                           child: DropdownButton<Consultant?>(
-                                            dropdownColor:
-                                                AppColors.buttonColor,
+                                            dropdownColor: AppColors.white,
+                                            iconEnabledColor: AppColors.primary,
                                             value: selectedConsultant,
                                             hint: Text(
                                               'Select consultant',
@@ -205,70 +214,157 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.name!,
+                                                      e.name!
+                                                          .toUpperCaseFirst(),
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
                                                   ),
                                                 )
                                                 .toList(),
-                                            onChanged: (Consultant? value) {
+                                            onChanged:
+                                                (Consultant? value) async {
                                               if (value != null) {
+                                                consultantSchedule = null;
+                                                selectedConsultantSchedule =
+                                                    null;
+                                                selectedDay = null;
+                                                selectedBranch = null;
                                                 selectedConsultant = value;
-                                                log('message ${selectedConsultant!.toJson()}');
+
                                                 setState(() {});
+                                                await getConsultantSchedule();
                                               }
                                             },
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        textWidget2(
-                                          text: 'Business Branch',
-                                          fSize: 14.sp,
-                                          fWeight: FontWeight.bold,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: DropdownButton<Branch?>(
-                                            dropdownColor:
-                                                AppColors.buttonColor,
-                                            value: selectedBranch,
-                                            hint: Text(
-                                              'Select branch',
+                                    if (consultantSchedule != null &&
+                                        consultantSchedule!.isNotEmpty)
+                                      Row(
+                                        children: [
+                                          textWidget2(
+                                            text: 'Consultant Branch',
+                                            fSize: 14.sp,
+                                            fWeight: FontWeight.bold,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: DropdownButton<Branch?>(
+                                              dropdownColor: AppColors.white,
+                                              iconEnabledColor:
+                                                  AppColors.primary,
+                                              value: selectedBranch,
+                                              hint: Text(
+                                                'Select branch',
+                                                style:
+                                                    MyTextStyles.smallBlacktext,
+                                              ),
                                               style:
                                                   MyTextStyles.smallBlacktext,
+                                              isExpanded: true,
+                                              items: branches!
+                                                  .where((branch) {
+                                                    return consultantSchedule!
+                                                        .any((element) =>
+                                                            element.branchId ==
+                                                            branch.id);
+                                                  })
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      value: e,
+                                                      child: Text(
+                                                        e.address!
+                                                            .toUpperCaseFirst(),
+                                                        style: MyTextStyles
+                                                            .smallBlacktext,
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              onChanged: (Branch? value) {
+                                                if (value != null) {
+                                                  selectedConsultantSchedule =
+                                                      null;
+                                                  selectedDay = null;
+                                                  selectedBranch = null;
+                                                  selectedBranch = value;
+
+                                                  setState(() {});
+                                                }
+                                              },
                                             ),
-                                            style: MyTextStyles.smallBlacktext,
-                                            isExpanded: true,
-                                            items: branches!
-                                                .map(
-                                                  (e) => DropdownMenuItem(
+                                          ),
+                                        ],
+                                      ),
+                                    if (consultantSchedule != null &&
+                                        consultantSchedule!.isEmpty)
+                                      const Text(
+                                          'No Branch found for this Consultant, Please assign Branch first'),
+                                    if (selectedBranch != null)
+                                      Row(
+                                        children: [
+                                          textWidget2(
+                                            text: 'Consultant Day',
+                                            fSize: 14.sp,
+                                            fWeight: FontWeight.bold,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: DropdownButton<
+                                                ConsultantSchedule?>(
+                                              dropdownColor: AppColors.white,
+                                              iconEnabledColor:
+                                                  AppColors.primary,
+                                              value: selectedConsultantSchedule,
+                                              hint: Text(
+                                                'Select Day',
+                                                style:
+                                                    MyTextStyles.smallBlacktext,
+                                              ),
+                                              style:
+                                                  MyTextStyles.smallBlacktext,
+                                              isExpanded: true,
+                                              items: consultantSchedule!
+                                                  .where((element) =>
+                                                      element.branchId ==
+                                                      selectedBranch!.id)
+                                                  .map(
+                                                (e) {
+                                                  return DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.address!,
+                                                      e.day!,
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
-                                                  ),
-                                                )
-                                                .toList(),
-                                            onChanged: (Branch? value) {
-                                              if (value != null) {
-                                                selectedBranch = value;
-                                                log('message ${selectedBranch!.toJson()}');
-                                                setState(() {});
-                                              }
-                                            },
+                                                  );
+                                                },
+                                              ).toList(),
+                                              onChanged: (ConsultantSchedule?
+                                                  value) async {
+                                                if (value != null) {
+                                                  selectedConsultantSchedule =
+                                                      value;
+                                                  selectedDay =
+                                                      selectedConsultantSchedule!
+                                                          .day;
+
+                                                  log('selectedConsultantSchedule ${selectedConsultantSchedule!.toJson()}');
+
+                                                  setState(() {});
+                                                }
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    if (selectedBranch != null)
+                                        ],
+                                      ),
+                                    if (selectedDay != null)
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 5.sp,
@@ -281,7 +377,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             Column(
                                               children: [
                                                 Text(
-                                                  'Branch Start time',
+                                                  'Consultant Start Time',
                                                   style: MyTextStyles
                                                       .smallBlacktext
                                                       .copyWith(
@@ -289,12 +385,11 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  '${selectedBranch!.startTime}',
+                                                  '${selectedConsultantSchedule!.startTime}',
                                                   style: MyTextStyles
                                                       .smallBlacktext
                                                       .copyWith(
                                                     fontSize: 12.sp,
-                                                    // fontWeight: FontWeight.normal,
                                                   ),
                                                 ),
                                               ],
@@ -302,7 +397,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             Column(
                                               children: [
                                                 Text(
-                                                  'Branch End time',
+                                                  'Consultant End time',
                                                   style: MyTextStyles
                                                       .smallBlacktext
                                                       .copyWith(
@@ -311,12 +406,11 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  ' ${selectedBranch!.endTime}',
+                                                  '${selectedConsultantSchedule!.endTime}',
                                                   style: MyTextStyles
                                                       .smallBlacktext
                                                       .copyWith(
                                                     fontSize: 12.sp,
-                                                    // fontWeight: FontWeight.normal,
                                                   ),
                                                 ),
                                               ],
@@ -324,6 +418,10 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           ],
                                         ),
                                       ),
+                                    if (consultantSchedule != null &&
+                                        consultantSchedule!.isEmpty)
+                                      const Text(
+                                          'No Schedule found for this Consultant, Please assign schedule first'),
                                     Row(
                                       children: [
                                         textWidget2(
@@ -336,8 +434,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         ),
                                         Expanded(
                                           child: DropdownButton<Service?>(
-                                            dropdownColor:
-                                                AppColors.buttonColor,
+                                            dropdownColor: AppColors.white,
+                                            iconEnabledColor: AppColors.primary,
                                             value: selectedService,
                                             hint: Text(
                                               'Select service',
@@ -351,7 +449,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.serviceName!,
+                                                      e.serviceName!
+                                                          .toUpperCaseFirst(),
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
@@ -514,7 +613,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         Checkbox(
                                           checkColor: Colors.white,
                                           visualDensity: VisualDensity.compact,
-                                          activeColor: AppColors.buttonColor,
+                                          activeColor: AppColors.primary,
                                           shape: const RoundedRectangleBorder(
                                             side: BorderSide.none,
                                           ),
@@ -599,9 +698,10 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     setState(() {
       isLoading = true;
     });
-    await getCustomerData();
+    // await getCustomerData();
     // await getConsultantData();
     // await getBusinessBranch();
+    customers = GetLocalData.getCustomers();
     consultants = GetLocalData.getConsultants();
     services = GetLocalData.getServices();
     branches = GetLocalData.getBranches();
@@ -611,17 +711,17 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     });
   }
 
-  Future<void> getCustomerData() async {
-    GetCustomer? tempCustomer = await ApiServices.getCustomer(
-      context,
-      Constants.getCustomers + businessId.toString(),
-      user,
-    );
+  // Future<void> getCustomerData() async {
+  //   GetCustomer? tempCustomer = await ApiServices.getCustomer(
+  //     context,
+  //     Constants.getCustomers + businessId.toString(),
+  //     user,
+  //   );
 
-    if (tempCustomer != null) {
-      customerData = tempCustomer;
-    }
-  }
+  //   if (tempCustomer != null) {
+  //     customerData = tempCustomer;
+  //   }
+  // }
 
   // Future<void> getConsultantData() async {
   //   GetConsultant? tempConsultant = await ApiServices.getConsultant(
@@ -689,5 +789,22 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       CustomDialogue.message(
           context: context, message: 'Appointment not created $e');
     }
+  }
+
+  Future<void> getConsultantSchedule() async {
+    GetConsultantSchedule? tempBranch = await ApiServices.getConsultantSchedule(
+      context,
+      Constants.getConsultantSchedule + selectedConsultant!.id.toString(),
+      user,
+    );
+
+    if (tempBranch != null) {
+      if (tempBranch.consultantSchedule!.isNotEmpty) {
+        consultantSchedule = tempBranch.consultantSchedule;
+      } else {
+        consultantSchedule = [];
+      }
+    }
+    setState(() {});
   }
 }

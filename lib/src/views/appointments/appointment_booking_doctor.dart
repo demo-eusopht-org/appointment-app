@@ -297,7 +297,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
                   Checkbox(
                     checkColor: Colors.white,
                     visualDensity: VisualDensity.compact,
-                    activeColor: AppColors.buttonColor,
+                    activeColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       side: BorderSide.none,
                     ),

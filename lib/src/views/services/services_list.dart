@@ -91,7 +91,7 @@ class _ProcedureListState extends State<ProcedureList> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.buttonColor,
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
@@ -136,7 +136,7 @@ class _ProcedureListState extends State<ProcedureList> {
                   : Container(
                       height: 30,
                       // width: 360,
-                      color: AppColors.buttonColor,
+                      color: AppColors.primary,
                       child: Row(
                         children: [
                           Expanded(
@@ -279,7 +279,7 @@ class _ProcedureListState extends State<ProcedureList> {
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             PopupMenuButton(
-                                              iconColor: AppColors.buttonColor,
+                                              iconColor: AppColors.primary,
                                               onSelected:
                                                   (String selectedValue) {
                                                 if (selectedValue == 'Update') {
@@ -568,12 +568,12 @@ class _ProcedureListState extends State<ProcedureList> {
                 width: MediaQuery.sizeOf(context).width * 0.4,
                 height: 33,
                 decoration: BoxDecoration(
-                  color: AppColors.buttonColor,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(41),
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.buttonColor,
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () async {

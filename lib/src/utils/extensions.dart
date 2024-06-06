@@ -17,6 +17,11 @@ extension DateTimeUtils on DateTime {
     return DateFormat('yyyy-MM-dd').format(this);
   }
 
+  String toMonthNameFormat() {
+    final DateFormat newFormat = DateFormat('dd MMMM yyyy');
+    return newFormat.format(this);
+  }
+
   String convertDateToDay() {
     final dayFormatter = DateFormat('EEEE'); // EEEE for full weekday name
     return dayFormatter.format(this);
@@ -30,5 +35,37 @@ extension TimeFormat on TimeOfDay {
 
     final period = this.hour >= 12 ? 'PM' : 'AM';
     return '${hour == 0 ? 12 : hour}:$minute:00 $period';
+  }
+}
+
+extension TimeFormatFromString on String {
+  String fromStringtoFormattedTime() {
+    try {
+      // Parse the time string
+      DateFormat originalFormat = DateFormat('HH:mm:ss');
+      DateTime time = originalFormat.parse(this);
+
+      // Format the time to AM/PM format
+      DateFormat newFormat = DateFormat('hh:mm:ss a');
+      return newFormat.format(time);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  String getDay() {
+    return split(' ')[0];
+  }
+
+  String getMonth() {
+    return split(' ')[1];
+  }
+
+  String getYear() {
+    return split(' ')[2];
+  }
+
+  String toUpperCaseFirst() {
+    return this[0].toUpperCase() + this.substring(1);
   }
 }

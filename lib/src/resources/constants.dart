@@ -23,7 +23,12 @@ class Constants {
   static const String deleteService = '$baseUrl/onboarding/delete-service';
 
   static const String consultantImageBaseUrl =
-      '${baseUrl}/consultant-image/?imageName=';
+      '$baseUrl/consultant-image/?imageName=';
   static const String getConsultantBranches =
-      '${baseUrl}/consultant/get-consultant-branches?consultant_id=';
+      '$baseUrl/consultant/get-consultant-branches?consultant_id=';
+  static const String getConsultantSchedule =
+      '$baseUrl/consultant/get-consultant-shedule?consultant_id=';
+      static const String getAllAppointments =
+      '$baseUrl/onboarding/get-business-appointments?business_id=';
+      
 }

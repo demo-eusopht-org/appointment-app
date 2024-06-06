@@ -29,7 +29,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:appointment_management/src/utils/date_time_utils.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 
 class AssignBranch extends StatefulWidget {
   const AssignBranch({super.key});
@@ -133,7 +133,7 @@ class AssigneBranchState extends State<AssignBranch> {
                               ),
                               Expanded(
                                 child: DropdownButton<Consultant?>(
-                                  dropdownColor: AppColors.buttonColor,
+                                  dropdownColor: AppColors.primary,
                                   value: selectedConsultant,
                                   hint: Text(
                                     'Select consultant',
@@ -175,7 +175,7 @@ class AssigneBranchState extends State<AssignBranch> {
                               ),
                               Expanded(
                                 child: DropdownButton<Branch?>(
-                                  dropdownColor: AppColors.buttonColor,
+                                  dropdownColor: AppColors.primary,
                                   value: selectedBranch,
                                   hint: Text(
                                     'Select branch',

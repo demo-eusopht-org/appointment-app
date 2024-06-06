@@ -9,8 +9,11 @@ class AppColors {
     color1,
     color2,
   ];
-  static const Color buttonColor = Color(0xff5D62E6);
-  static const Color whiteColor = Color(0xffFFFFFF);
+  static const Color primaryTheme = Color(0xff5D62E6);
+  static const Color primary = Color(0xff5D62E6);
+  static const Color success = Color.fromARGB(255, 6, 144, 38);
+  static const Color danger = Color.fromARGB(255, 204, 16, 16);
+  static const Color white = Color(0xffFFFFFF);
   static const Color ratingbarColor = Color(0xffF0EFEF);
   static const Color starColor = Color(0xffFFFF00);
   static const Color borderColor = Color(0xffF0EFEF);

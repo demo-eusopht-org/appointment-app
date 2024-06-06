@@ -1,5 +1,5 @@
 import 'package:appointment_management/src/resources/app_colors.dart';
-import 'package:appointment_management/src/views/widgets/text_widget.dart'; 
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class ClinicItem extends StatelessWidget {
@@ -22,7 +22,7 @@ class ClinicItem extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundColor: AppColors.buttonColor,
+            backgroundColor: AppColors.primary,
             child: Image.asset(
               imagePath,
               width: 24, // Adjust the width to fit the circle avatar

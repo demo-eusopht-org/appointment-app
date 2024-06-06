@@ -1,8 +1,6 @@
- 
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
- 
 
 class RoundedElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -24,7 +22,7 @@ class RoundedElevatedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius), // Rounded corners
         ),
-        backgroundColor: AppColors.buttonColor,
+        backgroundColor: AppColors.primary,
         padding: EdgeInsets.symmetric(
           horizontal: 18.0,
           // vertical: 12.0,

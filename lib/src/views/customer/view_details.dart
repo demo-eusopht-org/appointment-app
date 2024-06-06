@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../resources/app_colors.dart';
-import '../../resources/assets.dart'; 
+import '../../resources/assets.dart';
 
 class ViewDetails extends StatefulWidget {
   const ViewDetails({super.key});
@@ -43,7 +43,7 @@ class _ViewDetailsState extends State<ViewDetails> {
           children: [
             Container(
               margin: EdgeInsets.all(18),
-              color: AppColors.buttonColor,
+              color: AppColors.primary,
               height: MediaQuery.sizeOf(context).height * 0.18,
               child: Stack(
                 children: [

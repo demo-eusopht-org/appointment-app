@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_branches.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -190,6 +192,80 @@ class ApiServices {
 
       log('Consultant Branches not found: Please try again : ${e}',
           stackTrace: stack);
+      return null;
+    }
+  }
+
+  static Future<GetConsultantSchedule?> getConsultantSchedule(
+    BuildContext context,
+    String uri,
+    dynamic user,
+  ) async {
+    try {
+      final res = await http.get(Uri.parse(uri), headers: {
+        'Authorization': 'Bearer ${user['token']}',
+      });
+
+      if (res.statusCode == 200) {
+        GetConsultantSchedule tempConsultantBranches =
+            GetConsultantSchedule.fromJson(jsonDecode(res.body));
+
+        if (tempConsultantBranches.consultantSchedule!.isEmpty) {
+          return null;
+        }
+
+        return tempConsultantBranches;
+      }
+      return null;
+    } on SocketException {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Consultant Schedule not found\nPlease check your internet connection');
+      return null;
+    } catch (e, stack) {
+      CustomDialogue.message(
+          context: context,
+          message: 'Consultant Schedule not found: Please try again');
+
+      log('Consultant Schedule not found: Please try again : ${e}',
+          stackTrace: stack);
+      return null;
+    }
+  }
+
+  static Future<GetAllAppointments?> getAllAppointments(
+    BuildContext context,
+    String uri,
+    dynamic user,
+  ) async {
+    try {
+      final res = await http.get(Uri.parse(uri), headers: {
+        'Authorization': 'Bearer ${user['token']}',
+      });
+
+      if (res.statusCode == 200) {
+        GetAllAppointments tempConsultantBranches =
+            GetAllAppointments.fromJson(jsonDecode(res.body));
+
+        if (tempConsultantBranches.appointments!.isEmpty) {
+          return null;
+        }
+
+        return tempConsultantBranches;
+      }
+      return null;
+    } on SocketException {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Appointment not found\nPlease check your internet connection');
+      return null;
+    } catch (e, stack) {
+      CustomDialogue.message(
+          context: context, message: 'Appointment not found: Please try again');
+
+      log('Appointment not found: Please try again : ${e}', stackTrace: stack);
       return null;
     }
   }

@@ -4,6 +4,7 @@ import 'package:appointment_management/api/auth_api/api_services/api_services.da
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
@@ -66,6 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
     await getServices();
+    await getCustomerData();
     await getConsultantData();
     await getBusinessBranch();
     _navigateToNextScreen();
@@ -124,5 +126,22 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     }
     setState(() {});
+  }
+
+  Future<void> getCustomerData() async {
+    GetCustomer? tempCustomer = await ApiServices.getCustomer(
+      context,
+      Constants.getCustomers + businessId.toString(),
+      user,
+    );
+
+    if (tempCustomer != null) {
+      if (tempCustomer.customers!.isNotEmpty) {
+        await locator<LocalStorageService>().saveData(
+          key: 'customers',
+          value: tempCustomer.customers!.map((e) => e.toJson()).toList(),
+        );
+      }
+    }
   }
 }

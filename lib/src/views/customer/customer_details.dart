@@ -116,7 +116,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
+                                  color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 width: 66,
@@ -151,7 +151,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
+                                  color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 width: 66,
@@ -199,7 +199,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           height: 41,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: AppColors.buttonColor,
+                            color: AppColors.primary,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +239,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                             height: 41,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color: AppColors.buttonColor,
+                              color: AppColors.primary,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -295,7 +295,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         CustomInfoContainer(
                           label: 'Age:',
                           value: '24',
-                          color: AppColors.buttonColor,
+                          color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.065,
                           width: MediaQuery.of(context).size.width * 0.25,
                         ),
@@ -305,7 +305,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         CustomInfoContainer(
                           label: 'Height:',
                           value: '5.7',
-                          color: AppColors.buttonColor,
+                          color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.067,
                           width: MediaQuery.of(context).size.width * 0.33,
                         ),
@@ -315,7 +315,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         CustomInfoContainer(
                           label: 'D.O.B:',
                           value: '1/8/2000',
-                          color: AppColors.buttonColor,
+                          color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.069,
                           width: MediaQuery.of(context).size.width * 0.4,
                         ),
@@ -374,7 +374,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       color: isSelected
-                                          ? AppColors.buttonColor
+                                          ? AppColors.primary
                                           : AppColors.ratingbarColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -451,7 +451,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       color: isSelected
-                                          ? AppColors.buttonColor
+                                          ? AppColors.primary
                                           : AppColors.ratingbarColor,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -502,7 +502,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                               return LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
-                                colors: [Colors.white, AppColors.buttonColor],
+                                colors: [Colors.white, AppColors.primary],
                                 stops: [0.4, 0.4], // Halfway
                               ).createShader(bounds);
                             },

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
@@ -426,6 +427,7 @@ class _AddCustomerState extends State<AddCustomer> {
           log('res data ${res}');
           if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
+            await getCustomerData();
 
             final route = MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -504,6 +506,22 @@ class _AddCustomerState extends State<AddCustomer> {
       });
     }
   }
+
+  Future<void> getCustomerData() async {
+    GetCustomer? tempCustomer = await ApiServices.getCustomer(
+      context,
+      Constants.getCustomers + businessId.toString(),
+      user,
+    );
+
+    if (tempCustomer != null) {
+      await locator<LocalStorageService>().delete('customers');
+      await locator<LocalStorageService>().saveData(
+        key: 'customers',
+        value: tempCustomer.customers!.map((e) => e.toJson()).toList(),
+      );
+    }
+  }
 }
 
 class Loader extends StatelessWidget {
@@ -513,7 +531,7 @@ class Loader extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: CircularProgressIndicator(
-        color: AppColors.buttonColor,
+        color: AppColors.primary,
       ),
     );
   }
