@@ -262,9 +262,6 @@ class ApiServices {
               'Appointment not found\nPlease check your internet connection');
       return null;
     } catch (e, stack) {
-      CustomDialogue.message(
-          context: context, message: 'Appointment not found: Please try again');
-
       log('Appointment not found: Please try again : ${e}', stackTrace: stack);
       return null;
     }

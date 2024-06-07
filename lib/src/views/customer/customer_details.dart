@@ -1,66 +1,107 @@
+import 'dart:developer';
+
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_history.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_container_patient.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 
 class CustomerDetails extends StatefulWidget {
-  const CustomerDetails({super.key});
+  final Customer customer;
+  const CustomerDetails({super.key, required this.customer});
 
   @override
   State<CustomerDetails> createState() => _CustomerDetailsState();
 }
 
 class _CustomerDetailsState extends State<CustomerDetails> {
-  List<String> monthTexts = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-  List<String> timeTexts = ['09:00', '11:00', '02:00', '03:00', '11:00'];
-
-  int selectedDateIndex = 0;
-  int selectedTimeIndex = 0;
+  // int selectedDateIndex = 0;
+  // int selectedTimeIndex = 0;
   DateTime? selectedDate;
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
+
+  late Customer customer;
+
+  dynamic user, businessId;
+
+  List<Appointment>? customerAppointments;
+
+  bool isLoading = false;
+
+  bool isBooked = false;
+  bool isConducted = false;
+  bool isCancelled = false;
+
+  Map<String, dynamic> statusOrder = {
+    'Booked': 1,
+    'Conducted': 2,
+    'Cancelled': 3,
+  };
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-        context: context,
-        leadingIcon: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-        ),
-        title: 'Customer Details ',
-      ),
-      body: Stack(
-        children: [
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-              AppImages.vectorBox,
-              fit: BoxFit.cover,
+          context: context,
+          leadingIcon: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
             ),
           ),
+          title: 'Customer Details ',
+          action: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => PatientHistory(
+                      customerAppointments: customerAppointments!,
+                    ),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                child: const Icon(
+                  Icons.history,
+                ),
+              ),
+            ),
+          ]),
+      body: Stack(
+        children: [
+          // Positioned(
+          //   bottom: 0,
+          //   right: 0,
+          //   child: Image.asset(
+          //     AppImages.vectorBox,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -71,46 +112,31 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 154,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade100),
-                        ),
-                        child: Image.asset(
-                          fit: BoxFit.contain,
-                          AppImages.patient,
-                          width: MediaQuery.sizeOf(context).width * 0.4,
-                        ),
+                      CircleAvatar(
+                        radius: 35.sp,
+                        backgroundImage: customer.imagename != null
+                            ? CachedNetworkImageProvider(
+                                '${customer.imagename}',
+                              )
+                            : AssetImage(AppImages.noImage)
+                                as ImageProvider<Object>,
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 10.sp,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           textWidget(
-                            text: 'Abid Ali ',
-                            fSize: 20.0,
+                            text: '${customer.name}',
                             fWeight: FontWeight.w700,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          textWidget2(
-                            text: 'Email Address:',
-                            fSize: 12.0,
-                            fWeight: FontWeight.w700,
-                          ),
-                          SizedBox(
-                            height: 10,
                           ),
                           textWidget(
-                            text: 'Abid@gmail.com',
-                            fSize: 16.0,
+                            text: '${customer.email}',
                             fWeight: FontWeight.w700,
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 10.sp,
                           ),
                           Row(
                             children: [
@@ -119,64 +145,63 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                   color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                width: 66,
-                                height: 47,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Column(
-                                      children: [
-                                        textWidget2(
-                                          text: 'Mobile No.',
-                                          fSize: 9.0,
-                                          fWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        textWidget2(
-                                          text: '0323456780',
-                                          fSize: 9.0,
-                                          fWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: EdgeInsets.all(5.sp),
+                                      child: Column(
+                                        children: [
+                                          textWidget(
+                                            text: 'Mobile No.',
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            height: 5.sp,
+                                          ),
+                                          textWidget(
+                                            text: customer.mobile ?? '--',
+                                            fWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
                               ),
                               SizedBox(
-                                width: 15,
+                                width: 10.sp,
                               ),
                               Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                width: 66,
-                                height: 47,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Column(
-                                      children: [
-                                        textWidget2(
-                                          text: 'Reference ',
-                                          fSize: 9.0,
-                                          fWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        textWidget2(
-                                          text: '012f34',
-                                          fSize: 9.0,
-                                          fWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: EdgeInsets.all(5.sp),
+                                      child: Column(
+                                        children: [
+                                          textWidget(
+                                            text: 'Reference ',
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          textWidget(
+                                            text: (customer.refrenceno != '' &&
+                                                    customer.refrenceno != null)
+                                                ? customer.refrenceno!
+                                                : '--',
+                                            fWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
@@ -187,77 +212,51 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.sp, vertical: 10.sp),
+                    child: Divider(
+                      color: AppColors.black.withOpacity(0.3),
+                      height: 2.sp,
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: EdgeInsets.only(left: 12.sp, right: 5.sp),
                     child: Row(
                       children: [
-                        Container(
-                          width: 167,
-                          height: 41,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: AppColors.primary,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              textWidget2(
-                                text: 'Address',
-                                fWeight: FontWeight.w600,
-                                fSize: 10.0,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              textWidget2(
-                                text: '123 Main Street, Anytown, USA 12345',
-                                fWeight: FontWeight.w500,
-                                fSize: 8.0,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => PatientHistory(),
-                              ),
-                            );
-                          },
+                        Expanded(
                           child: Container(
-                            width: 167,
-                            height: 41,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 10.sp,
+                              horizontal: 10.sp,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               color: AppColors.primary,
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                textWidget2(
-                                  text: 'Customer Details ',
-                                  fWeight: FontWeight.w800,
-                                  fSize: 17.0,
+                                textWidget(
+                                  text: 'Address:',
                                   color: Colors.white,
                                 ),
-                                Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.white,
-                                )
+                                SizedBox(
+                                  width: 5.sp,
+                                ),
+                                Expanded(
+                                  child: textWidget(
+                                    text: customer.address ?? '--',
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
                       ],
                     ),
                   ),
@@ -267,34 +266,25 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        textWidget(
-                          text: 'Note:',
-                          fSize: 18.0,
-                          fWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        textWidget2(
-                          text:
-                              'Ive been making efforts to stay active and eat healthier to improve my overall well-being.',
-                          fSize: 15.0,
-                          fWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                        // textWidget2(
-                        //   text: 'health, from infancy to adolescence.',
-                        //   fSize: 15.0,
-                        //   fWeight: FontWeight.w600,
+                        // textWidget(
+                        //   text: 'Note:',
+                        //   fWeight: FontWeight.w700,
                         //   color: Colors.black,
                         // ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        // SizedBox(
+                        //   height: 5,
+                        // ),
+                        // textWidget(
+                        //   text:
+                        //       'Ive been making efforts to stay active and eat healthier to improve my overall well-being.',
+                        //   color: Colors.black,
+                        // ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
                         CustomInfoContainer(
                           label: 'Age:',
-                          value: '24',
+                          value: '${customer.age ?? '--'}',
                           color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.065,
                           width: MediaQuery.of(context).size.width * 0.25,
@@ -304,7 +294,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         ),
                         CustomInfoContainer(
                           label: 'Height:',
-                          value: '5.7',
+                          value: '${customer.height ?? '--'}',
                           color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.067,
                           width: MediaQuery.of(context).size.width * 0.33,
@@ -314,7 +304,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         ),
                         CustomInfoContainer(
                           label: 'D.O.B:',
-                          value: '1/8/2000',
+                          value: customer.dob != null
+                              ? customer.dob!.toPkFormattedDate()
+                              : '--',
                           color: AppColors.primary,
                           height: MediaQuery.of(context).size.width * 0.069,
                           width: MediaQuery.of(context).size.width * 0.4,
@@ -322,210 +314,228 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            textWidget(
-                              text: 'Schedule',
-                              fSize: 18.0,
-                              fWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _selectDate(context);
-                              },
-                              icon: Icon(
-                                Icons.calendar_today,
-                              ),
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 62,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              bool isSelected = (index == selectedDateIndex);
-
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedDateIndex = index;
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0,
-                                  ),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 80,
-                                    height: 62,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      color: isSelected
-                                          ? AppColors.primary
-                                          : AppColors.ratingbarColor,
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        textWidget(
-                                          text: monthTexts[index],
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fSize: 18.0,
-                                          fWeight: FontWeight.w800,
-                                        ),
-                                        textWidget(
-                                          text: '29',
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fSize: 18.0,
-                                          fWeight: FontWeight.w800,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                  isLoading ? Loader() : SizedBox(),
+                  if (customerAppointments != null &&
+                      customerAppointments!.isEmpty)
+                    textWidget(
+                      text: 'No appointments schedule',
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        textWidget(
-                          text: 'Time ',
-                          fSize: 18.0,
-                          fWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 62,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              bool isSelected = (index == selectedTimeIndex);
-
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedTimeIndex = index;
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0,
-                                  ),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 80,
-                                    height: 62,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      color: isSelected
-                                          ? AppColors.primary
-                                          : AppColors.ratingbarColor,
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        textWidget(
-                                          text: timeTexts[index],
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fSize: 18.0,
-                                          fWeight: FontWeight.w800,
-                                        ),
-                                        textWidget(
-                                          text: 'AM',
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fSize: 18.0,
-                                          fWeight: FontWeight.w800,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      print('heelo');
-                    },
-                    child: Stack(
-                      children: [
-                        Image.asset(AppImages.button),
-                        Positioned.fill(
-                          child: ShaderMask(
-                            shaderCallback: (Rect bounds) {
-                              return LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Colors.white, AppColors.primary],
-                                stops: [0.4, 0.4], // Halfway
-                              ).createShader(bounds);
-                            },
-                            child: Center(
-                              child: textWidget2(
-                                textAlign: TextAlign.center,
-                                text: 'Book Appointment',
-                                color: Colors.white,
-                                fSize: 17.0,
+                  if (customerAppointments != null &&
+                      customerAppointments!.isNotEmpty)
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.sp, vertical: 5.sp),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              textWidget(
+                                text: 'Appointment Date and Time',
                                 fWeight: FontWeight.w700,
+                                color: Colors.black,
                               ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.sp,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  textWidget(
+                                    text: 'Schedule',
+                                    fWeight: FontWeight.w500,
+                                    color: AppColors.primary,
+                                  ),
+                                  SizedBox(
+                                    width: 5.sp,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 5.sp,
+                                    backgroundColor: AppColors.primary,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  textWidget(
+                                    text: 'Conducted',
+                                    fWeight: FontWeight.w500,
+                                    color: AppColors.success,
+                                  ),
+                                  SizedBox(
+                                    width: 5.sp,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 5.sp,
+                                    backgroundColor: AppColors.success,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  textWidget(
+                                    text: 'Cancelled',
+                                    fWeight: FontWeight.w500,
+                                    color: AppColors.danger,
+                                  ),
+                                  SizedBox(
+                                    width: 5.sp,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 5.sp,
+                                    backgroundColor: AppColors.danger,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10.sp),
+                          SizedBox(
+                            height: 75.sp,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: customerAppointments!.length,
+                              itemBuilder: (context, index) {
+                                // bool isSelected = (index == selectedDateIndex);
+
+                                sortAppointmentList();
+                                Appointment appointmentSchedule =
+                                    customerAppointments![index];
+
+                                isBooked =
+                                    appointmentSchedule.status!.toLowerCase() ==
+                                        'booked';
+                                isConducted =
+                                    appointmentSchedule.status!.toLowerCase() ==
+                                        'conducted';
+                                isCancelled =
+                                    appointmentSchedule.status!.toLowerCase() ==
+                                        'cancelled';
+                                return GestureDetector(
+                                  onTap: () {
+                                    // setState(() {
+                                    //   selectedDateIndex = index;
+                                    // });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10.sp,
+                                        vertical: 10.sp,
+                                      ),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border:
+                                            Border.all(color: AppColors.black),
+                                        color:
+                                            // isSelected ?
+                                            isBooked
+                                                ? AppColors.primary
+                                                : isConducted
+                                                    ? AppColors.success
+                                                    : AppColors.danger,
+                                        // :   AppColors.ratingbarColor,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          textWidget(
+                                            text: appointmentSchedule
+                                                .appointmentDate!
+                                                .toPkFormattedDate(),
+                                            color:
+                                                // isSelected ?
+                                                Colors.white,
+                                            // : Colors.black,
+                                            fWeight: FontWeight.w700,
+                                          ),
+                                          SizedBox(
+                                            height: 5.sp,
+                                          ),
+                                          textWidget(
+                                            text: appointmentSchedule
+                                                .scheduleTime!
+                                                .fromStringtoFormattedTime(),
+                                            color:
+                                                //  isSelected     ?
+                                                Colors.white,
+                                            // : Colors.black,
+                                            fWeight: FontWeight.w700,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  )
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> getCustomerAppointments(Customer customer) async {
+    try {
+      final res = await ApiServices.getAllAppointments(
+        context,
+        Constants.getAllAppointments + businessId.toString(),
+        user,
+      );
+
+      if (res != null) {
+        if (res.appointments!.isNotEmpty) {
+          for (var i = 0; i < res.appointments!.length; i++) {
+            log('res.appointments ${res.totalAppointments}');
+          }
+          customerAppointments = res.appointments!
+              .where((element) => element.customerId == customer.id)
+              .toList();
+        }
+      }
+    } catch (e, stack) {
+      log('Something went wrong in getCustomerAppointments Api $e',
+          stackTrace: stack);
+    }
+  }
+
+  Future<void> _init() async {
+    setState(() {
+      isLoading = true;
+    });
+    user = locator<LocalStorageService>().getData(key: 'user');
+    businessId = locator<LocalStorageService>().getData(key: 'businessId');
+    customer = widget.customer;
+    await getCustomerAppointments(customer);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void sortAppointmentList() {
+    customerAppointments!.sort(
+      (a, b) {
+        final orderA = statusOrder[a.status];
+        final orderB = statusOrder[b.status];
+        return orderA.compareTo(orderB);
+      },
     );
   }
 }

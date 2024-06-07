@@ -1,5 +1,7 @@
- import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomInfoContainer extends StatelessWidget {
   final String label;
@@ -20,28 +22,25 @@ class CustomInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      height: height,
-      width: width,
+      padding: EdgeInsets.symmetric(vertical: 5.sp, horizontal: 10.sp),
+      // height: height,
+      // width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: color.withOpacity(0.9),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           textWidget(
-            text: label,
-            fSize: 15.0,
+            text: '$label: ',
+            color: AppColors.white,
             fWeight: FontWeight.w600,
-            color: Colors.white,
           ),
           textWidget(
             text: value,
-            fSize: 16.0,
-            fWeight: FontWeight.w700,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ],
       ),

@@ -2,16 +2,17 @@ import 'dart:developer';
 
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_events.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_states.dart';
-import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
-import 'package:appointment_management/src/views/auth/loader_bloc.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_events.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_states.dart';
+import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/Auth/loader_bloc.dart';
 
-import 'package:appointment_management/src/views/auth/signup.dart';
+import 'package:appointment_management/src/views/Auth/signup.dart';
 
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
+import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
@@ -61,10 +62,18 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthFailureState) {
             CustomDialogue.message(context: context, message: state.message);
           } else if (state is AuthSuccessState) {
+            // Navigator.pushReplacement(
+            //   context,
+            //   CupertinoPageRoute(
+            //     builder: (context) => const HomeScreen(),
+            //   ),
+            // );
             Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
-                builder: (context) => const HomeScreen(),
+                builder: (context) => const SplashScreen(
+                  fromLogin: true,
+                ),
               ),
             );
           }

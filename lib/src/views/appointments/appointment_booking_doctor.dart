@@ -1,3 +1,4 @@
+import 'package:appointment_management/src/views/Thankyou%20Screen/thankyou_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../resources/app_colors.dart';
-import '../thankyou/thankyou_screen.dart';
 
 class AppointmentBookingDoctor extends StatefulWidget {
   const AppointmentBookingDoctor({super.key});
@@ -91,7 +91,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
             children: [
               Row(
                 children: [
-                  textWidget2(
+                  textWidget(
                     text: "Doctor",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -128,7 +128,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
               ),
               Row(
                 children: [
-                  textWidget2(
+                  textWidget(
                     text: "Date",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -174,7 +174,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
               ),
               Row(
                 children: [
-                  textWidget2(
+                  textWidget(
                     text: "Start Time",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -230,7 +230,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
               ),
               Row(
                 children: [
-                  textWidget2(
+                  textWidget(
                     text: "Patient",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -256,7 +256,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
               ),
               Row(
                 children: [
-                  textWidget2(
+                  textWidget(
                     text: "Services",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -289,7 +289,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
                   SizedBox(
                     width: 10,
                   ),
-                  textWidget2(
+                  textWidget(
                     text: "Share On WhatsApp",
                     fSize: 15.0,
                     fWeight: FontWeight.w500,
@@ -322,7 +322,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => ThankYouScreen(),
+                        builder: (context) => const ThankYouScreen(),
                       ),
                     );
                   },

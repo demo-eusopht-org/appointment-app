@@ -41,7 +41,7 @@ class ClinicItem extends StatelessWidget {
                 fSize: 14.0,
                 fWeight: FontWeight.w700,
               ),
-              textWidget2(
+              textWidget(
                 text: type ?? '',
                 fSize: 10.0,
                 fWeight: FontWeight.w400,

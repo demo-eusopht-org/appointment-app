@@ -1,6 +1,6 @@
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/src/resources/constants.dart';
-import 'package:appointment_management/src/views/appointments/appointment_booking_doctor.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -140,7 +140,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                   children: [
                                     Column(
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: 'Patients',
                                           fSize: 10.0,
                                           fWeight: FontWeight.w600,
@@ -149,7 +149,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        textWidget2(
+                                        textWidget(
                                           text: '2.5K',
                                           fSize: 12.0,
                                           fWeight: FontWeight.w700,
@@ -175,7 +175,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                   children: [
                                     Column(
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: 'Experience ',
                                           fSize: 10.0,
                                           fWeight: FontWeight.w600,
@@ -184,7 +184,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        textWidget2(
+                                        textWidget(
                                           text:
                                               '${consultant!.experience ?? '0 years'}',
                                           fSize: 12.0,
@@ -282,13 +282,13 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: 'Satisfied Patients',
                                 fWeight: FontWeight.w600,
                                 fSize: 10.0,
                                 color: Colors.white,
                               ),
-                              textWidget2(
+                              textWidget(
                                 text: '2K+',
                                 fWeight: FontWeight.w600,
                                 fSize: 15.0,
@@ -315,7 +315,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                         SizedBox(
                           height: 10,
                         ),
-                        textWidget2(
+                        textWidget(
                           text: getAbout(),
                           fSize: 15.0,
                           fWeight: FontWeight.w600,
@@ -343,7 +343,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                   color: Colors.black,
                                 ),
                                 SizedBox(width: 5),
-                                textWidget2(
+                                textWidget(
                                   text: 'Check-ups',
                                   fSize: 18.0,
                                   fWeight: FontWeight.w600,
@@ -361,7 +361,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                   color: Colors.black,
                                 ),
                                 SizedBox(width: 5),
-                                textWidget2(
+                                textWidget(
                                   text: 'Assessments',
                                   fSize: 18.0,
                                   fWeight: FontWeight.w600,
@@ -382,7 +382,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               color: Colors.black,
                             ),
                             SizedBox(width: 5),
-                            textWidget2(
+                            textWidget(
                               text: 'Vaccinations',
                               fSize: 18.0,
                               fWeight: FontWeight.w600,
@@ -398,7 +398,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                   color: Colors.black,
                                 ),
                                 SizedBox(width: 5),
-                                textWidget2(
+                                textWidget(
                                   text: 'Guidance',
                                   fSize: 18.0,
                                   fWeight: FontWeight.w600,
@@ -419,7 +419,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               color: Colors.black,
                             ),
                             SizedBox(width: 5),
-                            textWidget2(
+                            textWidget(
                               text: 'Treatment',
                               fSize: 18.0,
                               fWeight: FontWeight.w600,
@@ -620,7 +620,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               ).createShader(bounds);
                             },
                             child: Center(
-                              child: textWidget2(
+                              child: textWidget(
                                 textAlign: TextAlign.center,
                                 text: 'Book Appointment',
                                 color: Colors.white,

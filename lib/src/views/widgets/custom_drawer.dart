@@ -3,14 +3,14 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Assign%20branch/assign_branch.dart';
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
-import 'package:appointment_management/src/views/appointments/appointment_booking.dart';
-import 'package:appointment_management/src/views/appointments/appointments.dart';
-import 'package:appointment_management/src/views/auth/login.dart';
-import 'package:appointment_management/src/views/consultant%20branch/create_branch.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
+import 'package:appointment_management/src/views/Appointments/appointments.dart';
+import 'package:appointment_management/src/views/Auth/login.dart';
+import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
-import 'package:appointment_management/src/views/services/services_list.dart';
-import 'package:appointment_management/src/views/settings/settings_screen.dart';
+import 'package:appointment_management/src/views/Services/services_list.dart';
+import 'package:appointment_management/src/views/Settings/settings_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +38,7 @@ class CustomDrawer extends StatelessWidget {
               children: [
                 Image.asset('assets/images/Male User.png'),
                 SizedBox(width: 5),
-                textWidget2(
+                textWidget(
                   text: '${user!['user']['username']}',
                   fSize: 20.0,
                   fWeight: FontWeight.w700,
@@ -55,7 +55,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Add Consultant',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -72,7 +72,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Add Customer',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -89,7 +89,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Create Branch',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -106,7 +106,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Assign Branch',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Assign Consultant Schedule',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -140,7 +140,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Customer Directory',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -157,7 +157,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Add Appointment',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -174,7 +174,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Services',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -191,7 +191,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Appointments',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
@@ -208,7 +208,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
               },
-              child: textWidget2(
+              child: textWidget(
                 text: 'Settings',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,

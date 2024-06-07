@@ -1,4 +1,4 @@
-import 'package:appointment_management/src/views/auth/login.dart';
+import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';

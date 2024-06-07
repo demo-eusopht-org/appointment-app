@@ -38,9 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
       const Duration(hours: 16),
     ),
   );
-  final List<Map<String, String>> popularLocations = [
-    {'name': 'New York', 'image': AppImages.doctor1},
-  ];
   bool isSelected = true;
 
   dynamic user;
@@ -125,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  textWidget2(
+                                  textWidget(
                                     textAlign: TextAlign.center,
                                     text: '24',
                                     color: Colors.white,
@@ -168,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    textWidget2(
+                                    textWidget(
                                       textAlign: TextAlign.center,
                                       text: '132',
                                       color: Colors.white,

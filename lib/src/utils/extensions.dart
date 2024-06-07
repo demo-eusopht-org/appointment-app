@@ -66,6 +66,6 @@ extension TimeFormatFromString on String {
   }
 
   String toUpperCaseFirst() {
-    return this[0].toUpperCase() + this.substring(1);
+    return this[0].toUpperCase() + substring(1);
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget textWidget({
   required String text,
@@ -12,41 +14,11 @@ Widget textWidget({
 }) {
   return Text(
     text,
-    style: TextStyle(
+    style: GoogleFonts.poppins(
       color: color,
-      fontWeight: fWeight,
-      fontSize: fSize,
-      fontFamily: 'Poppins',
+      fontWeight: fWeight ?? FontWeight.normal,
+      fontSize: fSize ?? 12.sp,
       decoration: underlined ? TextDecoration.underline : null,
-      // decorationColor: Colors.blue,
-      // decorationThickness: 2.0,
-    ),
-    textAlign: textAlign,
-    maxLines: maxline,
-    overflow: textOverFlow,
-  );
-}
-
-Widget textWidget2({
-  required String text,
-  Color? color,
-  FontWeight? fWeight,
-  double? fSize,
-  int? maxline,
-  bool underlined = false,
-  TextAlign? textAlign,
-  TextOverflow? textOverFlow,
-}) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: color,
-      fontWeight: fWeight,
-      fontSize: fSize,
-      fontFamily: 'Montserrat',
-      decoration: underlined ? TextDecoration.underline : null,
-      // decorationColor: Colors.blue,
-      // decorationThickness: 2.0,
     ),
     textAlign: textAlign,
     maxLines: maxline,

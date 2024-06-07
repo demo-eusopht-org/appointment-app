@@ -28,8 +28,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../resources/app_colors.dart';
-import '../thankyou/thankyou_screen.dart';
+import '../../resources/app_colors.dart'; 
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 
 class AppointmentBooking extends StatefulWidget {
@@ -144,7 +143,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                   children: [
                                     Row(
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: 'Customer',
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
@@ -189,7 +188,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                     ),
                                     Row(
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: 'Consultant',
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
@@ -244,7 +243,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         consultantSchedule!.isNotEmpty)
                                       Row(
                                         children: [
-                                          textWidget2(
+                                          textWidget(
                                             text: 'Consultant Branch',
                                             fSize: 14.sp,
                                             fWeight: FontWeight.bold,
@@ -307,7 +306,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                     if (selectedBranch != null)
                                       Row(
                                         children: [
-                                          textWidget2(
+                                          textWidget(
                                             text: 'Consultant Day',
                                             fSize: 14.sp,
                                             fWeight: FontWeight.bold,
@@ -424,7 +423,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           'No Schedule found for this Consultant, Please assign schedule first'),
                                     Row(
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: 'Services',
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
@@ -475,7 +474,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: "Date",
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
@@ -536,7 +535,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        textWidget2(
+                                        textWidget(
                                           text: "Start Time",
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
@@ -605,7 +604,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        textWidget2(
+                                        textWidget(
                                           text: "Share On WhatsApp",
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,

@@ -195,7 +195,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.015),
-                          textWidget2(
+                          textWidget(
                             text: 'Add Photo',
                             fSize: 14,
                             fWeight: FontWeight.w400,

@@ -107,7 +107,7 @@ class _ProcedureListState extends State<ProcedureList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        textWidget2(
+                        textWidget(
                           text: "Add Service",
                           fSize: 10.sp,
                           fWeight: FontWeight.w700,
@@ -142,7 +142,7 @@ class _ProcedureListState extends State<ProcedureList> {
                           Expanded(
                             flex: 2,
                             child: Center(
-                              child: textWidget2(
+                              child: textWidget(
                                 text: 'SERVICE NAME',
                                 fSize: 10.sp,
                                 fWeight: FontWeight.w600,
@@ -153,7 +153,7 @@ class _ProcedureListState extends State<ProcedureList> {
                           Expanded(
                             flex: 2,
                             child: Center(
-                              child: textWidget2(
+                              child: textWidget(
                                 text: 'PRICE',
                                 fSize: 10.sp,
                                 fWeight: FontWeight.w600,
@@ -164,7 +164,7 @@ class _ProcedureListState extends State<ProcedureList> {
                           Expanded(
                             flex: 2,
                             child: Center(
-                              child: textWidget2(
+                              child: textWidget(
                                 text: 'CREATED AT ',
                                 fSize: 10.sp,
                                 fWeight: FontWeight.w600,
@@ -175,7 +175,7 @@ class _ProcedureListState extends State<ProcedureList> {
                           Expanded(
                             flex: 1,
                             child: Center(
-                              child: textWidget2(
+                              child: textWidget(
                                 text: 'Action',
                                 fSize: 10.sp,
                                 fWeight: FontWeight.w600,

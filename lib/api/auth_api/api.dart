@@ -1,6 +1,6 @@
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/src/resources/constants.dart';
-import 'package:appointment_management/src/views/consultant%20branch/create_branch.dart';
+import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 part 'api.g.dart';

@@ -105,7 +105,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                         children: [
                           Row(
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: 'Consultant',
                                 fSize: 14.sp,
                               ),
@@ -146,7 +146,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                           ),
                           Row(
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: 'Business Branch',
                                 fSize: 14.sp,
                               ),
@@ -298,7 +298,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: "Date",
                                 fSize: 14.sp,
                               ),

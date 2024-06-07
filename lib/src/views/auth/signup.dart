@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_events.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_states.dart';
-import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
-import 'package:appointment_management/src/views/auth/login.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_events.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_states.dart';
+import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'

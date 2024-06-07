@@ -24,11 +24,15 @@ class Constants {
 
   static const String consultantImageBaseUrl =
       '$baseUrl/consultant-image/?imageName=';
+  static const String businessImageBaseUrl =
+      '$baseUrl/business-image/?imageName=';
+
+  static const String customerImageBaseUrl =
+      '$baseUrl/customer-image/?imageName=';
   static const String getConsultantBranches =
       '$baseUrl/consultant/get-consultant-branches?consultant_id=';
   static const String getConsultantSchedule =
       '$baseUrl/consultant/get-consultant-shedule?consultant_id=';
-      static const String getAllAppointments =
+  static const String getAllAppointments =
       '$baseUrl/onboarding/get-business-appointments?business_id=';
-      
 }

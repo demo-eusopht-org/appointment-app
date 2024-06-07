@@ -9,13 +9,20 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
-import 'package:appointment_management/src/views/auth/login.dart';
+import 'package:appointment_management/src/views/Auth/login.dart';
+import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/home/home_screen.dart';
-import 'package:appointment_management/src/views/option/option.dart';
+import 'package:appointment_management/src/views/Option/option.dart';
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final bool? fromLogin;
+  const SplashScreen({
+    Key? key,
+    this.fromLogin,
+  }) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -50,16 +57,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(AppImages.logo),
-              fit: BoxFit.contain,
+      body: widget.fromLogin != null && widget.fromLogin!
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                textWidget(
+                    text: 'Please wait while your app is being configured.'),
+                SizedBox(
+                  height: 10.sp,
+                ),
+                const Loader(),
+              ],
+            )
+          : Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(AppImages.logo),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -134,7 +153,6 @@ class _SplashScreenState extends State<SplashScreen> {
       Constants.getCustomers + businessId.toString(),
       user,
     );
-
     if (tempCustomer != null) {
       if (tempCustomer.customers!.isNotEmpty) {
         await locator<LocalStorageService>().saveData(

@@ -49,7 +49,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                   SizedBox(
                     height: 2,
                   ),
-                  textWidget2(
+                  textWidget(
                     text: 'Your Appointment Created',
                     fWeight: FontWeight.w700,
                     fSize: 19.0,
@@ -67,7 +67,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                textWidget2(
+                textWidget(
                   text: "Share On WhatsApp",
                   fSize: 15.0,
                   fWeight: FontWeight.w500,

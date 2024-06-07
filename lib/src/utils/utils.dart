@@ -34,17 +34,21 @@ class utils {
   }
 
   static void launchPhoneApp(BuildContext context, String? phoneNumber) async {
-    if (phoneNumber != null) {
-      final uri = 'tel:$phoneNumber';
-
-      if (await canLaunchUrl(Uri.parse(uri))) {
-        await launchUrl(Uri.parse(uri));
+    try {
+      if (phoneNumber != null) {
+        final uri = Uri(scheme: 'tel', path: phoneNumber);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        } else {
+          throw 'Could not launch $uri';
+        }
       } else {
-        throw 'Could not launch $uri';
+        CustomDialogue.message(
+            context: context, message: 'Phone No. doesn\'t found');
       }
-    } else {
-      CustomDialogue.message(
-          context: context, message: 'Phone No. doesn\'t found');
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      CustomDialogue.message(context: context, message: '$e');
     }
   }
 
@@ -73,4 +77,5 @@ class utils {
       return picked;
     }
   }
+  
 }

@@ -1,5 +1,5 @@
 import 'package:appointment_management/src/resources/assets.dart';
-import 'package:appointment_management/src/views/auth/otp_screen.dart';
+import 'package:appointment_management/src/views/Auth/otp_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +68,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: textWidget2(
+                      child: textWidget(
                         text: "New Password",
                         fSize: 14.0,
                         fWeight: FontWeight.w600,
@@ -96,7 +96,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: textWidget2(
+                      child: textWidget(
                         text: "Confirm Password",
                         fSize: 14.0,
                         fWeight: FontWeight.w600,

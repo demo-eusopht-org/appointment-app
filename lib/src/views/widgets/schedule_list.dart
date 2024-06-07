@@ -82,7 +82,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    textWidget2(
+                                    textWidget(
                                       text: appointment.appointmentDate!
                                           .toMonthNameFormat()
                                           .getMonth(),
@@ -90,7 +90,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                       color: Colors.white,
                                       fWeight: FontWeight.w800,
                                     ),
-                                    textWidget2(
+                                    textWidget(
                                       text: appointment.appointmentDate!
                                           .toMonthNameFormat()
                                           .getDay(),

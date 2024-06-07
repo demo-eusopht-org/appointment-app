@@ -104,7 +104,7 @@ class _AppointmentsState extends State<Appointments> {
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: textWidget2(
+                    child: textWidget(
                       text: 'Schedule',
                       fWeight: FontWeight.w800,
                       fSize: 12.0,
@@ -130,7 +130,7 @@ class _AppointmentsState extends State<Appointments> {
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: textWidget2(
+                    child: textWidget(
                       text: 'Completed',
                       fWeight: FontWeight.w800,
                       fSize: 12.0,
@@ -156,7 +156,7 @@ class _AppointmentsState extends State<Appointments> {
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: textWidget2(
+                    child: textWidget(
                       text: 'Cancelled',
                       fSize: 12.0,
                       fWeight: FontWeight.w800,
@@ -193,7 +193,7 @@ class _AppointmentsState extends State<Appointments> {
           //               child: Row(
           //                 mainAxisAlignment: MainAxisAlignment.center,
           //                 children: [
-          //                   textWidget2(
+          //                   textWidget(
           //                     text: 'Today',
           //                     fSize: 10.0,
           //                     fWeight: FontWeight.w400,
@@ -225,7 +225,7 @@ class _AppointmentsState extends State<Appointments> {
           //             child: Row(
           //               mainAxisAlignment: MainAxisAlignment.center,
           //               children: [
-          //                 textWidget2(
+          //                 textWidget(
           //                   text: 'Last 7 days',
           //                   fSize: 10.0,
           //                   fWeight: FontWeight.w400,

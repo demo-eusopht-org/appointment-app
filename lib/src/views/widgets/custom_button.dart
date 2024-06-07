@@ -40,7 +40,7 @@ class RoundedElevatedButton extends StatelessWidget {
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               ),
             )
-          : textWidget2(
+          : textWidget(
               text: text,
               color: Colors.white,
               fSize: 15.0,

@@ -7,8 +7,8 @@ import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_events.dart';
-import 'package:appointment_management/src/views/auth/auth_bloc/auth_states.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_events.dart';
+import 'package:appointment_management/src/views/Auth/auth_bloc/auth_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {

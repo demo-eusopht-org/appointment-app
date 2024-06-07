@@ -1,19 +1,53 @@
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
+import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/customer/view_details.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PatientHistory extends StatefulWidget {
-  const PatientHistory({super.key});
+  final List<Appointment> customerAppointments;
+  const PatientHistory({
+    super.key,
+    required this.customerAppointments,
+  });
 
   @override
   State<PatientHistory> createState() => _PatientHistoryState();
 }
 
 class _PatientHistoryState extends State<PatientHistory> {
+  List<Appointment> customerAppointments = [];
+
+  int? totalSchedule, totalVisited, totalCancelled;
+
+  List<Consultant> consultants = [];
+  @override
+  void initState() {
+    super.initState();
+    consultants = GetLocalData.getConsultants();
+    customerAppointments = widget.customerAppointments;
+    totalSchedule = customerAppointments
+        .where((element) => element.status!.toLowerCase() == 'booked')
+        .toList()
+        .length;
+    totalVisited = customerAppointments
+        .where((element) => element.status!.toLowerCase() == 'conducted')
+        .toList()
+        .length;
+    totalCancelled = customerAppointments
+        .where((element) => element.status!.toLowerCase() == 'cancelled')
+        .toList()
+        .length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +61,7 @@ class _PatientHistoryState extends State<PatientHistory> {
             Icons.arrow_back,
           ),
         ),
-        title: 'Patient History',
+        title: 'Customer History',
       ),
       body: Stack(children: [
         Positioned(
@@ -42,123 +76,87 @@ class _PatientHistoryState extends State<PatientHistory> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: EdgeInsets.all(18),
-              color: AppColors.primary,
-              height: MediaQuery.sizeOf(context).height * 0.18,
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Image.asset('assets/images/Vector 1.png'),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Image.asset('assets/images/Vector 2.png'),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 10,
-                    bottom: 0,
-                    right: 0,
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          AppImages.patient,
-                          height: 75,
-                        ),
-                        Expanded(
-                          child: GridView(
-                            padding: EdgeInsets.only(top: 10, left: 8),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              childAspectRatio: 1.6,
-                            ),
-                            physics: NeverScrollableScrollPhysics(),
-                            children: [
-                              _buildDetails('Patient Name', 'Abid Ali'),
-                              _buildDetails('Height', '5.7'),
-                              _buildDetails('Age', '24'),
-                              _buildDetails('Email Address', 'Abid@gmail.com'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.all(18),
+            //   color: AppColors.primary,
+            //   height: MediaQuery.sizeOf(context).height * 0.18,
+            //   child: Stack(
+            //     children: [
+            //       Positioned(
+            //         top: 0,
+            //         left: 0,
+            //         child: Image.asset('assets/images/Vector 1.png'),
+            //       ),
+            //       Positioned(
+            //         bottom: 0,
+            //         right: 0,
+            //         child: Image.asset('assets/images/Vector 2.png'),
+            //       ),
+            //       Positioned(
+            //         top: 0,
+            //         left: 10,
+            //         bottom: 0,
+            //         right: 0,
+            //         child: Row(
+            //           children: [
+            //             Image.asset(
+            //               AppImages.patient,
+            //               height: 75,
+            //             ),
+            //             Expanded(
+            //               child: GridView(
+            //                 padding: EdgeInsets.only(top: 10, left: 8),
+            //                 shrinkWrap: true,
+            //                 gridDelegate:
+            //                     SliverGridDelegateWithFixedCrossAxisCount(
+            //                   crossAxisCount: 3,
+            //                   childAspectRatio: 1.6,
+            //                 ),
+            //                 physics: NeverScrollableScrollPhysics(),
+            //                 children: [
+            //                   _buildDetails(
+            //                       'Customer Name', customer?.name ?? '--'),
+            //                   _buildDetails(
+            //                       'Height', '${customer?.height ?? '--'}'),
+            //                   _buildDetails('Age', '${customer?.age ?? '--'}'),
+            //                   _buildDetails(
+            //                       'Email Address', customer?.email ?? '--'),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 5,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 156,
-                  // height: 33,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.sp,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  totalCountWidget(
+                    title: 'Total Visited',
+                    totalCount: totalVisited!,
+                    color: AppColors.success,
+                  ),
+                  totalCountWidget(
+                    title: 'Total Schedule',
+                    totalCount: totalSchedule!,
                     color: AppColors.primary,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        textWidget2(
-                          text: 'Total Visits',
-                          fWeight: FontWeight.w600,
-                          fSize: 12.0,
-                          color: Colors.white,
-                        ),
-                        textWidget2(
-                          text: '9',
-                          fWeight: FontWeight.w700,
-                          fSize: 16.0,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
+                  totalCountWidget(
+                    title: 'Total Cancelled',
+                    totalCount: totalCancelled!,
+                    color: AppColors.danger,
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: 156,
-                  // height: ,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: AppColors.primary,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        textWidget2(
-                          text: 'This Month',
-                          fWeight: FontWeight.w600,
-                          fSize: 12.0,
-                          color: Colors.white,
-                        ),
-                        textWidget2(
-                          text: '4',
-                          fWeight: FontWeight.w700,
-                          fSize: 16.0,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(
               height: 10,
@@ -173,9 +171,8 @@ class _PatientHistoryState extends State<PatientHistory> {
                   children: [
                     Expanded(
                       child: Center(
-                        child: textWidget2(
-                          text: 'Consultant Name',
-                          fSize: 9.0,
+                        child: textWidget(
+                          text: 'Consultant',
                           fWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -183,9 +180,8 @@ class _PatientHistoryState extends State<PatientHistory> {
                     ),
                     Expanded(
                       child: Center(
-                        child: textWidget2(
+                        child: textWidget(
                           text: 'Date',
-                          fSize: 9.0,
                           fWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -193,26 +189,32 @@ class _PatientHistoryState extends State<PatientHistory> {
                     ),
                     Expanded(
                       child: Center(
-                        child: textWidget2(
+                        child: textWidget(
                           text: 'Time',
-                          fSize: 9.0,
                           fWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
                     ),
-                    Expanded(child: SizedBox()),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 10.sp,
             ),
+            if (customerAppointments.isEmpty)
+              textWidget(text: 'No Customer history found'),
             Expanded(
               child: ListView.builder(
-                  itemCount: 6,
+                  itemCount: customerAppointments.length,
                   itemBuilder: (context, index) {
+                    Appointment appointment = customerAppointments[index];
+                    Consultant tempConsultant = consultants
+                        .where(
+                            (element) => element.id == appointment.customerId)
+                        .first;
+
                     return Column(
                       children: [
                         Padding(
@@ -226,8 +228,8 @@ class _PatientHistoryState extends State<PatientHistory> {
                                   height: 30,
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: textWidget2(
-                                      text: 'Dr.Smith',
+                                    child: textWidget(
+                                      text: '${tempConsultant.name}',
                                       fSize: 10.0,
                                       fWeight: FontWeight.w500,
                                       color: Colors.white,
@@ -244,8 +246,9 @@ class _PatientHistoryState extends State<PatientHistory> {
                               ),
                               Expanded(
                                 child: Center(
-                                  child: textWidget2(
-                                    text: '15/1/24',
+                                  child: textWidget(
+                                    text: appointment.appointmentDate!
+                                        .toPkFormattedDate(),
                                     fSize: 10,
                                     fWeight: FontWeight.w500,
                                   ),
@@ -254,42 +257,43 @@ class _PatientHistoryState extends State<PatientHistory> {
                               Expanded(
                                 child: Center(
                                   child: textWidget(
-                                    text: '8:33PM',
+                                    text: appointment.scheduleTime!
+                                        .fromStringtoFormattedTime(),
                                     fSize: 10,
                                     fWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 30,
-                                  width: 89,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => ViewDetails(),
-                                        ),
-                                      );
-                                    },
-                                    child: textWidget2(
-                                      text: 'View Details',
-                                      fSize: 6.0,
-                                      fWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(47),
-                                      ),
-                                      backgroundColor: AppColors.primary,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Container(
+                              //     alignment: Alignment.center,
+                              //     height: 30,
+                              //     width: 89,
+                              //     child: ElevatedButton(
+                              //       onPressed: () {
+                              //         Navigator.push(
+                              //           context,
+                              //           CupertinoPageRoute(
+                              //             builder: (context) => ViewDetails(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       child: textWidget(
+                              //         text: 'View Details',
+                              //         fSize: 6.0,
+                              //         fWeight: FontWeight.w800,
+                              //         color: Colors.white,
+                              //       ),
+                              //       style: ElevatedButton.styleFrom(
+                              //         shape: RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.circular(47),
+                              //         ),
+                              //         backgroundColor: AppColors.primary,
+                              //         foregroundColor: Colors.white,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -307,21 +311,57 @@ class _PatientHistoryState extends State<PatientHistory> {
     );
   }
 
+  Expanded totalCountWidget({
+    required String title,
+    required int totalCount,
+    required Color color,
+  }) {
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.all(5.sp),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: color,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(5.sp),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              textWidget(
+                text: totalCount.toString(),
+                fWeight: FontWeight.w600,
+                fSize: 16.sp,
+                color: Colors.white,
+              ),
+              textWidget(
+                text: title,
+                fWeight: FontWeight.w600,
+                fSize: 10.sp,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDetails(String text, String label) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         textWidget(
           text: text,
-          fSize: 10.0,
           fWeight: FontWeight.w600,
+          color: Colors.white,
         ),
         Expanded(
           child: textWidget(
-              text: label,
-              fSize: 9.5,
-              fWeight: FontWeight.w700,
-              color: Colors.white),
+            text: label,
+            fWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
       ],
     );

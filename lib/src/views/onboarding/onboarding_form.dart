@@ -7,7 +7,7 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
-import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_events.dart';

@@ -123,7 +123,7 @@ class AssigneBranchState extends State<AssignBranch> {
                         children: [
                           Row(
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: 'Consultant',
                                 fSize: 14.sp,
                                 fWeight: FontWeight.bold,
@@ -165,7 +165,7 @@ class AssigneBranchState extends State<AssignBranch> {
                           ),
                           Row(
                             children: [
-                              textWidget2(
+                              textWidget(
                                 text: 'Business Branch',
                                 fSize: 14.sp,
                                 fWeight: FontWeight.bold,

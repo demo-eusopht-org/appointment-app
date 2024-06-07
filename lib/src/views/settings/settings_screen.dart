@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
-import 'package:appointment_management/src/views/settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
 import 'package:appointment_management/src/views/widgets/clinic_item.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
-import '../auth/login.dart';
+import '../Auth/login.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -115,13 +115,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    textWidget2(
+                                    textWidget(
                                       text: "Ali",
                                       fSize: 17.0,
                                       fWeight: FontWeight.w800,
                                       color: Colors.white,
                                     ),
-                                    textWidget2(
+                                    textWidget(
                                       text: "Ali@gmail.com",
                                       fSize: 8.0,
                                       fWeight: FontWeight.w500,
@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       Icons.edit,
                                       color: Colors.white,
                                     ),
-                                    textWidget2(
+                                    textWidget(
                                       text: "Edit",
                                       fSize: 9.0,
                                       fWeight: FontWeight.w400,
@@ -155,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
-                              child: textWidget2(
+                              child: textWidget(
                                   text: "Remove",
                                   fSize: 9.0,
                                   fWeight: FontWeight.w400,
@@ -170,7 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                textWidget2(
+                textWidget(
                   text: 'CLINIC PROFILE',
                   fSize: 15.0,
                   fWeight: FontWeight.w700,
@@ -208,7 +208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      textWidget2(
+                      textWidget(
                         text: '+92 3217285635',
                         fSize: 14.0,
                         fWeight: FontWeight.w700,
@@ -233,7 +233,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      textWidget2(
+                      textWidget(
                         text: 'Ali@gmail.com',
                         fSize: 14.0,
                         fWeight: FontWeight.w700,
@@ -262,7 +262,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SizedBox(
                           width: 10,
                         ),
-                        textWidget2(
+                        textWidget(
                           text: 'https://www.example.com/',
                           fSize: 14.0,
                           fWeight: FontWeight.w700,
@@ -281,7 +281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Row(
                         children: [
-                          textWidget2(
+                          textWidget(
                             text: "Notifactions",
                             fSize: 18.0,
                             fWeight: FontWeight.w700,
@@ -312,7 +312,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         },
-                        child: textWidget2(
+                        child: textWidget(
                           text: "Privacy Policy",
                           fSize: 18.0,
                           fWeight: FontWeight.w700,

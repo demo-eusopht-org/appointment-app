@@ -1,7 +1,7 @@
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
-import 'package:appointment_management/src/views/auth/bloc/auth_bloc.dart';
-import 'package:appointment_management/src/views/auth/loader_bloc.dart';
+import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/views/Auth/loader_bloc.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
 import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/theme/dark/dark_theme.dart';
