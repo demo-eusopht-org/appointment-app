@@ -2,12 +2,12 @@ import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-class ClinicItem extends StatelessWidget {
+class BusinessItem extends StatelessWidget {
   final String name;
   final String? type;
   final String imagePath;
 
-  const ClinicItem({
+  const BusinessItem({
     required this.name,
     this.type,
     required this.imagePath,

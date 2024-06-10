@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:timetable/timetable.dart';
 
 part 'get_all_appointment.g.dart';
 
@@ -25,7 +26,7 @@ class GetAllAppointments {
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class Appointment {
+class Appointment extends Event {
   int? appointmentId;
   int? customerId;
   int? consultantId;
@@ -38,6 +39,16 @@ class Appointment {
   int? businessId;
   String? appointmentNote;
   String? branchId;
+
+  @override
+  @JsonKey(fromJson: dateFromJson, toJson: dateToJson)
+  // ignore: overridden_fields
+  DateTime start;
+
+  @override
+  @JsonKey(fromJson: dateFromJson, toJson: dateToJson)
+  // ignore: overridden_fields
+  DateTime end;
 
   Appointment({
     this.appointmentId,
@@ -52,10 +63,28 @@ class Appointment {
     this.businessId,
     this.appointmentNote,
     this.branchId,
-  });
+    required this.start,
+    required this.end,
+  }) : super(start: start, end: end);
 
   factory Appointment.fromJson(Map<String, dynamic> json) =>
       _$AppointmentFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppointmentToJson(this);
+
+  static DateTime dateFromJson(int? timestamp) {
+    if (timestamp != null) {
+      return DateTime.fromMillisecondsSinceEpoch(timestamp);
+    } else {
+      return DateTime.now();
+    }
+  }
+
+  static int dateToJson(DateTime? dateTime) {
+    if (dateTime != null) {
+      return dateTime.millisecondsSinceEpoch;
+    } else {
+      return DateTime.now().millisecondsSinceEpoch;
+    }
+  }
 }

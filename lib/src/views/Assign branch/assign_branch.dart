@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
-import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/get_services.dart';

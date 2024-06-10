@@ -14,8 +14,6 @@ import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:appointment_management/theme/light/light_theme.dart'
-    as Appcolors;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -111,17 +109,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
 
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Appcolors.lightTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.03),
                         child: Image(
                           image: AssetImage(AppImages.account),
                           width: MediaQuery.of(context).size.width * 0.2,
                           height: MediaQuery.of(context).size.height * 0.2,
                         ),
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.03),
                       ),
 
                       TextFormField(
@@ -233,8 +231,8 @@ class _LoginPageState extends State<LoginPage> {
 
                           return ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Appcolors.lightTheme.primaryColor,
+                              backgroundColor: AppColors.primary,
+
                               minimumSize: Size(
                                   MediaQuery.of(context).size.width * 0.3,
                                   MediaQuery.of(context).size.height *
@@ -251,9 +249,14 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }
                             },
-                            child: Text(
-                              'Sign in',
-                              style: MyTextStyles.boldTextWhite,
+                            // child: Text(
+                            //   'Sign in',
+                            //   style: MyTextStyles.boldTextWhite,
+                            // ),
+                            child: textWidget(
+                              text: 'Sign in',
+                              color: AppColors.white,
+                              fWeight: FontWeight.bold,
                             ),
                           );
                         },

@@ -8,12 +8,15 @@ final dio = Dio(
   BaseOptions(
     validateStatus: (status) {
       return status == 200 ||
+          status == 400 ||
           status == 401 ||
           status == 403 ||
           status == 404 ||
           status == 405 ||
+          status == 409 ||
           status == 422 ||
-          status == 500;
+          status == 500 ||
+          status == 504;
     },
   ),
 )

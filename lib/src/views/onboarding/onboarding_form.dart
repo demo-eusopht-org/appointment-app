@@ -12,6 +12,7 @@ import 'package:appointment_management/src/views/common_widgets/custom_dialogue.
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_events.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_states.dart';
+import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
@@ -87,7 +88,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: textWidget(
-              text: 'Onboarding Form',
+              text: 'Create your business',
               color: Colors.black,
               fSize: 17.0,
               fWeight: FontWeight.w800,
@@ -567,11 +568,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
             value: res['business'][0]['id'],
           );
 
-          final route = MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+          // final route = MaterialPageRoute(
+          //   builder: (context) => const HomeScreen(),
+
+          // );
+          Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const SplashScreen(
+                fromLogin: true,
+              ),
+            ),
           );
 
-          Navigator.pushReplacement(context, route);
+          // Navigator.pushReplacement(context, route);
         } else {
           CustomDialogue.message(
               context: context,

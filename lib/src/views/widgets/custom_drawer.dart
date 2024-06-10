@@ -7,10 +7,11 @@ import 'package:appointment_management/src/views/Appointments/appointment_bookin
 import 'package:appointment_management/src/views/Appointments/appointments.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
+import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
 import 'package:appointment_management/src/views/Services/services_list.dart';
-import 'package:appointment_management/src/views/Settings/settings_screen.dart';
+import 'package:appointment_management/src/views/Settings/profile_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -204,12 +205,29 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => SettingsScreen(),
+                    builder: (context) => const VerifyEmail(),
                   ),
                 );
               },
               child: textWidget(
-                text: 'Settings',
+                text: 'Verify email',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const ProfileScreen(),
+                  ),
+                );
+              },
+              child: textWidget(
+                text: 'Profile',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

@@ -15,6 +15,7 @@ class Constants {
 
   static const String getBusiness =
       '$baseUrl/consultant/get-consultant-business-id/?business_id=';
+      
   static const String getBusinessBranch =
       '$baseUrl/onboarding/get-business-branches?business_id=';
 
@@ -35,4 +36,8 @@ class Constants {
       '$baseUrl/consultant/get-consultant-shedule?consultant_id=';
   static const String getAllAppointments =
       '$baseUrl/onboarding/get-business-appointments?business_id=';
+  static const String getBusinessData =
+  '$baseUrl/onboarding/get-business?user_id=';
+
+  
 }

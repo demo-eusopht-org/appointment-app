@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
-import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_branches.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
@@ -263,6 +264,42 @@ class ApiServices {
       return null;
     } catch (e, stack) {
       log('Appointment not found: Please try again : ${e}', stackTrace: stack);
+      return null;
+    }
+  }
+
+  static Future<GetBusinessData?> getBusinessData(
+    BuildContext context,
+    String uri,
+    dynamic user,
+  ) async {
+    try {
+      final res = await http.get(Uri.parse(uri), headers: {
+        'Authorization': 'Bearer ${user['token']}',
+      });
+
+      if (res.statusCode == 200) {
+        GetBusinessData tempBranch =
+            GetBusinessData.fromJson(jsonDecode(res.body));
+
+        if (tempBranch.business!.isEmpty) {
+          return null;
+        }
+        return tempBranch;
+      }
+      return null;
+    } on SocketException {
+      CustomDialogue.message(
+          context: context,
+          message:
+              'Business data found\nPlease check your internet connection');
+      return null;
+    } catch (e, stack) {
+      // CustomDialogue.message(
+      //     context: context,
+      //     message: 'Business data found: Please try again');
+
+      print('Business data found: Please try again : ${e}');
       return null;
     }
   }

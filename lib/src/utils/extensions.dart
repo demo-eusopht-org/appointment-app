@@ -26,6 +26,25 @@ extension DateTimeUtils on DateTime {
     final dayFormatter = DateFormat('EEEE'); // EEEE for full weekday name
     return dayFormatter.format(this);
   }
+
+  String getShortWeekDay() {
+    return DateFormat('EEE').format(this);
+  }
+
+  String getFormattedDate() {
+    return DateFormat('dd.MM.yyyy').format(this);
+  }
+
+  String getShortFormattedDate() {
+    return DateFormat('EEE dd MMM').format(this);
+  }
+}
+
+extension DurationUtils on Duration {
+  String getFormattedHoursTime() {
+    final hours = '$inHours'.padLeft(2, '0');
+    return '$hours:00';
+  }
 }
 
 extension TimeFormat on TimeOfDay {
@@ -67,5 +86,10 @@ extension TimeFormatFromString on String {
 
   String toUpperCaseFirst() {
     return this[0].toUpperCase() + substring(1);
+  }
+
+  DateTime toDateTime() {
+    final dateTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(this);
+    return dateTime;
   }
 }

@@ -46,6 +46,8 @@ Appointment _$AppointmentFromJson(Map<String, dynamic> json) => Appointment(
       businessId: (json['business_id'] as num?)?.toInt(),
       appointmentNote: json['appointment_note'] as String?,
       branchId: json['branch_id'] as String?,
+      start: Appointment.dateFromJson((json['start'] as num?)?.toInt()),
+      end: Appointment.dateFromJson((json['end'] as num?)?.toInt()),
     );
 
 Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>
@@ -62,4 +64,6 @@ Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>
       'business_id': instance.businessId,
       'appointment_note': instance.appointmentNote,
       'branch_id': instance.branchId,
+      'start': Appointment.dateToJson(instance.start),
+      'end': Appointment.dateToJson(instance.end),
     };

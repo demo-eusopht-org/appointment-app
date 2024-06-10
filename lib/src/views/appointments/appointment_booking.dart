@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
-import 'package:appointment_management/model/get_business_branch/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
@@ -16,19 +16,14 @@ import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
-import 'package:appointment_management/src/views/customer/customer_details.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
-import 'package:appointment_management/src/views/widgets/custom_dropdown.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../resources/app_colors.dart'; 
+import '../../resources/app_colors.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 
 class AppointmentBooking extends StatefulWidget {

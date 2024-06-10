@@ -1,6 +1,7 @@
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
+import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 part 'api.g.dart';
@@ -23,7 +24,12 @@ abstract class Api {
   @POST('/consultant/assign-consultant')
   Future<dynamic> assignBranch(@Body() Map<String, dynamic> body);
   @POST('/consultant/assign-consultant-shedule')
-  Future<dynamic> assignConsultantBranchSchedule(@Body() Map<String, dynamic> body);
+  Future<dynamic> assignConsultantBranchSchedule(
+      @Body() Map<String, dynamic> body);
   @POST('/customer/create-appointment')
   Future<dynamic> createAppointment(@Body() Map<String, dynamic> body);
+  @POST('/otp/regenerate-otp')
+  Future<dynamic> sendOtp(@Body() Map<String, dynamic> body);
+  @POST('/otp/verify-otp')
+  Future<dynamic> verifyOtp(@Body() Map<String, dynamic> body);
 }
