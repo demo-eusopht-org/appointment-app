@@ -73,7 +73,7 @@ class AssigneBranchState extends State<VerifyEmail> {
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                if (isVerified)
+                if (isVerified || userData!.verified == 1)
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width,
                     child: textWidget(

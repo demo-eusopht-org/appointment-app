@@ -1,3 +1,5 @@
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,5 +79,12 @@ class utils {
       return picked;
     }
   }
-  
+
+  static DateTime mergingDateTime(Appointment appointment) {
+    final date = appointment.appointmentDate!.toString().split(' ').first;
+    final time = appointment.scheduleTime;
+
+    final dateTime = '${date} ${time}';
+    return dateTime.toDateTime();
+  }
 }

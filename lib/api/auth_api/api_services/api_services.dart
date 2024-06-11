@@ -132,8 +132,7 @@ class ApiServices {
       final res = await http.get(Uri.parse(uri), headers: {
         'Authorization': 'Bearer ${user['token']}',
       });
-      log('res ${res.statusCode}');
-      log('res ${res.body}');
+
       if (res.statusCode == 200) {
         GetBranch tempBranch = GetBranch.fromJson(jsonDecode(res.body));
 
@@ -246,6 +245,7 @@ class ApiServices {
       });
 
       if (res.statusCode == 200) {
+        log('res.body ${res.body}');
         GetAllAppointments tempConsultantBranches =
             GetAllAppointments.fromJson(jsonDecode(res.body));
 

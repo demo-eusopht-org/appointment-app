@@ -110,7 +110,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
               //     );
               //   },
               // ),
-              if (customers == null)
+              if (customers!.isEmpty)
                 Expanded(
                   child: Center(
                     child: textWidget(

@@ -26,14 +26,14 @@ import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 import '../Auth/login.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class BusinessProfileScreen extends StatefulWidget {
+  const BusinessProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<BusinessProfileScreen> createState() => _BusinessProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   bool switchValue = false;
 
   User? userData;

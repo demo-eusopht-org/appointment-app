@@ -10,6 +10,8 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/utils/utils.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/appointment_widget.dart';
 import 'package:appointment_management/src/views/Timetable/widgets/time_table.dart';
@@ -21,6 +23,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:timetable/timetable.dart';
@@ -48,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Consultant> consultants = [];
 
   List<Appointment>? allAppointments;
+  int totalappointments = 0;
+  int currentMonthAppointments = 0;
 
   bool isBooked = false;
   bool isConducted = false;
@@ -61,9 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _dateController = DateController(
     initialDate: DateTimeTimetable.today(),
-    visibleRange: VisibleDateRange.week(
-      startOfWeek: DateTime.monday,
-    ),
+    // visibleRange: VisibleDateRange.week(
+    //   startOfWeek: DateTime.monday,
+    // ),
+    visibleRange: VisibleDateRange.days(5),
   );
 
   final _timeController = TimeController(
@@ -144,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         textWidget(
                                           textAlign: TextAlign.center,
-                                          text: 'Today Appointments',
+                                          text: 'Total Appointments',
                                           color: Colors.white,
                                           fSize: 10.0,
                                           fWeight: FontWeight.w600,
@@ -154,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         textWidget(
                                           textAlign: TextAlign.center,
-                                          text: '24',
+                                          text: totalappointments.toString(),
                                           color: Colors.white,
                                           fSize: 18.0,
                                           fWeight: FontWeight.w700,
@@ -198,7 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           textWidget(
                                             textAlign: TextAlign.center,
-                                            text: '132',
+                                            text: currentMonthAppointments
+                                                .toString()
+                                                .toString(),
                                             color: Colors.white,
                                             fSize: 18.0,
                                             fWeight: FontWeight.w700,
@@ -217,142 +225,192 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (allAppointments!.isNotEmpty)
-                      Expanded(
-                        flex: 7,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey.shade400,
-                            ),
+                    Expanded(
+                      flex: 7,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey.shade400,
                           ),
-                          child: TimetableConfig<Appointment>(
-                            timeController: _timeController,
-                            dateController: _dateController,
-                            eventProvider: (visibleRange) {
+                        ),
+                        child: TimetableConfig<Appointment>(
+                          timeController: _timeController,
+                          dateController: _dateController,
+                          eventProvider: (visibleRange) {
+                            if (allAppointments!.isNotEmpty) {
                               final eventList = allAppointments!
                                   .where((Appointment appointment) {
-                                final startTime = mergingDateTime(appointment);
-                                final endTime = mergingDateTime(appointment)
+                                final startTime =
+                                    utils.mergingDateTime(appointment);
+                                final endTime = utils
+                                    .mergingDateTime(appointment)
                                     .add(const Duration(minutes: 30));
 
                                 return startTime.isAfter(visibleRange.start) &&
-                                    endTime.isBefore(visibleRange.end);
+                                        endTime.isBefore(visibleRange.end) &&
+                                        appointment.start
+                                            .isAfter(visibleRange.start) &&
+                                        appointment.end
+                                            .isBefore(visibleRange.end)
+                                    //     &&
+                                    // appointment.status!.toLowerCase() ==
+                                    //     'booked'
+                                    ;
                               }).map((Appointment e) {
                                 return Appointment(
+                                  appointmentId: e.appointmentId,
+                                  // appointmentDate: e.appointmentDate,
+                                  appointmentNote: e.appointmentNote,
+                                  branchId: e.branchId,
+                                  businessId: e.businessId,
+                                  consultantId: e.consultantId,
+                                  createdAt: e.createdAt,
+                                  updatedAt: e.updatedAt,
+                                  customerId: e.customerId,
+                                  scheduleTime: e.scheduleTime,
+                                  status: e.status,
+                                  uidAppointment: e.uidAppointment,
                                   start: e.start.copyWith(isUtc: true),
                                   end: e.end.copyWith(isUtc: true),
                                 );
                               }).toList();
 
-                              log('lengtn is ${eventList}');
-
                               return eventList;
+                            } else {
+                              return [];
+                            }
+                          },
+                          eventBuilder: (context, appointment) =>
+                              AppointmentWidget(appointment: appointment),
+                          callbacks: TimetableCallbacks(
+                            onDateTap: (date) {},
+                            onDateBackgroundTap: (date) {},
+                            onDateTimeBackgroundTap: (dateTime) {
+                              final appointments = allAppointments!
+                                  .where((element) =>
+                                      element.start
+                                          .toString()
+                                          .split(' ')
+                                          .first ==
+                                      dateTime.toString().split(' ').first)
+                                  .toList();
+                              final route = MaterialPageRoute(
+                                builder: (context) => AppointmentDetails(
+                                    appointments: appointments,
+                                    onUpdate: () async {
+                                      // log('i am here');
+                                      // await getAllAppointments();
+                                      // log('i am here done');
+                                      // setState(
+                                      //   () {},
+                                      // );
+                                    }),
+                              );
+                              Navigator.push(context, route);
                             },
-                            eventBuilder: (context, appointment) =>
-                                AppointmentWidget(appointment: appointment),
-                            theme: TimetableThemeData(context,
-                                multiDateEventHeaderStyle:
-                                    MultiDateEventHeaderStyle(
-                                  context,
-                                  eventHeight: 10,
-                                ),
-                                dateEventsStyleProvider: (date) =>
-                                    DateEventsStyle(
-                                      context,
-                                      date,
-                                      enableStacking: false,
-                                    ),
-                                dateDividersStyle: DateDividersStyle(
-                                  context,
-                                  color: Colors.grey,
-                                ),
-                                hourDividersStyle: HourDividersStyle(
-                                  context,
-                                  color: Colors.grey,
-                                ),
-                                weekdayIndicatorStyleProvider: (date) =>
-                                    WeekdayIndicatorStyle(
-                                      context,
-                                      date,
-                                      textStyle: GoogleFonts.poppins(
-                                        fontSize: 13,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                dateHeaderStyleProvider: (date) =>
-                                    DateHeaderStyle(
-                                      context,
-                                      date,
-                                      showWeekdayIndicator: true,
-                                      indicatorSpacing: 5.0,
-                                    ),
-                                dateIndicatorStyleProvider: (date) =>
-                                    DateIndicatorStyle(
-                                      context,
-                                      date,
-                                      textStyle: GoogleFonts.poppins(
-                                        color: Colors.black,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                weekIndicatorStyleProvider: (week) =>
-                                    WeekIndicatorStyle(
-                                      context,
-                                      week,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.grey,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      textStyle: GoogleFonts.poppins(
-                                        fontSize: 18,
-                                      ),
-                                      labels: [week.weekOfYear.toString()],
-                                    ),
-                                timeIndicatorStyleProvider: (time) =>
-                                    TimeIndicatorStyle(
-                                      context,
-                                      time,
-                                      alwaysUse24HourFormat: true,
-                                    )),
-                            child: MultiDateTimetable<Appointment>(
-                              headerBuilder: (context, _) {
-                                return Container(
-                                  height: 60,
-                                  color: AppColors.todayBoxColor,
-                                  child: MultiDateTimetableHeader<Appointment>(
-                                    dateHeaderBuilder: (context, date) {
-                                      return Column(
-                                        children: [
-                                          textWidget(
-                                            text: date
-                                                .copyWith(isUtc: true)
-                                                .getShortWeekDay(),
-                                            fSize: 13.0,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                          textWidget(
-                                            text: date
-                                                .copyWith(isUtc: true)
-                                                .day
-                                                .toString(),
-                                            fSize: 13.0,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
+                          ),
+                          theme: TimetableThemeData(
+                            context,
+                            multiDateEventHeaderStyle:
+                                MultiDateEventHeaderStyle(
+                              context,
+                              eventHeight: 10,
                             ),
+                            dateEventsStyleProvider: (date) => DateEventsStyle(
+                              context,
+                              date,
+                              enableStacking: false,
+                            ),
+                            dateDividersStyle: DateDividersStyle(
+                              context,
+                              color: Colors.grey,
+                            ),
+                            hourDividersStyle: HourDividersStyle(
+                              context,
+                              color: Colors.grey,
+                            ),
+                            weekdayIndicatorStyleProvider: (date) =>
+                                WeekdayIndicatorStyle(
+                              context,
+                              date,
+                              textStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            dateHeaderStyleProvider: (date) => DateHeaderStyle(
+                              context,
+                              date,
+                              showWeekdayIndicator: true,
+                              indicatorSpacing: 5.0,
+                            ),
+                            dateIndicatorStyleProvider: (date) =>
+                                DateIndicatorStyle(
+                              context,
+                              date,
+                              textStyle: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                              ),
+                            ),
+                            weekIndicatorStyleProvider: (week) =>
+                                WeekIndicatorStyle(
+                              context,
+                              week,
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                              textStyle: GoogleFonts.poppins(
+                                fontSize: 18,
+                              ),
+                              labels: [week.weekOfYear.toString()],
+                            ),
+                            timeIndicatorStyleProvider: (time) =>
+                                TimeIndicatorStyle(
+                              context,
+                              time,
+                              alwaysUse24HourFormat: true,
+                            ),
+                          ),
+                          child: MultiDateTimetable<Appointment>(
+                            headerBuilder: (context, _) {
+                              return Container(
+                                height: 60,
+                                color: AppColors.todayBoxColor,
+                                child: MultiDateTimetableHeader<Appointment>(
+                                  dateHeaderBuilder: (context, date) {
+                                    return Column(
+                                      children: [
+                                        textWidget(
+                                          text: date
+                                              .copyWith(isUtc: true)
+                                              .getShortWeekDay(),
+                                          fSize: 13.0,
+                                          fWeight: FontWeight.w700,
+                                        ),
+                                        textWidget(
+                                          text: date
+                                              .copyWith(isUtc: true)
+                                              .day
+                                              .toString(),
+                                          fSize: 13.0,
+                                          fWeight: FontWeight.w700,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
+                    ),
                     if (consultants.isNotEmpty)
                       Expanded(
-                        flex: 4,
+                        flex: 3,
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: consultants.length,
@@ -498,12 +556,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _init() async {
     setState(() {
       isLoading = true;
-  });
+    });
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
 
     consultants = GetLocalData.getConsultants();
-     
+
     await getAllAppointments();
     setState(() {
       isLoading = false;
@@ -519,6 +577,11 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       if (res != null) {
+        log('res.totalAppointments ${res.totalAppointments}');
+        log('res.totalAppointments ${res.currentMonthAppointments}');
+        totalappointments = res.totalAppointments ?? 0;
+        currentMonthAppointments = res.currentMonthAppointments ?? 0;
+
         if (res.appointments!.isNotEmpty) {
           allAppointments = res.appointments;
           setBoolValues();
@@ -549,14 +612,6 @@ class _HomeScreenState extends State<HomeScreen> {
     isCancelledList = allAppointments!
         .where((element) => element.status!.toLowerCase() == 'cancelled')
         .toList();
-  }
-
-  DateTime mergingDateTime(Appointment appointment) {
-    final date = appointment.appointmentDate!.toString().split(' ').first;
-    final time = appointment.scheduleTime;
-
-    final dateTime = '${date} ${time}';
-    return dateTime.toDateTime();
   }
 }
 

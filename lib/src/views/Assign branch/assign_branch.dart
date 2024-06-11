@@ -108,151 +108,184 @@ class AssigneBranchState extends State<AssignBranch> {
               //             ),
               //           )
               //         :
-              Form(
-            key: formKey,
-            child: Container(
-              height: MediaQuery.sizeOf(context).height,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              textWidget(
-                                text: 'Consultant',
-                                fSize: 14.sp,
-                                fWeight: FontWeight.bold,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: DropdownButton<Consultant?>(
-                                  dropdownColor: AppColors.primary,
-                                  value: selectedConsultant,
-                                  hint: Text(
-                                    'Select consultant',
-                                    style: MyTextStyles.smallBlacktext,
-                                  ),
-                                  style: MyTextStyles.smallBlacktext,
-                                  isExpanded: true,
-                                  items: consultants
-                                      .map(
-                                        (e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e.name!,
-                                            style: MyTextStyles.smallBlacktext,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: (Consultant? value) {
-                                    if (value != null) {
-                                      selectedConsultant = value;
-                                      log('message ${selectedConsultant!.toJson()}');
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              textWidget(
-                                text: 'Business Branch',
-                                fSize: 14.sp,
-                                fWeight: FontWeight.bold,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: DropdownButton<Branch?>(
-                                  dropdownColor: AppColors.primary,
-                                  value: selectedBranch,
-                                  hint: Text(
-                                    'Select branch',
-                                    style: MyTextStyles.smallBlacktext,
-                                  ),
-                                  style: MyTextStyles.smallBlacktext,
-                                  isExpanded: true,
-                                  items: branches
-                                      .map(
-                                        (e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e.address!,
-                                            style: MyTextStyles.smallBlacktext,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: (Branch? value) {
-                                    if (value != null) {
-                                      selectedBranch = value;
-                                      log('message ${selectedBranch!.toJson()}');
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Builder(builder: (context) {
-                            if (isLoading) {
-                              return const Center(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                            return Container(
-                              height: 40,
-                              child: RoundedElevatedButton(
-                                borderRadius: 6,
-                                onPressed: () {
-                                  if (selectedConsultant != null &&
-                                      selectedBranch != null) {
-                                    if (formKey.currentState!.validate()) {
-                                      assignBranch();
-                                    }
-                                  } else if (selectedConsultant == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Consultant');
-                                  } else if (selectedBranch == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Branch');
-                                  }
-                                },
-                                text: 'Assign branch',
-                              ),
-                            );
-                          }),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
+
+              consultants.isEmpty
+                  ? Center(
+                      child: textWidget(
+                        text: 'No consultant found to assign branch',
+                        fWeight: FontWeight.bold,
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                    )
+                  : branches.isEmpty
+                      ? Center(
+                          child: textWidget(
+                            text: 'No branch found to assign consultant',
+                            fWeight: FontWeight.bold,
+                          ),
+                        )
+                      : Form(
+                          key: formKey,
+                          child: Container(
+                            height: MediaQuery.sizeOf(context).height,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            textWidget(
+                                              text: 'Consultant',
+                                              fSize: 14.sp,
+                                              fWeight: FontWeight.bold,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child:
+                                                  DropdownButton<Consultant?>(
+                                                dropdownColor:
+                                                    AppColors.primary,
+                                                value: selectedConsultant,
+                                                hint: Text(
+                                                  'Select consultant',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext,
+                                                ),
+                                                style:
+                                                    MyTextStyles.smallBlacktext,
+                                                isExpanded: true,
+                                                items: consultants
+                                                    .map(
+                                                      (e) => DropdownMenuItem(
+                                                        value: e,
+                                                        child: Text(
+                                                          e.name!,
+                                                          style: MyTextStyles
+                                                              .smallBlacktext,
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                                onChanged: (Consultant? value) {
+                                                  if (value != null) {
+                                                    selectedConsultant = value;
+                                                    log('message ${selectedConsultant!.toJson()}');
+                                                    setState(() {});
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            textWidget(
+                                              text: 'Business Branch',
+                                              fSize: 14.sp,
+                                              fWeight: FontWeight.bold,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: DropdownButton<Branch?>(
+                                                dropdownColor:
+                                                    AppColors.primary,
+                                                value: selectedBranch,
+                                                hint: Text(
+                                                  'Select branch',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext,
+                                                ),
+                                                style:
+                                                    MyTextStyles.smallBlacktext,
+                                                isExpanded: true,
+                                                items: branches
+                                                    .map(
+                                                      (e) => DropdownMenuItem(
+                                                        value: e,
+                                                        child: Text(
+                                                          e.address!,
+                                                          style: MyTextStyles
+                                                              .smallBlacktext,
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                                onChanged: (Branch? value) {
+                                                  if (value != null) {
+                                                    selectedBranch = value;
+                                                    log('message ${selectedBranch!.toJson()}');
+                                                    setState(() {});
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Builder(builder: (context) {
+                                          if (isLoading) {
+                                            return const Center(
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 8.0),
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          }
+                                          return Container(
+                                            height: 40,
+                                            child: RoundedElevatedButton(
+                                              borderRadius: 6,
+                                              onPressed: () {
+                                                if (selectedConsultant !=
+                                                        null &&
+                                                    selectedBranch != null) {
+                                                  if (formKey.currentState!
+                                                      .validate()) {
+                                                    assignBranch();
+                                                  }
+                                                } else if (selectedConsultant ==
+                                                    null) {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'Please Select Consultant');
+                                                } else if (selectedBranch ==
+                                                    null) {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'Please Select Branch');
+                                                }
+                                              },
+                                              text: 'Assign branch',
+                                            ),
+                                          );
+                                        }),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
         ),
         Positioned(
           right: 0,

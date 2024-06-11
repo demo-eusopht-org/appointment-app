@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:timetable/timetable.dart';
 
@@ -65,7 +68,13 @@ class Appointment extends Event {
     this.branchId,
     required this.start,
     required this.end,
-  }) : super(start: start, end: end);
+  }) : super(start: start, end: end) {
+    if (appointmentDate != null) {
+      final startTime = mergeTime(appointmentDate!);
+      start = startTime;
+      end = startTime.add(const Duration(minutes: 30));
+    }
+  }
 
   factory Appointment.fromJson(Map<String, dynamic> json) =>
       _$AppointmentFromJson(json);
@@ -86,5 +95,14 @@ class Appointment extends Event {
     } else {
       return DateTime.now().millisecondsSinceEpoch;
     }
+  }
+
+  DateTime mergeTime(DateTime appointmentDate) {
+    final date = appointmentDate.toString().split(' ').first;
+
+    final time = scheduleTime;
+
+    final dateTime = '${date} ${time}';
+    return dateTime.toDateTime();
   }
 }

@@ -195,7 +195,12 @@ class _ProcedureListState extends State<ProcedureList> {
           findingServices
               ? Loader()
               : servicesData == null
-                  ? textWidget(text: 'No services found')
+                  ? Center(
+                      child: textWidget(
+                        text: 'No services found',
+                        fWeight: FontWeight.bold,
+                      ),
+                    )
                   : Expanded(
                       child: ListView.builder(
                           itemCount: servicesData!.services?.length ?? 0,
@@ -294,7 +299,7 @@ class _ProcedureListState extends State<ProcedureList> {
                                                 } else if (selectedValue ==
                                                     'Delete') {
                                                   CustomDialogue
-                                                      .displayDialogye(
+                                                      .displayDialogue(
                                                     context,
                                                     message:
                                                         'Are you sure you want to delete?',

@@ -247,20 +247,36 @@ class _AppointmentsState extends State<Appointments> {
               ? const Loader()
               : selectedIndex == 0
                   ? !isBooked
-                      ? const Text('No Schedule Appointments found')
+                      ? Center(
+                          child: textWidget(
+                            text: 'No Schedule Appointments found',
+                            fWeight: FontWeight.w700,
+                          ),
+                        )
                       : ScheduleList(
                           allAppointments: isBookedList,
                         )
                   : selectedIndex == 1
                       ? !isConducted
-                          ? const Text('No Completed Appointments found')
+                          ? Center(
+                              child: textWidget(
+                                text: 'No Completed Appointments found',
+                                fWeight: FontWeight.w700,
+                              ),
+                            )
                           : ScheduleList(
                               allAppointments: isConductedList,
                             )
                       : SizedBox(),
+
           selectedIndex == 2
               ? !isCancelled
-                  ? const Text('No Completed Appointments found')
+                  ? Center(
+                      child: textWidget(
+                        text: 'No Cancelled Appointments found',
+                        fWeight: FontWeight.w700,
+                      ),
+                    )
                   : ScheduleList(
                       allAppointments: isCancelledList,
                     )

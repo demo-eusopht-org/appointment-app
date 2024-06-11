@@ -90,326 +90,373 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
               ),
             ),
           ),
-          body: Form(
-            key: formKey,
-            child: Container(
-              height: MediaQuery.sizeOf(context).height,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              textWidget(
-                                text: 'Consultant',
-                                fSize: 14.sp,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: DropdownButton<Consultant?>(
-                                  dropdownColor: AppColors.primary,
-                                  value: selectedConsultant,
-                                  hint: Text(
-                                    'Select consultant',
-                                    style: MyTextStyles.smallBlacktext,
-                                  ),
-                                  style: MyTextStyles.smallBlacktext,
-                                  isExpanded: true,
-                                  items: consultants
-                                      .map(
-                                        (e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e.name!,
+          body: consultants.isEmpty
+              ? Center(
+                  child: textWidget(
+                    text: 'No consultant found to assign schedule',
+                    fWeight: FontWeight.bold,
+                  ),
+                )
+              : branches.isEmpty
+                  ? Center(
+                      child: textWidget(
+                        text: 'No branch found to assign schedule',
+                        fWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Form(
+                      key: formKey,
+                      child: SizedBox(
+                        height: MediaQuery.sizeOf(context).height,
+                        child: Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                            SingleChildScrollView(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        textWidget(
+                                          text: 'Consultant',
+                                          fSize: 14.sp,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: DropdownButton<Consultant?>(
+                                            dropdownColor: AppColors.primary,
+                                            value: selectedConsultant,
+                                            hint: Text(
+                                              'Select consultant',
+                                              style:
+                                                  MyTextStyles.smallBlacktext,
+                                            ),
                                             style: MyTextStyles.smallBlacktext,
+                                            isExpanded: true,
+                                            items: consultants
+                                                .map(
+                                                  (e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(
+                                                      e.name!,
+                                                      style: MyTextStyles
+                                                          .smallBlacktext,
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            onChanged: (Consultant? value) {
+                                              if (value != null) {
+                                                selectedConsultant = value;
+                                                log('message ${selectedConsultant!.toJson()}');
+                                                setState(() {});
+                                              }
+                                            },
                                           ),
                                         ),
-                                      )
-                                      .toList(),
-                                  onChanged: (Consultant? value) {
-                                    if (value != null) {
-                                      selectedConsultant = value;
-                                      log('message ${selectedConsultant!.toJson()}');
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              textWidget(
-                                text: 'Business Branch',
-                                fSize: 14.sp,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: DropdownButton<Branch?>(
-                                  dropdownColor: AppColors.primary,
-                                  value: selectedBranch,
-                                  hint: Text(
-                                    'Select branch',
-                                    style: MyTextStyles.smallBlacktext,
-                                  ),
-                                  style: MyTextStyles.smallBlacktext,
-                                  isExpanded: true,
-                                  items: branches
-                                      .map(
-                                        (e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e.address!,
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        textWidget(
+                                          text: 'Business Branch',
+                                          fSize: 14.sp,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: DropdownButton<Branch?>(
+                                            dropdownColor: AppColors.primary,
+                                            value: selectedBranch,
+                                            hint: Text(
+                                              'Select branch',
+                                              style:
+                                                  MyTextStyles.smallBlacktext,
+                                            ),
                                             style: MyTextStyles.smallBlacktext,
+                                            isExpanded: true,
+                                            items: branches
+                                                .map(
+                                                  (e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(
+                                                      e.address!,
+                                                      style: MyTextStyles
+                                                          .smallBlacktext,
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            onChanged: (Branch? value) {
+                                              if (value != null) {
+                                                selectedBranch = value;
+
+                                                setState(() {});
+                                              }
+                                            },
                                           ),
                                         ),
-                                      )
-                                      .toList(),
-                                  onChanged: (Branch? value) {
-                                    if (value != null) {
-                                      selectedBranch = value;
-
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (selectedBranch != null)
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 5.sp,
-                                vertical: 5.sp,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'Branch Start time',
-                                        style: MyTextStyles.smallBlacktext
-                                            .copyWith(
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${selectedBranch!.startTime}',
-                                        style: MyTextStyles.smallBlacktext
-                                            .copyWith(
-                                          fontSize: 12.sp,
-                                          // fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'Branch End time',
-                                        style: MyTextStyles.smallBlacktext
-                                            .copyWith(
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      Text(
-                                        ' ${selectedBranch!.endTime}',
-                                        style: MyTextStyles.smallBlacktext
-                                            .copyWith(
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                              onTap: () async {
-                                selectedStartTime =
-                                    await utils.selectTime(context);
-                                setState(() {});
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    selectedStartTime != null
-                                        ? selectedStartTime!.toFormattedTime()
-                                        : 'Select Start time',
-                                    style: MyTextStyles.smallBlacktext.copyWith(
-                                      color: AppColors.black.withOpacity(
-                                        0.5,
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                  Divider(
-                                    color: AppColors.black.withOpacity(0.2),
-                                  )
-                                ],
-                              )),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                              onTap: () async {
-                                selectedEndTime =
-                                    await utils.selectTime(context);
-
-                                setState(() {});
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    selectedEndTime != null
-                                        ? selectedEndTime!.toFormattedTime()
-                                        : 'Select End time',
-                                    style: MyTextStyles.smallBlacktext.copyWith(
-                                      color: AppColors.black.withOpacity(
-                                        0.5,
+                                    if (selectedBranch != null)
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 5.sp,
+                                          vertical: 5.sp,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  'Branch Start time',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext
+                                                      .copyWith(
+                                                    fontSize: 12.sp,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${selectedBranch!.startTime}',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext
+                                                      .copyWith(
+                                                    fontSize: 12.sp,
+                                                    // fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  'Branch End time',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext
+                                                      .copyWith(
+                                                    fontSize: 12.sp,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' ${selectedBranch!.endTime}',
+                                                  style: MyTextStyles
+                                                      .smallBlacktext
+                                                      .copyWith(
+                                                    fontSize: 12.sp,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       ),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  Divider(
-                                    color: AppColors.black.withOpacity(0.2),
-                                  )
-                                ],
-                              )),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              textWidget(
-                                text: "Date",
-                                fSize: 14.sp,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.sizeOf(context).width * 0.07,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  selectedDate =
-                                      await utils.selectDate(context);
+                                    GestureDetector(
+                                        onTap: () async {
+                                          selectedStartTime =
+                                              await utils.selectTime(context);
+                                          setState(() {});
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              selectedStartTime != null
+                                                  ? selectedStartTime!
+                                                      .toFormattedTime()
+                                                  : 'Select Start time',
+                                              style: MyTextStyles.smallBlacktext
+                                                  .copyWith(
+                                                color:
+                                                    AppColors.black.withOpacity(
+                                                  0.5,
+                                                ),
+                                              ),
+                                            ),
+                                            Divider(
+                                              color: AppColors.black
+                                                  .withOpacity(0.2),
+                                            )
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    GestureDetector(
+                                        onTap: () async {
+                                          selectedEndTime =
+                                              await utils.selectTime(context);
 
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  height: 36,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.ratingbarColor,
-                                    borderRadius: BorderRadius.circular(38),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      textWidget(
-                                        text: selectedDate != null
-                                            ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                                            : 'Select Date',
-                                        fSize: 12.sp,
-                                        fWeight: FontWeight.w400,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                      SizedBox(
-                                        width: 5.sp,
-                                      ),
-                                      const Icon(
-                                        Icons.calendar_today,
-                                        color: Colors.black,
-                                        size: 15,
-                                      )
-                                    ],
-                                  ),
+                                          setState(() {});
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              selectedEndTime != null
+                                                  ? selectedEndTime!
+                                                      .toFormattedTime()
+                                                  : 'Select End time',
+                                              style: MyTextStyles.smallBlacktext
+                                                  .copyWith(
+                                                color:
+                                                    AppColors.black.withOpacity(
+                                                  0.5,
+                                                ),
+                                              ),
+                                            ),
+                                            Divider(
+                                              color: AppColors.black
+                                                  .withOpacity(0.2),
+                                            )
+                                          ],
+                                        )),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        textWidget(
+                                          text: "Date",
+                                          fSize: 14.sp,
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  0.07,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            selectedDate =
+                                                await utils.selectDate(context);
+
+                                            setState(() {});
+                                          },
+                                          child: Container(
+                                            height: 36,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.ratingbarColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(38),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                textWidget(
+                                                  text: selectedDate != null
+                                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                                                      : 'Select Schedule Day',
+                                                  fSize: 12.sp,
+                                                  fWeight: FontWeight.w400,
+                                                  color: Colors.grey.shade700,
+                                                ),
+                                                SizedBox(
+                                                  width: 5.sp,
+                                                ),
+                                                const Icon(
+                                                  Icons.calendar_today,
+                                                  color: Colors.black,
+                                                  size: 15,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Builder(builder: (context) {
+                                      if (isLoading) {
+                                        return const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      }
+                                      return Container(
+                                        height: 40,
+                                        child: RoundedElevatedButton(
+                                          borderRadius: 6,
+                                          onPressed: () {
+                                            if (selectedConsultant != null &&
+                                                selectedBranch != null &&
+                                                selectedStartTime != null &&
+                                                selectedEndTime != null &&
+                                                selectedDate != null) {
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                assignConsultantBranch();
+                                              }
+                                            } else if (selectedConsultant ==
+                                                null) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message:
+                                                      'Please Select Consultant');
+                                            } else if (selectedBranch == null) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message:
+                                                      'Please Select Branch');
+                                            } else if (selectedStartTime ==
+                                                null) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message:
+                                                      'Please Select Start Time');
+                                            } else if (selectedEndTime ==
+                                                null) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message:
+                                                      'Please Select End Time');
+                                            } else if (selectedDate == null) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message: 'Please Select Day');
+                                            }
+                                          },
+                                          text: 'Assign Schedule',
+                                        ),
+                                      );
+                                    }),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Builder(builder: (context) {
-                            if (isLoading) {
-                              return const Center(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                            return Container(
-                              height: 40,
-                              child: RoundedElevatedButton(
-                                borderRadius: 6,
-                                onPressed: () {
-                                  if (selectedConsultant != null &&
-                                      selectedBranch != null &&
-                                      selectedStartTime != null &&
-                                      selectedEndTime != null &&
-                                      selectedDate != null) {
-                                    if (formKey.currentState!.validate()) {
-                                      assignConsultantBranch();
-                                    }
-                                  } else if (selectedConsultant == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Consultant');
-                                  } else if (selectedBranch == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Branch');
-                                  } else if (selectedStartTime == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Start Time');
-                                  } else if (selectedEndTime == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select End Time');
-                                  } else if (selectedDate == null) {
-                                    CustomDialogue.message(
-                                        context: context,
-                                        message: 'Please Select Date');
-                                  }
-                                },
-                                text: 'Assign Schedule',
-                              ),
-                            );
-                          }),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
         ),
         Positioned(
           right: 0,
@@ -516,9 +563,10 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
         selectedConsultantBranch = null;
         final tempConsultantBranch = res.consultant!
             .where(
-              (element) => element.cbid == selectedBranch!.id,
+              (element) => element.branchId == selectedBranch!.id,
             )
             .toList();
+
         if (tempConsultantBranch.isNotEmpty) {
           selectedConsultantBranch = tempConsultantBranch.first;
         }

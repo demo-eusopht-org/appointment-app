@@ -222,12 +222,12 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => const ProfileScreen(),
+                    builder: (context) => const BusinessProfileScreen(),
                   ),
                 );
               },
               child: textWidget(
-                text: 'Profile',
+                text: 'Business Profile',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

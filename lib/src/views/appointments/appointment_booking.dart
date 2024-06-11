@@ -91,27 +91,25 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       drawer: CustomDrawer(),
       body: isLoading
           ? const Loader()
-          : customers == null
+          : customers!.isEmpty
               ? Expanded(
                   child: Center(
                     child: textWidget(
-                      text:
-                          'No customer found for this business, Please create one',
+                      text: 'No Customer found to set appointment',
                       fWeight: FontWeight.bold,
                     ),
                   ),
                 )
-              : consultants == null
+              : consultants!.isEmpty
                   ? Expanded(
                       child: Center(
                         child: textWidget(
-                          text:
-                              'No consultant found for this business, Please create one',
+                          text: 'No Consutant found to set appointment',
                           fWeight: FontWeight.bold,
                         ),
                       ),
                     )
-                  : branches == null
+                  : branches!.isEmpty
                       ? Expanded(
                           child: Center(
                             child: textWidget(
@@ -121,7 +119,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                             ),
                           ),
                         )
-                      : services == null
+                      : services!.isEmpty
                           ? Expanded(
                               child: Center(
                                 child: textWidget(
@@ -189,7 +187,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           fWeight: FontWeight.bold,
                                         ),
                                         SizedBox(
-                                          width: 10,
+                                          width: 10.sp,
                                         ),
                                         Expanded(
                                           child: DropdownButton<Consultant?>(
@@ -244,7 +242,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             fWeight: FontWeight.bold,
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 10.sp,
                                           ),
                                           Expanded(
                                             child: DropdownButton<Branch?>(
@@ -297,7 +295,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                     if (consultantSchedule != null &&
                                         consultantSchedule!.isEmpty)
                                       const Text(
-                                          'No Branch found for this Consultant, Please assign Branch first'),
+                                          'No Branch or Schedule assigned to this Consultant, Please assign Branch and Schedule'),
                                     if (selectedBranch != null)
                                       Row(
                                         children: [
@@ -412,10 +410,6 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           ],
                                         ),
                                       ),
-                                    if (consultantSchedule != null &&
-                                        consultantSchedule!.isEmpty)
-                                      const Text(
-                                          'No Schedule found for this Consultant, Please assign schedule first'),
                                     Row(
                                       children: [
                                         textWidget(
@@ -692,9 +686,6 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     setState(() {
       isLoading = true;
     });
-    // await getCustomerData();
-    // await getConsultantData();
-    // await getBusinessBranch();
     customers = GetLocalData.getCustomers();
     consultants = GetLocalData.getConsultants();
     services = GetLocalData.getServices();
@@ -704,44 +695,6 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       isLoading = false;
     });
   }
-
-  // Future<void> getCustomerData() async {
-  //   GetCustomer? tempCustomer = await ApiServices.getCustomer(
-  //     context,
-  //     Constants.getCustomers + businessId.toString(),
-  //     user,
-  //   );
-
-  //   if (tempCustomer != null) {
-  //     customerData = tempCustomer;
-  //   }
-  // }
-
-  // Future<void> getConsultantData() async {
-  //   GetConsultant? tempConsultant = await ApiServices.getConsultant(
-  //     context,
-  //     Constants.getBusiness + businessId.toString(),
-  //     user,
-  //   );
-
-  //   if (tempConsultant != null) {
-  //     consultantsData = tempConsultant;
-  //   }
-  //   setState(() {});
-  // }
-
-  // Future<void> getBusinessBranch() async {
-  //   GetBranch? tempBranch = await ApiServices.getBusinessBranch(
-  //     context,
-  //     Constants.getBusinessBranch + businessId.toString(),
-  //     user,
-  //   );
-
-  //   if (tempBranch != null) {
-  //     branchData = tempBranch;
-  //   }
-  //   setState(() {});
-  // }
 
   Future<void> addAppointment() async {
     try {
@@ -791,14 +744,22 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       Constants.getConsultantSchedule + selectedConsultant!.id.toString(),
       user,
     );
-
+    log('tempBranch.consultantSchedule selectedConsultant ${selectedConsultant!.id}');
     if (tempBranch != null) {
-      if (tempBranch.consultantSchedule!.isNotEmpty) {
+      for (var i = 0; i < tempBranch.consultantSchedule!.length; i++) {
+        log('tempBranch.consultantSchedule ${tempBranch.consultantSchedule![i].toJson()}');
+      }
+
+      if (tempBranch.consultantSchedule!.isNotEmpty &&
+          tempBranch.consultantSchedule!.first.cbid != null) {
         consultantSchedule = tempBranch.consultantSchedule;
       } else {
         consultantSchedule = [];
       }
+    } else {
+      consultantSchedule = [];
     }
+
     setState(() {});
   }
 }

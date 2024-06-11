@@ -594,45 +594,45 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => AppointmentBookingDoctor(),
-                        ),
-                      );
-                    },
-                    child: Stack(
-                      children: [
-                        Image.asset(AppImages.button),
-                        Positioned.fill(
-                          child: ShaderMask(
-                            shaderCallback: (Rect bounds) {
-                              return LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Colors.white, AppColors.primary],
-                                stops: [0.4, 0.4], // Halfway
-                              ).createShader(bounds);
-                            },
-                            child: Center(
-                              child: textWidget(
-                                textAlign: TextAlign.center,
-                                text: 'Book Appointment',
-                                color: Colors.white,
-                                fSize: 17.0,
-                                fWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       CupertinoPageRoute(
+                  //         builder: (context) => AppointmentBookingDoctor(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Stack(
+                  //     children: [
+                  //       Image.asset(AppImages.button),
+                  //       Positioned.fill(
+                  //         child: ShaderMask(
+                  //           shaderCallback: (Rect bounds) {
+                  //             return LinearGradient(
+                  //               begin: Alignment.centerLeft,
+                  //               end: Alignment.centerRight,
+                  //               colors: [Colors.white, AppColors.primary],
+                  //               stops: [0.4, 0.4], // Halfway
+                  //             ).createShader(bounds);
+                  //           },
+                  //           child: Center(
+                  //             child: textWidget(
+                  //               textAlign: TextAlign.center,
+                  //               text: 'Book Appointment',
+                  //               color: Colors.white,
+                  //               fSize: 17.0,
+                  //               fWeight: FontWeight.w700,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             ),
