@@ -6,9 +6,11 @@ import 'package:appointment_management/model/get_customer_model/get_customer_mod
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
+import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/widgets/confirmation_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -62,16 +64,13 @@ class _ScheduleListState extends State<ScheduleList> {
                       children: [
                         Stack(
                           children: [
-                            Container(
-                              height: 75,
-                              width: 75,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.grey.shade100,
-                                ),
-                              ),
-                              child: Image.asset(AppImages.men),
+                            CircleAvatar(
+                              radius: 35.sp,
+                              backgroundImage: currentCustomer.imagename != null
+                                  ? CachedNetworkImageProvider(
+                                      '${Constants.customerImageBaseUrl}${currentCustomer.imagename}')
+                                  : AssetImage(AppImages.noImage)
+                                      as ImageProvider<Object>,
                             ),
                             Positioned(
                               right: 0,
