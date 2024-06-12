@@ -10,6 +10,7 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
@@ -217,7 +218,8 @@ class _ProcedureListState extends State<ProcedureList> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
-                                          service.serviceName ?? 'No name',
+                                          service.serviceName!
+                                              .toUpperCaseFirst(),
                                           style: MyTextStyles.normalBlacktext
                                               .copyWith(
                                             fontSize: 12.sp,
