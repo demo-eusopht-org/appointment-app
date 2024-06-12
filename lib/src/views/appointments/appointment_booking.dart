@@ -14,12 +14,14 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -80,7 +82,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       appBar: customAppBar(
         context: context,
         title: 'Appointment Booking',
-        leadingIcon: Icon(
+        leadingIcon: const Icon(
           Icons.arrow_back_outlined,
         ),
         leadingIconOnTap: () {
@@ -88,7 +90,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
           Navigator.pop(context);
         },
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: isLoading
           ? const Loader()
           : customers!.isEmpty
@@ -141,7 +143,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Expanded(
@@ -304,7 +306,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             fSize: 14.sp,
                                             fWeight: FontWeight.bold,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Expanded(
@@ -417,7 +419,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Expanded(
@@ -618,7 +620,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                       height: 10.sp,
                                     ),
                                     isAddingAppointment
-                                        ? Loader()
+                                        ? const Loader()
                                         : SizedBox(
                                             height: 42,
                                             width: MediaQuery.sizeOf(context)
@@ -716,6 +718,11 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       if (res['status'] == 200) {
         // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
+        await Future.delayed(const Duration(seconds: 2));
+        final route = CupertinoPageRoute(
+          builder: (context) => const HomeScreen(),
+        );
+        Navigator.push(context, route);
       } else {
         if (res.toString().contains('message')) {
           // ignore: use_build_context_synchronously
