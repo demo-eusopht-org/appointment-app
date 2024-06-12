@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:appointment_management/api/auth_api/api.dart';
+import 'package:appointment_management/api/auth_api/dio.dart';
 
 class AppointmentDetails extends StatefulWidget {
   final List<Appointment>? appointments;
@@ -196,8 +200,17 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     onUpdate: widget.onUpdate,
                   );
                 } else if (value == 'reSchedule') {
-                  
-                  // final route=  MaterialPageRoute(builder: (context) => Appoin,)
+                  CustomDialogue.showRecheduleDialogue(
+                    context,
+                    appointment,
+                    onUpdate: (Map<String, dynamic> selectedValue) {
+                      reScheduleAppointment(
+                          context,
+                          appointment,
+                          selectedValue['selectedDate'],
+                          selectedValue['selectedTime']);
+                    },
+                  );
                 }
               },
               itemBuilder: (context) {
@@ -208,7 +221,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   ),
                   PopupMenuItem(
                     value: 'reSchedule',
-                    child: textWidget(text: 'Re Schedule'),
+                    child: textWidget(text: 'Reschedule'),
                   ),
                 ];
               },
@@ -216,5 +229,54 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
           )
       ],
     );
+  }
+
+  static Future<void> reScheduleAppointment(
+    BuildContext context,
+    Appointment appointment,
+    String date,
+    String time,
+  ) async {
+    try {
+      Api api = Api(
+        dio,
+        baseUrl: Constants.baseUrl,
+      );
+      log('time1 ${time}');
+      log('time1 date ${date}');
+      dynamic res = await api.reScheduleAppointment({
+        "consultant_id": appointment.consultantId,
+        "customer_id": appointment.customerId,
+        "business_id": appointment.businessId,
+        "schedule_time": time,
+        "appointment_date": date,
+        "id": appointment.appointmentId,
+        "branch_id": appointment.branchId,
+      });
+
+      if (res['status'] == 200) {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+        CustomDialogue.message(context: context, message: res['message']);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+        // onUpdate();
+      } else {
+        if (res.toString().contains('message')) {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['message']);
+        } else {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['error']);
+        }
+      }
+    } catch (e) {
+      log('Something went wrong in Reschedule Appointment api $e');
+      CustomDialogue.message(
+          // ignore: use_build_context_synchronously
+          context: context,
+          message: 'Appointment not Rescheduled $e');
+    }
   }
 }

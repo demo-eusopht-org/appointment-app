@@ -34,4 +34,7 @@ abstract class Api {
   Future<dynamic> verifyOtp(@Body() Map<String, dynamic> body);
   @POST('/customer/update-appointment')
   Future<dynamic> updateAppointment(@Body() Map<String, dynamic> body);
+  @POST('/customer/reshedule-appointment')
+  Future<dynamic> reScheduleAppointment(@Body() Map<String, dynamic> body);
+  
 }

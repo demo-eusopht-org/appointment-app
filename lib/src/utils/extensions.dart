@@ -38,6 +38,9 @@ extension DateTimeUtils on DateTime {
   String getShortFormattedDate() {
     return DateFormat('EEE dd MMM').format(this);
   }
+  String fromDateTimeToTime(){
+    return DateFormat('hh:mm:ss a').format(this);
+  }
 }
 
 extension DurationUtils on Duration {

@@ -568,22 +568,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         request.fields['start_time'] = selectedStartTime.toString();
         request.fields['end_time'] = selectedEndTime.toString();
 
-        log('testing url ${url}');
-        log('testing token ${user['token']}');
-        log('testing userId ${user['user']['id'].toString()}');
-        log('testing name ${nameController.text}');
-        log('testing profession ${professionController.text}');
-        log('testing address ${addressController.text}');
-        log('testing ${businessId}');
-        log('testing createdAt ${business!.createdAt!.toString()}');
-        log('testing updatedAt ${DateTime.now().copyWith(isUtc: true).toString()}');
-        log('testing selectedStartTime ${selectedStartTime}');
-        log('testing selectedEndTime ${selectedEndTime}');
-        log('testing whatsappnote ${whatsappNoteController.text}');
-        log('testing fees ${feesController.text}');
-        log('testing location ${locationController.text}');
-        log('testing _selectedImage ${_selectedImage.toString()}');
-
         // Add image file to the request
         if (_selectedImage != null) {
           request.files.add(await http.MultipartFile.fromPath(

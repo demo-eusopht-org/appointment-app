@@ -5,9 +5,13 @@ import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDialogue {
@@ -212,7 +216,123 @@ class CustomDialogue {
       CustomDialogue.message(
           // ignore: use_build_context_synchronously
           context: context,
-          message: 'Appointment not created $e');
+          message: 'Appointment not updated $e');
     }
+  }
+
+  static void showRecheduleDialogue(
+    BuildContext context,
+    Appointment appointment, {
+    required ValueSetter<Map<String, dynamic>> onUpdate,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        DateTime? pickedDate;
+        TimeOfDay? pickedTime;
+
+        DateTime selectedDateTime = appointment.appointmentDate!;
+
+        return AlertDialog(
+          title: textWidget(
+            text: 'Reschedule Appointment',
+            fSize: 18.0,
+            fWeight: FontWeight.bold,
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      pickedDate = await utils.selectDate(context);
+                      if (pickedDate != null) {
+                        setState(() {
+                          selectedDateTime = DateTime(
+                            pickedDate!.year,
+                            pickedDate!.month,
+                            pickedDate!.day,
+                            selectedDateTime.hour,
+                            selectedDateTime.minute,
+                          );
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textWidget(
+                          text:
+                              'Selected Date: ${pickedDate == null ? appointment.appointmentDate!.toPkFormattedDate() : selectedDateTime.toPkFormattedDate()}',
+                        ),
+                        const Icon(
+                          Icons.calendar_today,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.sp,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      pickedTime = await utils.selectTime(context);
+
+                      if (pickedTime != null) {
+                        setState(() {
+                          selectedDateTime = DateTime(
+                            selectedDateTime.year,
+                            selectedDateTime.month,
+                            selectedDateTime.day,
+                            pickedTime!.hour,
+                            pickedTime!.minute,
+                          );
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textWidget(
+                          text:
+                              'Selected Time: ${pickedTime == null ? appointment.start.fromDateTimeToTime() : selectedDateTime.fromDateTimeToTime()}',
+                        ),
+                        const Icon(
+                          Icons.access_time,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: textWidget(text: 'Cancel', color: Colors.red),
+            ),
+            TextButton(
+              onPressed: () async {
+                onUpdate(
+                  {
+                    'selectedDate': selectedDateTime.toFormattedDate(),
+                    'selectedTime': selectedDateTime.fromDateTimeToTime(),
+                  },
+                );
+
+                Navigator.of(context).pop();
+              },
+              child: textWidget(text: 'Update', color: Colors.green),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
