@@ -122,10 +122,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // if you want to update image then remove if condition to change image.
-                          if (!widget.isUpdate) {
-                            _openImagePicker();
-                          }
+                          _openImagePicker();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -163,10 +160,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                     ),
                         ),
                       ),
-                      if (!widget.isUpdate)
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.015),
-                      if (!widget.isUpdate) textWidget(text: 'Add Photo'),
+
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015),
+                      textWidget(text: 'Add Photo'),
 
                       // Form Fields
                       TextFormField(
@@ -588,13 +585,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
         log('testing _selectedImage ${_selectedImage.toString()}');
 
         // Add image file to the request
-        if (!widget.isUpdate) {
-          if (_selectedImage != null) {
-            request.files.add(await http.MultipartFile.fromPath(
-                'images', '${_selectedImage?.path}'));
-          } else {
-            request.fields['images'] = _selectedImage.toString();
-          }
+        if (_selectedImage != null) {
+          request.files.add(await http.MultipartFile.fromPath(
+              'images', '${_selectedImage?.path}'));
+        } else {
+          request.fields['images'] = _selectedImage.toString();
         }
         // Send the request
 

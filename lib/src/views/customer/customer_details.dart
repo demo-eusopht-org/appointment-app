@@ -431,7 +431,6 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                         horizontal: 10.sp,
                                         vertical: 10.sp,
                                       ),
-                                      alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         border:
                                             Border.all(color: AppColors.black),

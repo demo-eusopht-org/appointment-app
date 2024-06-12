@@ -22,6 +22,7 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -440,26 +441,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          // Image.asset(
-                                          //   AppImages.doctor1,
+                                          // CachedNetworkImage(
+                                          //   imageUrl:
+                                          //       '${Constants.consultantImageBaseUrl}${consultant.imagename ?? ''}',
+                                          //   fit: BoxFit.cover,
+                                          //   width: MediaQuery.sizeOf(context)
+                                          //           .width *
+                                          //       0.2,
+                                          //   errorWidget: (context, url, error) {
+                                          //     return Image.asset(
+                                          //       fit: BoxFit.contain,
+                                          //       AppImages.noImage,
+                                          //       width:
+                                          //           MediaQuery.sizeOf(context)
+                                          //                   .width *
+                                          //               0.2,
+                                          //     );
+                                          //   },
                                           // ),
-                                          CachedNetworkImage(
-                                            imageUrl:
-                                                '${Constants.consultantImageBaseUrl}${consultant.imagename ?? ''}',
-                                            fit: BoxFit.cover,
-                                            width: MediaQuery.sizeOf(context)
-                                                    .width *
-                                                0.2,
-                                            errorWidget: (context, url, error) {
-                                              return Image.asset(
-                                                fit: BoxFit.contain,
-                                                AppImages.noImage,
-                                                width:
-                                                    MediaQuery.sizeOf(context)
-                                                            .width *
-                                                        0.2,
-                                              );
-                                            },
+                                          Padding(
+                                            padding: EdgeInsets.all(5.sp),
+                                            child: CircleAvatar(
+                                              radius: 40.sp,
+                                              backgroundImage: consultant
+                                                          .imagename !=
+                                                      null
+                                                  ? CachedNetworkImageProvider(
+                                                      '${Constants.consultantImageBaseUrl}${consultant.imagename}',
+                                                    )
+                                                  : AssetImage(
+                                                          AppImages.noImage)
+                                                      as ImageProvider<Object>,
+                                            ),
                                           ),
                                           const SizedBox(
                                             width: 10,
@@ -471,7 +484,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 textWidget(
                                                   text:
-                                                      '${consultant.name ?? ''}',
+                                                      '${consultant.name!.toUpperCaseFirst()}',
                                                   fSize: 15.0,
                                                   fWeight: FontWeight.w800,
                                                   color: Colors.white,
@@ -488,9 +501,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
-                                                const RatingWidget(
-                                                  initialRating: 2.0,
-                                                ),
+                                                // const RatingWidget(
+                                                //   initialRating: 2.0,
+                                                // ),
                                               ],
                                             ),
                                           ),
@@ -499,33 +512,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      SizedBox(
-                                        width: 120,
-                                        // height: 35,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  ConsultantDetails(
+                                                      consultant: consultant),
                                             ),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    ConsultantDetails(
-                                                        consultant: consultant),
-                                              ),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              textWidget(
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: textWidget(
                                                   text: 'Details', fSize: 13.0),
-                                              const Icon(Icons.arrow_right_alt)
-                                            ],
-                                          ),
+                                            ),
+                                            const Icon(Icons.arrow_right_alt)
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -615,75 +626,75 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class RatingWidget extends StatelessWidget {
-  final double? initialRating;
-  const RatingWidget({
-    this.initialRating,
-    super.key,
-  });
+// class RatingWidget extends StatelessWidget {
+//   final double? initialRating;
+//   const RatingWidget({
+//     this.initialRating,
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      // width: 100,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-            left: 30,
-            child: Container(
-              height: 30,
-              padding: const EdgeInsets.only(left: 20, right: 5),
-              decoration: const BoxDecoration(
-                color: AppColors.ratingbarColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                ),
-              ),
-              alignment: Alignment.center,
-              child: RatingBar.builder(
-                updateOnDrag: true,
-                glowColor: AppColors.starColor,
-                glowRadius: 5.0,
-                initialRating: initialRating ?? 5.0,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize: 14,
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: AppColors.starColor,
-                ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            child: Container(
-              alignment: Alignment.center,
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: textWidget(
-                text: initialRating.toString(),
-                fSize: 16,
-                fWeight: FontWeight.w600,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 50,
+//       // width: 100,
+//       child: Stack(
+//         clipBehavior: Clip.none,
+//         alignment: Alignment.center,
+//         children: [
+//           Positioned(
+//             left: 30,
+//             child: Container(
+//               height: 30,
+//               padding: const EdgeInsets.only(left: 20, right: 5),
+//               decoration: const BoxDecoration(
+//                 color: AppColors.ratingbarColor,
+//                 borderRadius: BorderRadius.only(
+//                   topRight: Radius.circular(50),
+//                   bottomRight: Radius.circular(50),
+//                 ),
+//               ),
+//               alignment: Alignment.center,
+//               child: RatingBar.builder(
+//                 updateOnDrag: true,
+//                 glowColor: AppColors.starColor,
+//                 glowRadius: 5.0,
+//                 initialRating: initialRating ?? 5.0,
+//                 minRating: 1,
+//                 direction: Axis.horizontal,
+//                 allowHalfRating: true,
+//                 itemCount: 5,
+//                 itemSize: 14,
+//                 itemBuilder: (context, _) => const Icon(
+//                   Icons.star,
+//                   color: AppColors.starColor,
+//                 ),
+//                 onRatingUpdate: (rating) {
+//                   print(rating);
+//                 },
+//               ),
+//             ),
+//           ),
+//           Positioned(
+//             left: 0,
+//             child: Container(
+//               alignment: Alignment.center,
+//               height: 50,
+//               width: 50,
+//               decoration: BoxDecoration(
+//                 color: AppColors.white,
+//                 borderRadius: BorderRadius.circular(100),
+//               ),
+//               child: textWidget(
+//                 text: initialRating.toString(),
+//                 fSize: 16,
+//                 fWeight: FontWeight.w600,
+//                 color: AppColors.primary,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

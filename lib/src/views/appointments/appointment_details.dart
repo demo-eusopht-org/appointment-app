@@ -196,11 +196,8 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     onUpdate: widget.onUpdate,
                   );
                 } else if (value == 'reSchedule') {
-                  CustomDialogue.showUpdateDialog(
-                    context,
-                    appointment: appointment,
-                    onUpdate: widget.onUpdate,
-                  );
+                  
+                  final route=  MaterialPageRoute(builder: (context) => Appoin,)
                 }
               },
               itemBuilder: (context) {

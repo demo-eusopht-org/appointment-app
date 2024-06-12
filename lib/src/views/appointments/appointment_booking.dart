@@ -744,12 +744,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       Constants.getConsultantSchedule + selectedConsultant!.id.toString(),
       user,
     );
-    log('tempBranch.consultantSchedule selectedConsultant ${selectedConsultant!.id}');
-    if (tempBranch != null) {
-      for (var i = 0; i < tempBranch.consultantSchedule!.length; i++) {
-        log('tempBranch.consultantSchedule ${tempBranch.consultantSchedule![i].toJson()}');
-      }
 
+    if (tempBranch != null) {
       if (tempBranch.consultantSchedule!.isNotEmpty &&
           tempBranch.consultantSchedule!.first.cbid != null) {
         consultantSchedule = tempBranch.consultantSchedule;
