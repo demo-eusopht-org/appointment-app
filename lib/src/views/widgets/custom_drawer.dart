@@ -7,6 +7,7 @@ import 'package:appointment_management/src/views/Appointments/appointment_bookin
 import 'package:appointment_management/src/views/Appointments/appointments.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
+import 'package:appointment_management/src/views/Settings%20page/settings_page.dart';
 import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
@@ -228,6 +229,23 @@ class CustomDrawer extends StatelessWidget {
               },
               child: textWidget(
                 text: 'Business Profile',
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const SettingsPage(),
+                  ),
+                );
+              },
+              child: textWidget(
+                text: 'Settings page',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

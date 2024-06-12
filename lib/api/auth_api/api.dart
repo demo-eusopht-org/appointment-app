@@ -38,7 +38,8 @@ abstract class Api {
   Future<dynamic> verifyOtpResetPass(@Body() Map<String, dynamic> body);
   @POST('/reset-password')
   Future<dynamic> resetPassword(@Body() Map<String, dynamic> body);
-
+  @POST('/update-password')
+  Future<dynamic> updatePassword(@Body() Map<String, dynamic> body);
   @POST('/customer/update-appointment')
   Future<dynamic> updateAppointment(@Body() Map<String, dynamic> body);
   @POST('/customer/reshedule-appointment')

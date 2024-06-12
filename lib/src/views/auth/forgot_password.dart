@@ -85,6 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
           if (isVerified)
             ChangePassword(
+              fromSettingPage: false,
               email: emailController.text,
               roleId: selectedRole.value!['key'].toString(),
             )
