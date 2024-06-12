@@ -10,6 +10,7 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
 import 'package:appointment_management/src/views/widgets/business_item.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
@@ -157,22 +158,39 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                 ],
                                               ),
                                               const Spacer(),
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.sp),
-                                                child: Column(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.edit,
-                                                      color: Colors.white,
-                                                      size: 25.sp,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  final route =
+                                                      CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        OnboardingPage(
+                                                      isUpdate: true,
+                                                      business:
+                                                          businessData![i],
                                                     ),
-                                                    textWidget(
-                                                      text: "Edit",
-                                                      fWeight: FontWeight.w400,
-                                                      color: Colors.white,
-                                                    )
-                                                  ],
+                                                  );
+
+                                                  Navigator.push(
+                                                      context, route);
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.sp),
+                                                  child: Column(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.edit,
+                                                        color: Colors.white,
+                                                        size: 25.sp,
+                                                      ),
+                                                      textWidget(
+                                                        text: "Edit",
+                                                        fWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               )
                                             ],

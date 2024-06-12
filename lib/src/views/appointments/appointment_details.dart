@@ -195,7 +195,12 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     appointment: appointment,
                     onUpdate: widget.onUpdate,
                   );
-                  //  _showUpdateDialog(context);
+                } else if (value == 'reSchedule') {
+                  CustomDialogue.showUpdateDialog(
+                    context,
+                    appointment: appointment,
+                    onUpdate: widget.onUpdate,
+                  );
                 }
               },
               itemBuilder: (context) {
@@ -203,6 +208,10 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   PopupMenuItem(
                     value: 'update',
                     child: textWidget(text: 'Update'),
+                  ),
+                  PopupMenuItem(
+                    value: 'reSchedule',
+                    child: textWidget(text: 'Re Schedule'),
                   ),
                 ];
               },

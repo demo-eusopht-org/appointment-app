@@ -6,6 +6,8 @@ class Constants {
   // static const String baseUrl = 'http://192.168.100.121:3000';
 
   static const String onBoardingSignUp = '${baseUrl}/onboarding/sign-up';
+  static const String onBoardingUpdate =
+      '${baseUrl}/onboarding/update-business';
 
   static const String addConsultant = '${baseUrl}/consultant/add-consultant';
   static const String addCustomer = '${baseUrl}/customer/add-customer';
@@ -15,7 +17,7 @@ class Constants {
 
   static const String getBusiness =
       '$baseUrl/consultant/get-consultant-business-id/?business_id=';
-      
+
   static const String getBusinessBranch =
       '$baseUrl/onboarding/get-business-branches?business_id=';
 
@@ -37,7 +39,5 @@ class Constants {
   static const String getAllAppointments =
       '$baseUrl/onboarding/get-business-appointments?business_id=';
   static const String getBusinessData =
-  '$baseUrl/onboarding/get-business?user_id=';
-
-  
+      '$baseUrl/onboarding/get-business?user_id=';
 }

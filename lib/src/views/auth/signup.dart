@@ -43,7 +43,9 @@ class _SignupPageState extends State<SignupPage> {
             Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
-                builder: (context) => const OnboardingPage(),
+                builder: (context) => const OnboardingPage(
+                  isUpdate: false,
+                ),
               ),
             );
           }

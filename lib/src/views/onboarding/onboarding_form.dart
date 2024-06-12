@@ -1,36 +1,39 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
-
+import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
-import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
-import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
+import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
-import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_bloc.dart';
-import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_events.dart';
-import 'package:appointment_management/src/views/onboarding/onboarding_bloc/onboarding_states.dart';
 import 'package:appointment_management/src/views/splash.dart';
+import 'package:appointment_management/src/views/widgets/cached_network_image.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:appointment_management/theme/light/light_theme.dart'
     as Appcolors;
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../../resources/assets.dart';
 import '../../resources/textstyle.dart';
-import '../home/home_screen.dart';
 
 class OnboardingPage extends StatefulWidget {
-  const OnboardingPage({super.key});
+  final bool isUpdate;
+  final Business? business;
+  const OnboardingPage({
+    super.key,
+    required this.isUpdate,
+    this.business,
+  });
 
   @override
   State<OnboardingPage> createState() => _OnboardingPageState();
@@ -59,7 +62,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   bool isLoading = false;
 
-  // Function to open the image picker
   Future<void> _openImagePicker() async {
     final imagePicker = ImagePicker();
     final selectedImage = await imagePicker.pickImage(
@@ -75,6 +77,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   final formKey = GlobalKey<FormState>();
   final dateTimeKey = GlobalKey<FormState>();
+  Business? business;
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +91,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
         Scaffold(
           extendBodyBehindAppBar: false,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: widget.isUpdate,
             scrolledUnderElevation: 0,
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: textWidget(
-              text: 'Create your business',
+              text: '${(widget.isUpdate) ? 'Update' : 'Create'} your business',
               color: Colors.black,
               fSize: 17.0,
               fWeight: FontWeight.w800,
@@ -112,12 +120,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-
-                      // Account Icon in Circle
                       GestureDetector(
                         onTap: () {
-                          _openImagePicker();
+                          // if you want to update image then remove if condition to change image.
+                          if (!widget.isUpdate) {
+                            _openImagePicker();
+                          }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -127,7 +135,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             color: Appcolors.lightTheme.primaryColor,
                           ),
                           child: _selectedImage != null
-                              ? Container(
+                              ? SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.1,
                                   child: ClipOval(
@@ -140,18 +148,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                     ),
                                   ),
                                 )
-                              : Image(
-                                  image: AssetImage(AppImages.camera),
-                                ),
-                          // padding: EdgeInsets.all(
-                          //     MediaQuery.of(context).size.width * 0.1),
+                              : widget.isUpdate
+                                  ? CircleAvatar(
+                                      radius: 35.sp,
+                                      backgroundImage:
+                                          business!.imagename != null
+                                              ? CachedNetworkImageProvider(
+                                                  business!.imagename!,
+                                                )
+                                              : AssetImage(AppImages.noImage)
+                                                  as ImageProvider<Object>)
+                                  : Image(
+                                      image: AssetImage(AppImages.camera),
+                                    ),
                         ),
                       ),
-
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015),
-
-                      Text('Add Photo'),
+                      if (!widget.isUpdate)
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.015),
+                      if (!widget.isUpdate) textWidget(text: 'Add Photo'),
 
                       // Form Fields
                       TextFormField(
@@ -334,21 +349,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             children: [
                               Expanded(
                                 child: DateTimePicker(
+                                  initialValue: widget.isUpdate
+                                      ? selectedStartTime
+                                      : TimeOfDay.now().toFormattedTime(),
                                   type: DateTimePickerType.time,
                                   firstDate: DateTime.now(),
-                                  icon: Icon(Icons.access_time_filled),
+                                  icon: const Icon(Icons.access_time_filled),
                                   timeLabelText: "Business Start Time",
-                                  onChanged: (String? val) =>
-                                      setState(() => selectedStartTime = val),
+                                  onChanged: (String? val) => setState(() =>
+                                      selectedStartTime =
+                                          val!.fromHourMintoFormattedTime()),
                                   validator: (String? val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please select business start time';
                                     }
-
                                     return null;
                                   },
-                                  onSaved: (String? val) =>
-                                      setState(() => selectedStartTime = val),
+                                  onSaved: (String? val) => setState(() =>
+                                      selectedStartTime =
+                                          val!.fromHourMintoFormattedTime()),
                                 ),
                               ),
                             ],
@@ -357,12 +376,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             children: [
                               Expanded(
                                 child: DateTimePicker(
+                                  initialValue: widget.isUpdate
+                                      ? selectedEndTime
+                                      : TimeOfDay.now().toFormattedTime(),
                                   type: DateTimePickerType.time,
                                   firstDate: DateTime.now(),
                                   icon: const Icon(Icons.access_time_filled),
                                   timeLabelText: "Business End Time",
                                   onChanged: (String? val) {
-                                    setState(() => selectedEndTime = val);
+                                    setState(() => selectedEndTime =
+                                        val!.fromHourMintoFormattedTime());
                                   },
                                   validator: (String? val) {
                                     if (val == null || val.isEmpty) {
@@ -371,8 +394,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
                                     return null;
                                   },
-                                  onSaved: (String? val) =>
-                                      setState(() => selectedEndTime = val),
+                                  onSaved: (String? val) => setState(() =>
+                                      selectedEndTime =
+                                          val!.fromHourMintoFormattedTime()),
                                 ),
                               ),
                             ],
@@ -389,7 +413,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         children: List<Widget>.generate(2, (int index) {
                           return AnimatedContainer(
                             duration: Duration(milliseconds: 300),
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
                             height: MediaQuery.sizeOf(context).height * 0.04,
                             width: MediaQuery.sizeOf(context).width * 0.025,
                             decoration: BoxDecoration(
@@ -407,13 +431,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       Builder(
                         builder: (context) {
                           if (isLoading) {
-                            return Row(
+                            return const Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: const CircularProgressIndicator(),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: CircularProgressIndicator(),
                                 ),
                               ],
                             );
@@ -431,16 +455,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 if (dateTimeKey.currentState!.validate()) {
                                   onBoarding();
                                 }
-
-                                // Navigator.push(
-                                //   context,
-                                //   CupertinoPageRoute(
-                                //     builder: (context) => HomeScreen(),
-                                //   ),
-                                // );
                               },
                               child: Text(
-                                'Done',
+                                widget.isUpdate ? 'Update' : 'Done',
                                 style: MyTextStyles.boldTextWhite,
                               ),
                             ),
@@ -518,12 +535,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
     });
 
     try {
+      String url = widget.isUpdate
+          ? Constants.onBoardingUpdate
+          : Constants.onBoardingSignUp;
       final user = locator<LocalStorageService>().getData(key: 'user');
+      final businessId =
+          locator<LocalStorageService>().getData(key: 'businessId');
 
       if (user != null && user['token'] != null) {
         var request = http.MultipartRequest(
-            'POST', Uri.parse(Constants.onBoardingSignUp));
+          'POST',
+          Uri.parse(url),
+        );
         request.headers['Authorization'] = 'Bearer ${user['token']}';
+
+        if (widget.isUpdate) {
+          request.fields['business_id'] = businessId.toString();
+          request.fields['created_at'] = business!.createdAt!.toString();
+          request.fields['updated_at'] =
+              DateTime.now().copyWith(isUtc: true).toString();
+        }
 
         request.fields['name'] = nameController.text;
         request.fields['profession'] = professionController.text;
@@ -536,22 +567,39 @@ class _OnboardingPageState extends State<OnboardingPage> {
         request.fields['fees'] = feesController.text;
         request.fields['whatsapp_note'] = whatsappNoteController.text;
         request.fields['footnote'] = quotationController.text;
-
         request.fields['user_id'] = user['user']['id'].toString();
         request.fields['start_time'] = selectedStartTime.toString();
         request.fields['end_time'] = selectedEndTime.toString();
 
-        // Add image file to the request
-        if (_selectedImage != null) {
-          request.files.add(await http.MultipartFile.fromPath(
-              'images', '${_selectedImage?.path}'));
-        } else {
-          request.fields['images'] = _selectedImage.toString();
-        }
+        log('testing url ${url}');
+        log('testing token ${user['token']}');
+        log('testing userId ${user['user']['id'].toString()}');
+        log('testing name ${nameController.text}');
+        log('testing profession ${professionController.text}');
+        log('testing address ${addressController.text}');
+        log('testing ${businessId}');
+        log('testing createdAt ${business!.createdAt!.toString()}');
+        log('testing updatedAt ${DateTime.now().copyWith(isUtc: true).toString()}');
+        log('testing selectedStartTime ${selectedStartTime}');
+        log('testing selectedEndTime ${selectedEndTime}');
+        log('testing whatsappnote ${whatsappNoteController.text}');
+        log('testing fees ${feesController.text}');
+        log('testing location ${locationController.text}');
+        log('testing _selectedImage ${_selectedImage.toString()}');
 
+        // Add image file to the request
+        if (!widget.isUpdate) {
+          if (_selectedImage != null) {
+            request.files.add(await http.MultipartFile.fromPath(
+                'images', '${_selectedImage?.path}'));
+          } else {
+            request.fields['images'] = _selectedImage.toString();
+          }
+        }
         // Send the request
 
         var response = await request.send();
+
         // Convert response bytes to string
         var responseBytes = await response.stream.toBytes();
 
@@ -561,43 +609,47 @@ class _OnboardingPageState extends State<OnboardingPage> {
         // Check the response status code
 
         if (response.statusCode == 200) {
+          // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['message']);
 
-          await locator<LocalStorageService>().saveData(
-            key: 'businessId',
-            value: res['business'][0]['id'],
-          );
+          if (!widget.isUpdate) {
+            await locator<LocalStorageService>().saveData(
+              key: 'businessId',
+              value: res['business'][0]['id'],
+            );
+          }
 
-          // final route = MaterialPageRoute(
-          //   builder: (context) => const HomeScreen(),
-
-          // );
           Navigator.pushReplacement(
+            // ignore: use_build_context_synchronously
             context,
             CupertinoPageRoute(
-              builder: (context) => const SplashScreen(
-                fromLogin: true,
-              ),
+              builder: (context) => widget.isUpdate
+                  ? const HomeScreen()
+                  : const SplashScreen(
+                      fromLogin: true,
+                    ),
             ),
           );
-
-          // Navigator.pushReplacement(context, route);
         } else {
           CustomDialogue.message(
               context: context,
-              message: 'Business not created: ${res['message']}');
+              message:
+                  'Business not ${widget.isUpdate ? 'updated' : 'created'}: ${res['message']}');
         }
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       CustomDialogue.message(
           context: context,
           message:
-              'Business not created\nPlease check your internet connection');
+              'Business not ${widget.isUpdate ? 'updated' : 'created'}\nPlease check your internet connection');
     } catch (e, stack) {
+      log('Error in ${widget.isUpdate ? 'updated' : 'created'}Business api ${e}',
+          stackTrace: stack);
       CustomDialogue.message(
-          context: context, message: 'Business not created: Please try again');
+          context: context,
+          message:
+              'Business not ${widget.isUpdate ? 'updated' : 'created'}: Please try again');
 
-      print('Error in onBoarding runtimeType: ${e}');
       setState(() {
         isLoading = false;
       });
@@ -606,6 +658,53 @@ class _OnboardingPageState extends State<OnboardingPage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void _init() {
+    if (widget.isUpdate) {
+      setBusinessFields();
+    }
+  }
+
+  void setBusinessFields() {
+    business = widget.business;
+    nameController.text = business!.name.toString();
+    if (business!.profession != null) {
+      professionController.text = business!.profession!;
+    }
+    if (business!.completeAddress != null) {
+      addressController.text = business!.completeAddress!;
+    }
+    if (business!.email != null) {
+      emailController.text = business!.email!;
+    }
+    if (business!.website != null) {
+      websiteController.text = business!.website!;
+    }
+    if (business!.phoneNumber != null) {
+      mobileController.text = business!.phoneNumber!;
+    }
+    if (business!.location != null) {
+      locationController.text = business!.location!;
+    }
+    if (business!.fees != null) {
+      feesController.text = business!.fees.toString();
+    }
+    if (business!.whatsappNote != null) {
+      whatsappNoteController.text = business!.whatsappNote!;
+    }
+    if (business!.footNote != null) {
+      quotationController.text = business!.footNote!;
+    }
+
+    if (business!.startTime != null) {
+      selectedStartTime = business!.startTime!.fromHourMintoFormattedTime();
+    }
+    if (business!.endTime != null) {
+      selectedEndTime = business!.endTime!.fromHourMintoFormattedTime();
+    }
+
+    // "updated_at": "2024-05-03T06:43:27.000Z",
   }
 
   // Future<void> onBoarding() async {

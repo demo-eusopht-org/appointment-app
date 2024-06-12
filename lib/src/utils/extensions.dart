@@ -72,6 +72,20 @@ extension TimeFormatFromString on String {
     }
   }
 
+  String fromHourMintoFormattedTime() {
+    try {
+      // Parse the time string
+      DateFormat originalFormat = DateFormat('HH:mm');
+      DateTime time = originalFormat.parse(this);
+
+      // Format the time to AM/PM format
+      DateFormat newFormat = DateFormat('hh:mm:ss a');
+      return newFormat.format(time);
+    } catch (e) {
+      return this;
+    }
+  }
+
   String getDay() {
     return split(' ')[0];
   }

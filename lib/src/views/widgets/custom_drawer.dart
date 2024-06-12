@@ -11,7 +11,7 @@ import 'package:appointment_management/src/views/Verify%20Email/verify_email.dar
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
 import 'package:appointment_management/src/views/Services/services_list.dart';
-import 'package:appointment_management/src/views/Settings/profile_screen.dart';
+import 'package:appointment_management/src/views/Settings/business_profile_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
