@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
 import 'package:appointment_management/src/views/Auth/auth_bloc/auth_events.dart';
 import 'package:appointment_management/src/views/Auth/auth_bloc/auth_states.dart';
@@ -37,16 +38,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final formKey = GlobalKey<FormState>();
 
-  List<Map<String, dynamic>> roles = [
-    {
-      'key': 1,
-      'value': 'Admin',
-    },
-    {
-      'key': 2,
-      'value': 'Consultant',
-    },
-  ];
   ValueNotifier<Map<String, dynamic>?> selectedRole =
       ValueNotifier<Map<String, dynamic>?>(null);
 
@@ -173,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                     isExpanded: true,
                                     dropdownColor: AppColors.white,
                                     hint: textWidget(text: 'Select role'),
-                                    items: roles
+                                    items: Constants.roles
                                         .map(
                                           (Map<String, dynamic> role) =>
                                               DropdownMenuItem<

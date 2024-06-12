@@ -40,4 +40,15 @@ class Constants {
       '$baseUrl/onboarding/get-business-appointments?business_id=';
   static const String getBusinessData =
       '$baseUrl/onboarding/get-business?user_id=';
+
+  static List<Map<String, dynamic>> roles = [
+    {
+      'key': 1,
+      'value': 'Admin',
+    },
+    {
+      'key': 2,
+      'value': 'Consultant',
+    },
+  ];
 }
