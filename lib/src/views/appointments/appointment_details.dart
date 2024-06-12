@@ -197,7 +197,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   );
                 } else if (value == 'reSchedule') {
                   
-                  final route=  MaterialPageRoute(builder: (context) => Appoin,)
+                  // final route=  MaterialPageRoute(builder: (context) => Appoin,)
                 }
               },
               itemBuilder: (context) {
