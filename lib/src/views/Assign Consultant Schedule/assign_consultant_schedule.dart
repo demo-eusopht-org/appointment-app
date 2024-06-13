@@ -487,9 +487,10 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
             "end_time": selectedEndTime!.toFormatted12Hours(),
             "day": selectedDay,
             "consultant_id": selectedConsultant!.id,
-            "consultant_branch_id": selectedConsultantBranch!.id,
+            "consultant_branch_id": selectedConsultantBranch!.cbid,
           },
         );
+        
 
         if (res['status'] == 200) {
           // ignore: use_build_context_synchronously
@@ -568,6 +569,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
 
       if (res != null) {
         selectedConsultantBranch = null;
+
         final tempConsultantBranch = res.consultant!
             .where(
               (element) => element.branchId == selectedBranch!.id,

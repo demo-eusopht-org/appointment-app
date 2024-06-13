@@ -7,6 +7,7 @@ import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/schedule_list.dart';
@@ -299,11 +300,7 @@ class _AppointmentsState extends State<Appointments> {
 
     userData = GetLocalData.getUser();
 
-    if (userData!.roleId == 1) {
-      await getAllAppointments();
-    } else if (userData!.roleId == 2) {
-      // await getAllAppointments();
-    }
+    await getAllAppointments();
 
     setState(() {
       isLoading = false;
@@ -320,12 +317,15 @@ class _AppointmentsState extends State<Appointments> {
 
       if (res != null) {
         if (res.appointments!.isNotEmpty) {
-          allAppointments = res.appointments;
-          setBoolValues();
-
-          for (var i = 0; i < allAppointments!.length; i++) {
-            log('allAppointments ${allAppointments![i].toJson()}');
+          if (isAdmin!) {
+            allAppointments = res.appointments;
+          } else {
+            allAppointments = res.appointments!
+                .where((element) => element.consultantId == userData!.id)
+                .toList();
           }
+
+          setBoolValues();
         }
       }
     } catch (e, stack) {

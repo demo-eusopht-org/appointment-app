@@ -34,6 +34,7 @@ class User {
   int? id;
   int? verified;
   int? roleId;
+  int? businessId;
 
   User({
     this.name,
@@ -43,6 +44,7 @@ class User {
     this.id,
     this.verified,
     this.roleId,
+    this.businessId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

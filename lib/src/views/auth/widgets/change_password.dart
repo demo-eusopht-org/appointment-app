@@ -229,7 +229,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
       if (res['status'] == 200) {
         CustomDialogue.message(context: context, message: res['message']);
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 1));
         if (widget.fromSettingPage) {
           Navigator.pushReplacement(
             context,

@@ -1,4 +1,6 @@
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/auth_model/auth_model.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,5 +97,13 @@ class utils {
 
     final dateTime = '$date $time';
     return dateTime.toDateTime();
+  }
+
+  static void setUserRole(User user) {
+    if (user.roleId == 1) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
+import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Auth/auth_bloc/auth_events.dart';
 import 'package:appointment_management/src/views/Auth/auth_bloc/auth_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,9 +39,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           'role_id': event.roleId,
         },
       );
-      log('business id ${res.businessId}');
+
       if (res.status == 200) {
         AuthResponse user = AuthResponse(token: res.token, user: res.user);
+        utils.setUserRole(res.user!);
 
         await locator<LocalStorageService>().saveData(
           key: 'user',
@@ -49,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
         await locator<LocalStorageService>().saveData(
           key: 'businessId',
-          value: res.businessId,
+          value: isAdmin! ? res.businessId : res.user!.businessId,
         );
 
         emit(AuthSuccessState());

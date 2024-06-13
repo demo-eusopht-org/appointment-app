@@ -1,5 +1,6 @@
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Assign%20branch/assign_branch.dart';
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
@@ -47,149 +48,173 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => AddConsultant(),
+            if (isAdmin!)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AddConsultant(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Add Consultant',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Add Consultant',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => AddCustomer(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AddCustomer(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Add Customer',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Add Customer',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const CreateBranch(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const CreateBranch(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Create Branch',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Create Branch',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const AssignBranch(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const AssignBranch(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Assign Branch',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Assign Branch',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const AssignConsultantSchedule(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) =>
+                              const AssignConsultantSchedule(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Assign Consultant Schedule',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Assign Consultant Schedule',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => PatientDirectory(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => PatientDirectory(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Customer Directory',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Customer Directory',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => AppointmentBooking(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AppointmentBooking(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Add Appointment',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Add Appointment',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => ProcedureList(),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ProcedureList(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Services',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-              child: textWidget(
-                text: 'Services',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const BusinessProfileScreen(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Business Profile',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
-            ),
             SizedBox(height: 20),
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => Appointments(),
+                    builder: (context) => const Appointments(),
                   ),
                 );
               },
@@ -200,7 +225,7 @@ class CustomDrawer extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -212,23 +237,6 @@ class CustomDrawer extends StatelessWidget {
               },
               child: textWidget(
                 text: 'Verify Email',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const BusinessProfileScreen(),
-                  ),
-                );
-              },
-              child: textWidget(
-                text: 'Business Profile',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
@@ -257,6 +265,7 @@ class CustomDrawer extends StatelessWidget {
               child: RoundedElevatedButton(
                 borderRadius: 38.0,
                 onPressed: () async {
+                  isAdmin = null;
                   await locator<LocalStorageService>().clearAll();
                   Navigator.pushAndRemoveUntil(
                     context,

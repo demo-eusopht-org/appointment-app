@@ -48,8 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   dynamic user;
   dynamic businessId;
-
-  // GetConsultant? consultantsData;
+  User? userData;
 
   List<Consultant> consultants = [];
 
@@ -206,25 +205,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             onDateTap: (date) {},
                             onDateBackgroundTap: (date) {},
                             onDateTimeBackgroundTap: (dateTime) {
-                              final appointments = allAppointments!
-                                  .where((element) =>
-                                      element.start
-                                          .toString()
-                                          .split(' ')
-                                          .first ==
-                                      dateTime.toString().split(' ').first)
-                                  .toList();
+                              final appointments =
+                                  allAppointments!.where((element) {
+                                return element.start
+                                        .toString()
+                                        .split(' ')
+                                        .first ==
+                                    dateTime.toString().split(' ').first;
+                              }).toList();
                               final route = MaterialPageRoute(
                                 builder: (context) => AppointmentDetails(
                                     appointments: appointments,
-                                    onUpdate: () async {
-                                      // log('i am here');
-                                      // await getAllAppointments();
-                                      // log('i am here done');
-                                      // setState(
-                                      //   () {},
-                                      // );
-                                    }),
+                                    onUpdate: () async {}),
                               );
                               Navigator.push(context, route);
                             },
@@ -442,7 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       )
-                    else
+                    else if (isAdmin!)
                       Expanded(
                         flex: 4,
                         child: Center(
@@ -451,9 +443,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             fWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
+                      )
+                    else
+                      const SizedBox(),
                     SizedBox(
-                      height: 5.sp,
+                      height: 10.sp,
                     ),
                   ],
                 ),
@@ -467,12 +461,14 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     user = locator<LocalStorageService>().getData(key: 'user');
-    log('user ${user}');
+
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
-
-    consultants = GetLocalData.getConsultants();
-
+    if (isAdmin!) {
+      consultants = GetLocalData.getConsultants();
+    }
+    userData = GetLocalData.getUser(); 
     await getAllAppointments();
+
     setState(() {
       isLoading = false;
     });
@@ -487,13 +483,18 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       if (res != null) {
-        log('res.totalAppointments ${res.totalAppointments}');
-        log('res.totalAppointments ${res.currentMonthAppointments}');
         totalappointments = res.totalAppointments ?? 0;
         currentMonthAppointments = res.currentMonthAppointments ?? 0;
 
         if (res.appointments!.isNotEmpty) {
-          allAppointments = res.appointments;
+          if (isAdmin!) {
+            allAppointments = res.appointments;
+          } else {
+            allAppointments = res.appointments!
+                .where((element) => element.consultantId == userData!.id)
+                .toList();
+          }
+
           setBoolValues();
         }
       } else {

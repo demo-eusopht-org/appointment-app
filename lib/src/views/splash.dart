@@ -1,15 +1,18 @@
 import 'dart:developer';
 
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
+import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/enums.dart';
+import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/home/home_screen.dart';
@@ -31,6 +34,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   dynamic businessId, user;
 
+  User? userData;
+
   @override
   void initState() {
     super.initState();
@@ -38,8 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen() {
-    final user = locator<LocalStorageService>().getData(key: 'user');
-
     if (user != null && user['token'] != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -82,12 +85,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _init() async {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
-    setUserRole();
+
+    userData = GetLocalData.getUser();
+    utils.setUserRole(userData!);
+
+    await getCustomerData();
+    await getBusinessBranch();
+    await getConsultantData();
     await getBusinessData();
     await getServices();
-    await getCustomerData();
-    await getConsultantData();
-    await getBusinessBranch();
+
     _navigateToNextScreen();
   }
 
@@ -175,14 +182,6 @@ class _SplashScreenState extends State<SplashScreen> {
           value: tempBusiness.business!.map((e) => e.toJson()).toList(),
         );
       }
-    }
-  }
-
-  void setUserRole() {
-    if (user['user']['role_id'] == 1) {
-      isAdmin = true;
-    } else {
-      isAdmin = false;
     }
   }
 }

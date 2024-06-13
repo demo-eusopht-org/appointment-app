@@ -89,10 +89,11 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
 
   Widget buildAppointmentCard(BuildContext context, Appointment appointment) {
     final usersData = getUsersData(appointment);
-    Customer customer = usersData['customer'];
-    Consultant consultant = usersData['consultant'];
-    Branch branch = usersData['branch'];
-    Business business = usersData['business'];
+
+    Customer? customer = usersData['customer'];
+    Consultant? consultant = usersData['consultant'];
+    Branch? branch = usersData['branch'];
+    Business? business = usersData['business'];
 
     return Stack(
       children: [
@@ -118,18 +119,20 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   color: AppColors.white,
                 ),
                 SizedBox(height: 5.sp),
-                textWidget(
-                  text: 'Customer Name: ${customer.name!.toUpperCaseFirst()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
+                if (customer != null)
+                  textWidget(
+                    text: 'Customer Name: ${customer.name!.toUpperCaseFirst()}',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.white,
+                  ),
                 SizedBox(height: 5.sp),
-                textWidget(
-                  text:
-                      'Consultant Name: ${consultant.name!.toUpperCaseFirst()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
+                if (consultant != null)
+                  textWidget(
+                    text:
+                        'Consultant Name: ${consultant.name!.toUpperCaseFirst()}',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.white,
+                  ),
                 SizedBox(height: 5.sp),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,17 +154,19 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   ],
                 ),
                 SizedBox(height: 5.sp),
-                textWidget(
-                  text: 'Address: ${branch.address!.toUpperCaseFirst()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
+                if (branch != null)
+                  textWidget(
+                    text: 'Address: ${branch.address!.toUpperCaseFirst()}',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.white,
+                  ),
                 SizedBox(height: 5.sp),
-                textWidget(
-                  text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
+                if (business != null)
+                  textWidget(
+                    text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.white,
+                  ),
                 if (appointment.appointmentNote != null) SizedBox(height: 5.sp),
                 if (appointment.appointmentNote != null)
                   textWidget(
@@ -304,30 +309,47 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     final customers = GetLocalData.getCustomers();
     final consultants = GetLocalData.getConsultants();
     final businessData = GetLocalData.getBusiness();
-    Branch branch = branches
+    Branch? branch;
+    Customer? customer;
+    Consultant? consultant;
+    Business? business;
+    final tempBranch = branches
         .where(
           (element) => element.id.toString() == appointment.branchId,
         )
-        .first;
-    Customer customer = customers
+        .toList();
+    if (tempBranch.isNotEmpty) {
+      branch = tempBranch.first;
+    }
+    final tempCustomers = customers
         .where(
           (element) =>
               element.id.toString() == appointment.customerId.toString(),
         )
-        .first;
-    Consultant consultant = consultants
+        .toList();
+
+    if (tempCustomers.isNotEmpty) {
+      customer = tempCustomers.first;
+    }
+    final tempConsultant = consultants
         .where(
           (element) =>
               element.id.toString() == appointment.consultantId.toString(),
         )
-        .first;
-
-    Business business = businessData
+        .toList();
+    if (tempConsultant.isNotEmpty) {
+      consultant = tempConsultant.first;
+    }
+    final tempBusiness = businessData
         .where(
           (element) =>
               element.id.toString() == appointment.businessId.toString(),
         )
-        .first;
+        .toList();
+    if (tempBusiness.isNotEmpty) {
+      business = tempBusiness.first;
+    }
+
     Map<String, dynamic> usersData = {
       'customer': customer,
       'consultant': consultant,

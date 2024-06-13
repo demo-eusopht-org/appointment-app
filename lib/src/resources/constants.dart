@@ -38,6 +38,7 @@ class Constants {
       '$baseUrl/consultant/get-consultant-shedule?consultant_id=';
   static const String getAllAppointments =
       '$baseUrl/onboarding/get-business-appointments?business_id=';
+
   static const String getBusinessData =
       '$baseUrl/onboarding/get-business?user_id=';
 

@@ -8,6 +8,7 @@ import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
@@ -362,6 +363,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               width: MediaQuery.sizeOf(context).width * 0.6,
                               child: RoundedElevatedButton(
                                 onPressed: () async {
+                                  isAdmin = null;
                                   await locator<LocalStorageService>()
                                       .clearAll();
                                   Navigator.pushAndRemoveUntil(

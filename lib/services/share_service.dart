@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/services/get_services.dart';
@@ -46,12 +48,14 @@ class MySharePlus {
         )
         .first
         .name!;
-    Business business = businessData
-        .where(
-          (element) =>
-              element.id.toString() == appointment.businessId.toString(),
-        )
-        .first;
+
+    Business business = businessData.where(
+      (element) {
+        log('tempBusiness ${element.id}');
+        log('tempBusiness ${appointment.businessId}');
+        return element.id == appointment.businessId;
+      },
+    ).first;
 
     try {
       await Share.share(
