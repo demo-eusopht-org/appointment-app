@@ -27,22 +27,22 @@ class AuthResponse {
   fieldRename: FieldRename.snake,
 )
 class User {
-  String username;
-  String email;
-  String createdAt;
-  String updatedAt;
-  int id;
-  int verified;
-  int roleId;
+  String? name;
+  String? email;
+  String? createdAt;
+  String? updatedAt;
+  int? id;
+  int? verified;
+  int? roleId;
 
   User({
-    required this.username,
-    required this.email,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.id,
-    required this.verified,
-    required this.roleId,
+    this.name,
+    this.email,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
+    this.verified,
+    this.roleId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

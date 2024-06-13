@@ -61,7 +61,7 @@ class GetLocalData {
     final userData = user['user'];
 
     return User(
-        username: userData['username'],
+        name: userData['username'],
         email: userData['email'],
         createdAt: userData['created_at'],
         updatedAt: userData['updated_at'],

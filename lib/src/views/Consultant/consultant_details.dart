@@ -472,6 +472,11 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             ],
                           ),
                           const SizedBox(height: 10),
+                          if (consultantSchedules!.isEmpty)
+                            textWidget(
+                              text: 'No Schedule found',
+                              fWeight: FontWeight.w500,
+                            ),
                           SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.2,
                             child: ListView.builder(

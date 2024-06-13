@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-            localizationsDelegates: [
+            localizationsDelegates: const [
               TimetableLocalizationsDelegate(),
             ],
             debugShowCheckedModeBanner: false,

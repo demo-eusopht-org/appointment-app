@@ -261,7 +261,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                       width: 10,
                                     ),
                                     textWidget(
-                                      text: userData!.email,
+                                      text: userData!.email!,
                                       fWeight: FontWeight.w700,
                                     ),
                                   ],

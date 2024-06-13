@@ -41,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
                 Image.asset('assets/images/Male User.png'),
                 SizedBox(width: 5),
                 textWidget(
-                  text: '${user!['user']['username']}',
+                  text: '${user!['user']['name']}',
                   fSize: 20.0,
                   fWeight: FontWeight.w700,
                 ),
@@ -211,7 +211,7 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
               child: textWidget(
-                text: 'Verify email',
+                text: 'Verify Email',
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,

@@ -9,6 +9,7 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/home/home_screen.dart';
@@ -37,9 +38,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen() {
-    // Future.delayed(const Duration(seconds: 5), () {
-
-    // });
     final user = locator<LocalStorageService>().getData(key: 'user');
 
     if (user != null && user['token'] != null) {
@@ -84,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _init() async {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
-
+    setUserRole();
     await getBusinessData();
     await getServices();
     await getCustomerData();
@@ -177,6 +175,14 @@ class _SplashScreenState extends State<SplashScreen> {
           value: tempBusiness.business!.map((e) => e.toJson()).toList(),
         );
       }
+    }
+  }
+
+  void setUserRole() {
+    if (user['user']['role_id'] == 1) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
     }
   }
 }

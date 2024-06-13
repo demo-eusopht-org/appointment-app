@@ -165,7 +165,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.name!
+                                                      e.email!
                                                           .toUpperCaseFirst(),
                                                       style: MyTextStyles
                                                           .smallBlacktext,
@@ -210,7 +210,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.name!
+                                                      e.email!
                                                           .toUpperCaseFirst(),
                                                       style: MyTextStyles
                                                           .smallBlacktext,
@@ -720,7 +720,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       if (res['status'] == 200) {
         // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 1));
         if (isChecked) {
           shareAppointment();
         }

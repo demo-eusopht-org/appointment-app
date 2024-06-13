@@ -9,6 +9,7 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
@@ -94,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       key: scaffoldKey,
       appBar: customAppBar(
         context: context,
-        title:
-            'Hi, ${user!['user']['username'].toString().toUpperCaseFirst()}!',
+        title: 'Hi, ${user!['user']['name'].toString().toUpperCaseFirst()}!',
         leadingIcon: Image.asset(
           AppImages.menuIcon,
         ),
@@ -467,6 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     user = locator<LocalStorageService>().getData(key: 'user');
+    log('user ${user}');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
 
     consultants = GetLocalData.getConsultants();

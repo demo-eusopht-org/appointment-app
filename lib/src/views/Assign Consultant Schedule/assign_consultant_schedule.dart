@@ -13,6 +13,7 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
@@ -48,7 +49,16 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
 
   ConsultantBranch? selectedConsultantBranch;
 
-  DateTime? selectedDate;
+  String? selectedDay;
+  List<String> days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
 
   @override
   void initState() {
@@ -129,7 +139,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                         ),
                                         Expanded(
                                           child: DropdownButton<Consultant?>(
-                                            dropdownColor: AppColors.primary,
+                                            dropdownColor: AppColors.white,
                                             value: selectedConsultant,
                                             hint: Text(
                                               'Select consultant',
@@ -143,7 +153,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.name!,
+                                                      e.email!,
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
@@ -172,7 +182,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                         ),
                                         Expanded(
                                           child: DropdownButton<Branch?>(
-                                            dropdownColor: AppColors.primary,
+                                            dropdownColor: AppColors.white,
                                             value: selectedBranch,
                                             hint: Text(
                                               'Select branch',
@@ -259,7 +269,57 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                         ),
                                       ),
                                     SizedBox(
-                                      height: 10,
+                                      height: 10.sp,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        textWidget(
+                                          text: "Date",
+                                          fSize: 14.sp,
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  0.07,
+                                        ),
+                                        Expanded(
+                                          child: DropdownButton<String?>(
+                                            dropdownColor: AppColors.white,
+                                            value: selectedDay,
+                                            hint: Text(
+                                              'Select Day',
+                                              style:
+                                                  MyTextStyles.smallBlacktext,
+                                            ),
+                                            style: MyTextStyles.smallBlacktext,
+                                            isExpanded: true,
+                                            items: days
+                                                .map(
+                                                  (e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(
+                                                      e,
+                                                      style: MyTextStyles
+                                                          .smallBlacktext,
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            onChanged: (String? value) {
+                                              if (value != null) {
+                                                selectedDay = value;
+
+                                                setState(() {});
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
                                     ),
                                     GestureDetector(
                                         onTap: () async {
@@ -330,65 +390,6 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        textWidget(
-                                          text: "Date",
-                                          fSize: 14.sp,
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.07,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            selectedDate =
-                                                await utils.selectDate(context);
-
-                                            setState(() {});
-                                          },
-                                          child: Container(
-                                            height: 36,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 15,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.ratingbarColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(38),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                textWidget(
-                                                  text: selectedDate != null
-                                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                                                      : 'Select Schedule Day',
-                                                  fSize: 12.sp,
-                                                  fWeight: FontWeight.w400,
-                                                  color: Colors.grey.shade700,
-                                                ),
-                                                SizedBox(
-                                                  width: 5.sp,
-                                                ),
-                                                const Icon(
-                                                  Icons.calendar_today,
-                                                  color: Colors.black,
-                                                  size: 15,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
                                     Builder(builder: (context) {
                                       if (isLoading) {
                                         return const Center(
@@ -408,7 +409,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                 selectedBranch != null &&
                                                 selectedStartTime != null &&
                                                 selectedEndTime != null &&
-                                                selectedDate != null) {
+                                                selectedDay != null) {
                                               if (formKey.currentState!
                                                   .validate()) {
                                                 assignConsultantBranch();
@@ -436,7 +437,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   context: context,
                                                   message:
                                                       'Please Select End Time');
-                                            } else if (selectedDate == null) {
+                                            } else if (selectedDay == null) {
                                               CustomDialogue.message(
                                                   context: context,
                                                   message: 'Please Select Day');
@@ -484,7 +485,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
             "branch_id": selectedBranch!.id,
             "start_time": selectedStartTime!.toFormatted12Hours(),
             "end_time": selectedEndTime!.toFormatted12Hours(),
-            "day": selectedDate!.convertDateToDay(),
+            "day": selectedDay,
             "consultant_id": selectedConsultant!.id,
             "consultant_branch_id": selectedConsultantBranch!.id,
           },
@@ -497,6 +498,12 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
           selectedEndTime = null;
           nameController.clear();
           addressController.clear();
+
+          await Future.delayed(const Duration(seconds: 1));
+          final route = CupertinoPageRoute(
+            builder: (context) => const HomeScreen(),
+          );
+          Navigator.push(context, route);
         } else {
           if (res.toString().contains('message')) {
             // ignore: use_build_context_synchronously

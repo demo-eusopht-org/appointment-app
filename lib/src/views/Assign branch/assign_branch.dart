@@ -151,8 +151,7 @@ class AssigneBranchState extends State<AssignBranch> {
                                             Expanded(
                                               child:
                                                   DropdownButton<Consultant?>(
-                                                dropdownColor:
-                                                    AppColors.primary,
+                                                dropdownColor: AppColors.white,
                                                 value: selectedConsultant,
                                                 hint: Text(
                                                   'Select consultant',
@@ -167,7 +166,7 @@ class AssigneBranchState extends State<AssignBranch> {
                                                       (e) => DropdownMenuItem(
                                                         value: e,
                                                         child: Text(
-                                                          e.name!,
+                                                          e.email!,
                                                           style: MyTextStyles
                                                               .smallBlacktext,
                                                         ),
@@ -197,8 +196,7 @@ class AssigneBranchState extends State<AssignBranch> {
                                             ),
                                             Expanded(
                                               child: DropdownButton<Branch?>(
-                                                dropdownColor:
-                                                    AppColors.primary,
+                                                dropdownColor: AppColors.white,
                                                 value: selectedBranch,
                                                 hint: Text(
                                                   'Select branch',
@@ -321,6 +319,11 @@ class AssigneBranchState extends State<AssignBranch> {
         selectedEndTime = null;
         nameController.clear();
         addressController.clear();
+        await Future.delayed(const Duration(seconds: 1));
+        final route = CupertinoPageRoute(
+          builder: (context) => const HomeScreen(),
+        );
+        Navigator.push(context, route);
       } else {
         if (res.toString().contains('message')) {
           // ignore: use_build_context_synchronously

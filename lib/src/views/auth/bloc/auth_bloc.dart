@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:appointment_management/api/auth_api/api.dart';
@@ -38,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           'role_id': event.roleId,
         },
       );
-
+      log('business id ${res.businessId}');
       if (res.status == 200) {
         AuthResponse user = AuthResponse(token: res.token, user: res.user);
 
@@ -46,6 +45,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           key: 'user',
           value: user.toJson(),
         );
+        if (event.roleId == 1) {}
+
         await locator<LocalStorageService>().saveData(
           key: 'businessId',
           value: res.businessId,

@@ -304,7 +304,7 @@ class AssigneBranchState extends State<VerifyEmail> {
 
   Future<void> updatingUser() async {
     final userUpdate = User(
-        username: userData!.username,
+        name: userData!.name,
         email: userData!.email,
         createdAt: userData!.createdAt,
         updatedAt: userData!.updatedAt,
