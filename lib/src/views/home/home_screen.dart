@@ -14,6 +14,7 @@ import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/appointment_widget.dart';
+import 'package:appointment_management/src/views/Home/widgets/appointment_count_widget.dart';
 import 'package:appointment_management/src/views/Timetable/widgets/time_table.dart';
 import 'package:appointment_management/src/views/notifications/notification_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
@@ -122,105 +123,22 @@ class _HomeScreenState extends State<HomeScreen> {
       body: isLoading
           ? const Loader()
           : PopScope(
-              canPop: true,
+              canPop: false,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 5.sp),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Stack(
-                                children: [
-                                  Image.asset(
-                                    AppImages.right,
-                                    width: 164,
-                                    height: 53,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Positioned.fill(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        textWidget(
-                                          textAlign: TextAlign.center,
-                                          text: 'Total Appointments',
-                                          color: Colors.white,
-                                          fSize: 10.0,
-                                          fWeight: FontWeight.w600,
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        textWidget(
-                                          textAlign: TextAlign.center,
-                                          text: totalappointments.toString(),
-                                          color: Colors.white,
-                                          fSize: 18.0,
-                                          fWeight: FontWeight.w700,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Stack(
-                                  children: [
-                                    Image.asset(
-                                      AppImages.left,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned.fill(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          textWidget(
-                                            textAlign: TextAlign.center,
-                                            text: 'Total Monthly Appointments',
-                                            color: Colors.white,
-                                            fSize: 10.0,
-                                            fWeight: FontWeight.w600,
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          textWidget(
-                                            textAlign: TextAlign.center,
-                                            text: currentMonthAppointments
-                                                .toString()
-                                                .toString(),
-                                            color: Colors.white,
-                                            fSize: 18.0,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                        AppointmentCountWidget(
+                            title: 'Total Appointments',
+                            totalappointments: totalappointments.toString()),
+                        AppointmentCountWidget(
+                          title: 'Monthly Appointments',
+                          totalappointments:
+                              currentMonthAppointments.toString(),
                         ),
                       ],
                     ),
@@ -420,128 +338,104 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             final consultant = consultants[index];
 
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                alignment: Alignment.center,
-                                // width: MediaQuery.sizeOf(context).width *
-                                //     (consultantsData!.consultants.length > 1
-                                //         ? 0.6
-                                //         : 0.9),
-                                width: MediaQuery.sizeOf(context).width * 0.6,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              margin: EdgeInsets.all(5.sp),
+                              alignment: Alignment.center,
+                              width: MediaQuery.sizeOf(context).width * 0.6,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(5.sp),
+                                          child: CircleAvatar(
+                                            radius: 40.sp,
+                                            backgroundImage: consultant
+                                                        .imagename !=
+                                                    null
+                                                ? CachedNetworkImageProvider(
+                                                    '${Constants.consultantImageBaseUrl}${consultant.imagename}',
+                                                  )
+                                                : AssetImage(AppImages.noImage)
+                                                    as ImageProvider<Object>,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              textWidget(
+                                                text: consultant.name!
+                                                    .toUpperCaseFirst(),
+                                                fSize: 15.0,
+                                                fWeight: FontWeight.w800,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              textWidget(
+                                                text: '${consultant.field}',
+                                                fSize: 10.sp,
+                                                fWeight: FontWeight.w800,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              // const RatingWidget(
+                                              //   initialRating: 2.0,
+                                              // ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.sp,
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) =>
+                                                ConsultantDetails(
+                                              consultant: consultant,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Row(
                                         children: [
-                                          // CachedNetworkImage(
-                                          //   imageUrl:
-                                          //       '${Constants.consultantImageBaseUrl}${consultant.imagename ?? ''}',
-                                          //   fit: BoxFit.cover,
-                                          //   width: MediaQuery.sizeOf(context)
-                                          //           .width *
-                                          //       0.2,
-                                          //   errorWidget: (context, url, error) {
-                                          //     return Image.asset(
-                                          //       fit: BoxFit.contain,
-                                          //       AppImages.noImage,
-                                          //       width:
-                                          //           MediaQuery.sizeOf(context)
-                                          //                   .width *
-                                          //               0.2,
-                                          //     );
-                                          //   },
-                                          // ),
-                                          Padding(
-                                            padding: EdgeInsets.all(5.sp),
-                                            child: CircleAvatar(
-                                              radius: 40.sp,
-                                              backgroundImage: consultant
-                                                          .imagename !=
-                                                      null
-                                                  ? CachedNetworkImageProvider(
-                                                      '${Constants.consultantImageBaseUrl}${consultant.imagename}',
-                                                    )
-                                                  : AssetImage(
-                                                          AppImages.noImage)
-                                                      as ImageProvider<Object>,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
                                           Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                textWidget(
-                                                  text:
-                                                      consultant.name!.toUpperCaseFirst(),
-                                                  fSize: 15.0,
-                                                  fWeight: FontWeight.w800,
-                                                  color: Colors.white,
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                textWidget(
-                                                  text: '${consultant.field}',
-                                                  fSize: 10.0,
-                                                  fWeight: FontWeight.w800,
-                                                  color: Colors.white,
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                // const RatingWidget(
-                                                //   initialRating: 2.0,
-                                                // ),
-                                              ],
-                                            ),
+                                            child: textWidget(
+                                                text: 'Details', fSize: 13.0),
                                           ),
+                                          const Icon(Icons.arrow_forward_ios)
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  ConsultantDetails(
-                                                      consultant: consultant),
-                                            ),
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: textWidget(
-                                                  text: 'Details', fSize: 13.0),
-                                            ),
-                                            const Icon(Icons.arrow_right_alt)
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
@@ -557,7 +451,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             fWeight: FontWeight.bold,
                           ),
                         ),
-                      )
+                      ),
+                    SizedBox(
+                      height: 5.sp,
+                    ),
                   ],
                 ),
               ),
