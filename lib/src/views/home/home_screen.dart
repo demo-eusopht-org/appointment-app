@@ -93,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
       key: scaffoldKey,
       appBar: customAppBar(
         context: context,
-        title: 'Hi, ${user!['user']['username']}!',
+        title:
+            'Hi, ${user!['user']['username'].toString().toUpperCaseFirst()}!',
         leadingIcon: Image.asset(
           AppImages.menuIcon,
         ),
@@ -484,7 +485,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 textWidget(
                                                   text:
-                                                      '${consultant.name!.toUpperCaseFirst()}',
+                                                      consultant.name!.toUpperCaseFirst(),
                                                   fSize: 15.0,
                                                   fWeight: FontWeight.w800,
                                                   color: Colors.white,

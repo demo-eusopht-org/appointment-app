@@ -1,6 +1,12 @@
 import 'dart:developer';
 
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/get_business/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_data.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
+import 'package:appointment_management/services/get_services.dart';
+import 'package:appointment_management/services/share_service.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
@@ -82,6 +88,12 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
   }
 
   Widget buildAppointmentCard(BuildContext context, Appointment appointment) {
+    final usersData = getUsersData(appointment);
+    Customer customer = usersData['customer'];
+    Consultant consultant = usersData['consultant'];
+    Branch branch = usersData['branch'];
+    Business business = usersData['business'];
+
     return Stack(
       children: [
         Card(
@@ -107,14 +119,15 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                 ),
                 SizedBox(height: 5.sp),
                 textWidget(
-                  text: 'Customer ID: ${appointment.customerId}',
-                  fWeight: FontWeight.normal,
+                  text: 'Customer Name: ${customer.name!.toUpperCaseFirst()}',
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
                 SizedBox(height: 5.sp),
                 textWidget(
-                  text: 'Consultant ID: ${appointment.consultantId}',
-                  fWeight: FontWeight.normal,
+                  text:
+                      'Consultant Name: ${consultant.name!.toUpperCaseFirst()}',
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
                 SizedBox(height: 5.sp),
@@ -122,64 +135,61 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      text: 'Status: ${appointment.status}',
-                      fWeight: FontWeight.normal,
+                      text: 'Status: ${appointment.status!.toUpperCaseFirst()}',
+                      fWeight: FontWeight.w500,
                       color: AppColors.white,
                     ),
-                    Icon(
-                      isBooked
-                          ? Icons.calendar_month
-                          : isConducted
-                              ? Icons.check_box
-                              : Icons.cancel,
-                      color: AppColors.white,
-                      // color: isBooked
-                      //     ? AppColors.primary
-                      //     : isConducted
-                      //         ? AppColors.success
-                      //         : AppColors.danger,
-                      size: 20.sp,
-                    )
+                    // Icon(
+                    //   isBooked
+                    //       ? Icons.calendar_month
+                    //       : isConducted
+                    //           ? Icons.check_box
+                    //           : Icons.cancel,
+                    //   color: AppColors.white,
+                    //   size: 20.sp,
+                    // )
                   ],
                 ),
                 SizedBox(height: 5.sp),
                 textWidget(
-                  text: 'Branch ID: ${appointment.branchId}',
-                  fWeight: FontWeight.normal,
+                  text: 'Address: ${branch.address!.toUpperCaseFirst()}',
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
                 SizedBox(height: 5.sp),
                 textWidget(
-                  text: 'Business ID: ${appointment.businessId}',
-                  fWeight: FontWeight.normal,
+                  text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
                 if (appointment.appointmentNote != null) SizedBox(height: 5.sp),
                 if (appointment.appointmentNote != null)
                   textWidget(
                     text: 'Appointment Note: ${appointment.appointmentNote}',
-                    fWeight: FontWeight.normal,
+                    fWeight: FontWeight.w500,
                     color: AppColors.white,
                   ),
                 SizedBox(height: 5.sp),
                 textWidget(
                   text:
                       'Date: ${appointment.appointmentDate!.toPkFormattedDate()}',
-                  fWeight: FontWeight.normal,
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
                 SizedBox(height: 5.sp),
                 textWidget(
                   text:
                       'Start: ${appointment.start.toString().split(' ').last.fromStringtoFormattedTime()}',
-                  fWeight: FontWeight.normal,
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
-                SizedBox(height: 5.sp),
+                SizedBox(
+                  height: 5.sp,
+                ),
                 textWidget(
                   text:
                       'End: ${appointment.end.toString().split(' ').last.fromStringtoFormattedTime()}',
-                  fWeight: FontWeight.normal,
+                  fWeight: FontWeight.w500,
                   color: AppColors.white,
                 ),
               ],
@@ -211,6 +221,11 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                           selectedValue['selectedTime']);
                     },
                   );
+                } else if (value == 'share') {
+                  MySharePlus.onShare(
+                    context,
+                    appointment,
+                  );
                 }
               },
               itemBuilder: (context) {
@@ -222,6 +237,10 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   PopupMenuItem(
                     value: 'reSchedule',
                     child: textWidget(text: 'Reschedule'),
+                  ),
+                  PopupMenuItem(
+                    value: 'share',
+                    child: textWidget(text: 'Share'),
                   ),
                 ];
               },
@@ -278,5 +297,43 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
           context: context,
           message: 'Appointment not Rescheduled $e');
     }
+  }
+
+  Map<String, dynamic> getUsersData(Appointment appointment) {
+    final branches = GetLocalData.getBranches();
+    final customers = GetLocalData.getCustomers();
+    final consultants = GetLocalData.getConsultants();
+    final businessData = GetLocalData.getBusiness();
+    Branch branch = branches
+        .where(
+          (element) => element.id.toString() == appointment.branchId,
+        )
+        .first;
+    Customer customer = customers
+        .where(
+          (element) =>
+              element.id.toString() == appointment.customerId.toString(),
+        )
+        .first;
+    Consultant consultant = consultants
+        .where(
+          (element) =>
+              element.id.toString() == appointment.consultantId.toString(),
+        )
+        .first;
+
+    Business business = businessData
+        .where(
+          (element) =>
+              element.id.toString() == appointment.businessId.toString(),
+        )
+        .first;
+    Map<String, dynamic> usersData = {
+      'customer': customer,
+      'consultant': consultant,
+      'branch': branch,
+      'business': business,
+    };
+    return usersData;
   }
 }

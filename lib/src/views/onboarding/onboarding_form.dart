@@ -348,7 +348,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 child: DateTimePicker(
                                   initialValue: widget.isUpdate
                                       ? selectedStartTime
-                                      : TimeOfDay.now().toFormattedTime(),
+                                      : TimeOfDay.now().toFormatted12Hours(),
                                   type: DateTimePickerType.time,
                                   firstDate: DateTime.now(),
                                   icon: const Icon(Icons.access_time_filled),
@@ -375,7 +375,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 child: DateTimePicker(
                                   initialValue: widget.isUpdate
                                       ? selectedEndTime
-                                      : TimeOfDay.now().toFormattedTime(),
+                                      : TimeOfDay.now().toFormatted12Hours(),
                                   type: DateTimePickerType.time,
                                   firstDate: DateTime.now(),
                                   icon: const Icon(Icons.access_time_filled),

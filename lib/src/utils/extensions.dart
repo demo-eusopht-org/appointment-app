@@ -38,7 +38,8 @@ extension DateTimeUtils on DateTime {
   String getShortFormattedDate() {
     return DateFormat('EEE dd MMM').format(this);
   }
-  String fromDateTimeToTime(){
+
+  String fromDateTimeToTime() {
     return DateFormat('hh:mm:ss a').format(this);
   }
 }
@@ -51,12 +52,18 @@ extension DurationUtils on Duration {
 }
 
 extension TimeFormat on TimeOfDay {
-  String toFormattedTime() {
+  String toFormatted12Hours() {
     final hour = this.hour % 12;
     final minute = this.minute.toString().padLeft(2, '0');
 
     final period = this.hour >= 12 ? 'PM' : 'AM';
     return '${hour == 0 ? 12 : hour}:$minute:00 $period';
+  }
+
+  String toFormatted24Hours() {
+    final hour = this.hour.toString().padLeft(2, '0');
+    final minute = this.minute.toString().padLeft(2, '0');
+    return '$hour:$minute:00';
   }
 }
 

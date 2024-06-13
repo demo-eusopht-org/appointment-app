@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
-import 'package:appointment_management/model/get_business/get_business_branch.dart'; 
+import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
@@ -140,7 +140,8 @@ class _CreateBranchState extends State<CreateBranch> {
                                 children: [
                                   Text(
                                     selectedStartTime != null
-                                        ? selectedStartTime!.toFormattedTime()
+                                        ? selectedStartTime!
+                                            .toFormatted12Hours()
                                         : 'Select Branch Start time',
                                     style: MyTextStyles.smallBlacktext.copyWith(
                                       color: AppColors.black.withOpacity(
@@ -168,9 +169,8 @@ class _CreateBranchState extends State<CreateBranch> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                     
                                     selectedEndTime != null
-                                        ? '${selectedEndTime!.toFormattedTime()}'
+                                        ? selectedEndTime!.toFormatted12Hours()
                                         : 'Select Branch End time',
                                     style: MyTextStyles.smallBlacktext.copyWith(
                                       color: AppColors.black.withOpacity(
@@ -266,8 +266,8 @@ class _CreateBranchState extends State<CreateBranch> {
       dynamic res = await api!.createBranch(
         {
           "business_id": businessId.toString(),
-          "start_time": selectedStartTime!.toFormattedTime(),
-          "end_time": selectedEndTime!.toFormattedTime(),
+          "start_time": selectedStartTime!.toFormatted12Hours(),
+          "end_time": selectedEndTime!.toFormatted12Hours(),
           "address": addressController.text,
         },
       );

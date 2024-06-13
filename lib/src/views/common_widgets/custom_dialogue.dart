@@ -143,7 +143,7 @@ class CustomDialogue {
               TextField(
                 controller: notesController,
                 decoration: const InputDecoration(
-                  labelText: 'Write some Note',
+                  labelText: 'Add Note',
                 ),
               ),
             ],

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
@@ -10,6 +11,7 @@ import 'package:appointment_management/model/get_customer_model/get_customer_mod
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/services/share_service.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
@@ -596,7 +598,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           width: 10,
                                         ),
                                         textWidget(
-                                          text: "Share On WhatsApp",
+                                          text: "Share Appointment",
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
                                         ),
@@ -709,7 +711,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
           "consultant_id": selectedConsultant!.id,
           "customer_id": selectedCustomer!.id,
           "business_id": businessId,
-          "schedule_time": selectedTime!.toFormattedTime(),
+          "schedule_time": selectedTime!.toFormatted12Hours(),
           "appointment_date": selectedDate!.toFormattedDate(),
           "branch_id": selectedBranch!.id,
         },
@@ -719,6 +721,9 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
         // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
         await Future.delayed(const Duration(seconds: 2));
+        if (isChecked) {
+          shareAppointment();
+        }
         final route = CupertinoPageRoute(
           builder: (context) => const HomeScreen(),
         );
@@ -764,5 +769,25 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     }
 
     setState(() {});
+  }
+
+  void shareAppointment() {
+    final startTime =
+        utils.mergeTime(selectedDate!, selectedTime!.toFormatted24Hours());
+
+    final endTime = startTime.add(const Duration(minutes: 30));
+
+    MySharePlus.onShare(
+      context,
+      Appointment(
+        start: startTime,
+        end: endTime,
+        consultantId: selectedConsultant!.id,
+        customerId: selectedCustomer!.id,
+        businessId: businessId,
+        branchId: selectedBranch!.id.toString(),
+        appointmentDate: selectedDate!,
+      ),
+    );
   }
 }

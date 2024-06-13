@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
@@ -14,6 +15,15 @@ class GetLocalData {
         locator<LocalStorageService>().getData(key: 'services');
     if (tempServices != null) {
       return tempServices.map((e) => Service.fromJson(e)).toList();
+    }
+    return [];
+  }
+
+  static List<Business> getBusiness() {
+    List<Map<String, dynamic>>? tempBusiness =
+        locator<LocalStorageService>().getData(key: 'businessData');
+    if (tempBusiness != null) {
+      return tempBusiness.map((e) => Business.fromJson(e)).toList();
     }
     return [];
   }

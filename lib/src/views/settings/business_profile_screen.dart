@@ -42,7 +42,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
 
   dynamic user, businessId;
 
-  List<Business>? businessData;
+  List<Business>? business;
   @override
   void initState() {
     super.initState();
@@ -66,11 +66,11 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
       ),
       body: isLoading
           ? const Loader()
-          : businessData == null
+          : business!.isEmpty
               ? textWidget(text: 'No business created')
               : Stack(
                   children: [
-                    for (int i = 0; i < businessData!.length; i++)
+                    for (int i = 0; i < business!.length; i++)
                       SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +92,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                     child: Image.asset(
                                         'assets/images/Vector 2.png'),
                                   ),
-                                  if (businessData![i].name != null)
+                                  if (business![i].name != null)
                                     Positioned(
                                       top: 0,
                                       left: 10,
@@ -114,12 +114,12 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                     onTap: () {},
                                                     child: CircleAvatar(
                                                       radius: 35.sp,
-                                                      backgroundImage: businessData![
+                                                      backgroundImage: business![
                                                                       i]
                                                                   .imagename !=
                                                               null
                                                           ? CachedNetworkImageProvider(
-                                                              '${Constants.businessImageBaseUrl}${businessData![i].imagename}')
+                                                              '${Constants.businessImageBaseUrl}${business![i].imagename}')
                                                           : AssetImage(AppImages
                                                                   .noImage)
                                                               as ImageProvider<
@@ -138,17 +138,17 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   textWidget(
-                                                    text: businessData![i]
+                                                    text: business![i]
                                                         .name
                                                         .toString(),
                                                     fSize: 15.sp,
                                                     fWeight: FontWeight.w800,
                                                     color: Colors.white,
                                                   ),
-                                                  if (businessData![i].email !=
+                                                  if (business![i].email !=
                                                       null)
                                                     textWidget(
-                                                      text: businessData![i]
+                                                      text: business![i]
                                                           .email
                                                           .toString(),
                                                       fSize: 10.sp,
@@ -165,8 +165,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                     builder: (context) =>
                                                         OnboardingPage(
                                                       isUpdate: true,
-                                                      business:
-                                                          businessData![i],
+                                                      business: business![i],
                                                     ),
                                                   );
 
@@ -205,20 +204,20 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               height: 10,
                             ),
                             BusinessItem(
-                              name: '${businessData![i].name}',
+                              name: '${business![i].name}',
                               imagePath: AppImages.hospital,
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             BusinessItem(
-                              name: businessData![i].completeAddress.toString(),
+                              name: business![i].completeAddress.toString(),
                               imagePath: AppImages.location,
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            if (businessData![i].phoneNumber != null)
+                            if (business![i].phoneNumber != null)
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -235,9 +234,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                       width: 10,
                                     ),
                                     textWidget(
-                                      text: businessData![i]
-                                          .phoneNumber
-                                          .toString(),
+                                      text: business![i].phoneNumber.toString(),
                                       fSize: 14.0,
                                       fWeight: FontWeight.w700,
                                     ),
@@ -247,7 +244,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             SizedBox(
                               height: 10.sp,
                             ),
-                            if (businessData![i].email != null)
+                            if (business![i].email != null)
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -273,11 +270,11 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             SizedBox(
                               height: 10.sp,
                             ),
-                            if (businessData![i].website != null)
+                            if (business![i].website != null)
                               InkWell(
                                 onTap: () {
                                   _launchUrl(
-                                      '${businessData![i].website.toString()}');
+                                      '${business![i].website.toString()}');
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -294,9 +291,9 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      if (businessData![i].website != null)
+                                      if (business![i].website != null)
                                         textWidget(
-                                          text: '${businessData![i].website}',
+                                          text: '${business![i].website}',
                                           fSize: 14.0,
                                           fWeight: FontWeight.w700,
                                         ),
@@ -397,21 +394,6 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     }
   }
 
-  Future<void> getBusinessData() async {
-    GetBusinessData? tempBusiness = await ApiServices.getBusinessData(
-      context,
-      Constants.getBusinessData + userData!.id.toString(),
-      user,
-    );
-
-    if (tempBusiness != null) {
-      if (tempBusiness.business!.isNotEmpty) {
-        businessData = tempBusiness.business;
-      }
-    }
-    setState(() {});
-  }
-
   Future<void> _init() async {
     setState(() {
       isLoading = true;
@@ -419,7 +401,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     userData = GetLocalData.getUser();
-    await getBusinessData();
+    business = GetLocalData.getBusiness();
+
     setState(() {
       isLoading = false;
     });

@@ -87,4 +87,13 @@ class utils {
     final dateTime = '${date} ${time}';
     return dateTime.toDateTime();
   }
+
+  static DateTime mergeTime(DateTime appointmentDate, String scheduleTime) {
+    final date = appointmentDate.toString().split(' ').first;
+
+    final time = scheduleTime;
+
+    final dateTime = '$date $time';
+    return dateTime.toDateTime();
+  }
 }

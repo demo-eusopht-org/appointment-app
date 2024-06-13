@@ -276,7 +276,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                             Text(
                                               selectedStartTime != null
                                                   ? selectedStartTime!
-                                                      .toFormattedTime()
+                                                      .toFormatted12Hours()
                                                   : 'Select Start time',
                                               style: MyTextStyles.smallBlacktext
                                                   .copyWith(
@@ -311,7 +311,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                             Text(
                                               selectedEndTime != null
                                                   ? selectedEndTime!
-                                                      .toFormattedTime()
+                                                      .toFormatted12Hours()
                                                   : 'Select End time',
                                               style: MyTextStyles.smallBlacktext
                                                   .copyWith(
@@ -482,8 +482,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
         dynamic res = await api!.assignConsultantBranchSchedule(
           {
             "branch_id": selectedBranch!.id,
-            "start_time": selectedStartTime!.toFormattedTime(),
-            "end_time": selectedEndTime!.toFormattedTime(),
+            "start_time": selectedStartTime!.toFormatted12Hours(),
+            "end_time": selectedEndTime!.toFormatted12Hours(),
             "day": selectedDate!.convertDateToDay(),
             "consultant_id": selectedConsultant!.id,
             "consultant_branch_id": selectedConsultantBranch!.id,

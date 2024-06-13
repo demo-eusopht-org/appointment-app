@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
+import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -83,6 +84,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _init() async {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
+
+    await getBusinessData();
     await getServices();
     await getCustomerData();
     await getConsultantData();
@@ -128,21 +131,20 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> getBusinessBranch() async {
-    GetBranch? tempBranch = await ApiServices.getBusinessBranch(
+    GetBranch? tempBusiness = await ApiServices.getBusinessBranch(
       context,
       Constants.getBusinessBranch + businessId.toString(),
       user,
     );
 
-    if (tempBranch != null) {
-      if (tempBranch.businessBranches!.isNotEmpty) {
+    if (tempBusiness != null) {
+      if (tempBusiness.businessBranches!.isNotEmpty) {
         await locator<LocalStorageService>().saveData(
           key: 'branches',
-          value: tempBranch.businessBranches!.map((e) => e.toJson()).toList(),
+          value: tempBusiness.businessBranches!.map((e) => e.toJson()).toList(),
         );
       }
     }
-    setState(() {});
   }
 
   Future<void> getCustomerData() async {
@@ -156,6 +158,23 @@ class _SplashScreenState extends State<SplashScreen> {
         await locator<LocalStorageService>().saveData(
           key: 'customers',
           value: tempCustomer.customers!.map((e) => e.toJson()).toList(),
+        );
+      }
+    }
+  }
+
+  Future<void> getBusinessData() async {
+    GetBusinessData? tempBusiness = await ApiServices.getBusinessData(
+      context,
+      Constants.getBusinessData + user['user']['id'].toString(),
+      user,
+    );
+
+    if (tempBusiness != null) {
+      if (tempBusiness.business!.isNotEmpty) {
+        await locator<LocalStorageService>().saveData(
+          key: 'businessData',
+          value: tempBusiness.business!.map((e) => e.toJson()).toList(),
         );
       }
     }
