@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
@@ -210,10 +212,10 @@ class _PatientHistoryState extends State<PatientHistory> {
                   itemCount: customerAppointments.length,
                   itemBuilder: (context, index) {
                     Appointment appointment = customerAppointments[index];
-                    Consultant tempConsultant = consultants
-                        .where(
-                            (element) => element.id == appointment.customerId)
-                        .first;
+                    Consultant tempConsultant = consultants.where((element) {
+                      log('element.id');
+                      return element.id == appointment.customerId;
+                    }).first;
 
                     return Column(
                       children: [

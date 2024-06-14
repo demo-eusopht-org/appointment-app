@@ -12,6 +12,7 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
+import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -228,7 +229,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     // Padding(
@@ -354,8 +355,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             Center(
                               child: textWidget(
                                 text: 'No services found',
-                                fWeight: FontWeight.w700,
-                                color: Colors.black,
+                                fWeight: FontWeight.w500,
                               ),
                             )
                           else
@@ -365,43 +365,49 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               fWeight: FontWeight.w700,
                               color: Colors.black,
                             ),
-                          const SizedBox(
-                            height: 10,
-                          ),
                           if (services.isNotEmpty)
-                            for (int i = 0; i < services.length; i++)
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.fiber_manual_record,
-                                    size: 10,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 5.sp,
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        textWidget(
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          for (int i = 0; i < services.length; i++)
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.fiber_manual_record,
+                                  size: 10,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 5.sp,
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: textWidget(
                                           text: '${services[i].serviceName}',
                                           fSize: 15.sp,
+                                          textOverFlow: TextOverflow.ellipsis,
                                           fWeight: FontWeight.w500,
                                           color: Colors.black,
                                         ),
-                                        textWidget(
-                                          text: '${services[i].price}',
-                                          fSize: 15.sp,
-                                          fWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.sp,
+                                      ),
+                                      textWidget(
+                                        text: 'Rs: ${services[i].price}',
+                                        fSize: 15.sp,
+                                        fWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -428,16 +434,12 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               fWeight: FontWeight.w500,
                             ),
                           SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.2,
+                            height: MediaQuery.sizeOf(context).height * 0.18,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
                               itemCount: consultantSchedules!.length,
                               itemBuilder: (context, index) {
-                                // bool isSelected = (index == selectedDateIndex);
-
-                                // sortAppointmentList();
-
                                 Branch? consultantBranch;
                                 ConsultantSchedule consultantSchedule =
                                     consultantSchedules![index];
@@ -452,91 +454,145 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                       tempConsultantBranches.first;
                                 }
 
-                                return GestureDetector(
-                                  onTap: () {
-                                    // setState(() {
-                                    //   selectedDateIndex = index;
-                                    // });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0,
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.sp,
-                                        vertical: 10.sp,
+                                return Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0,
                                       ),
-                                      width: MediaQuery.sizeOf(context).width /
-                                          2.7,
-                                      decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: AppColors.black),
-                                        color:
-                                            // isSelected ?
-                                            // isBooked
-                                            //     ? AppColors.primary
-                                            //     : isConducted
-                                            //         ? AppColors.success
-                                            //         : AppColors.danger,
-                                            AppColors.primary,
-                                        // :   AppColors.ratingbarColor,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          if (consultantBranch != null)
-                                            textWidget(
-                                              text:
-                                                  '${consultantBranch.address}',
-                                              maxline: 3,
-                                              textOverFlow:
-                                                  TextOverflow.ellipsis,
-                                              color: Colors.white,
-                                              fWeight: FontWeight.w700,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.sp,
+                                          vertical: 10.sp,
+                                        ),
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.9,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColors.black),
+                                          color: AppColors.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (consultantBranch != null)
+                                              textWidget(
+                                                text:
+                                                    '${consultantBranch.address}',
+                                                maxline: 2,
+                                                textOverFlow:
+                                                    TextOverflow.ellipsis,
+                                                color: Colors.white,
+                                                fWeight: FontWeight.w700,
+                                              ),
+                                            SizedBox(
+                                              height: 5.sp,
                                             ),
-                                          SizedBox(
-                                            height: 5.sp,
-                                          ),
-                                          textWidget(
-                                            text: consultantSchedule.day
-                                                .toString(),
-                                            color:
-                                                // isSelected ?
-                                                Colors.white,
-                                            // : Colors.black,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                          SizedBox(
-                                            height: 5.sp,
-                                          ),
-                                          textWidget(
-                                            text:
-                                                'Start: ${consultantSchedule.startTime!.fromStringtoFormattedTime()}',
-                                            color:
-                                                // isSelected ?
-                                                Colors.white,
-                                            // : Colors.black,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                          SizedBox(
-                                            height: 5.sp,
-                                          ),
-                                          textWidget(
-                                            text:
-                                                'End: ${consultantSchedule.endTime!.fromStringtoFormattedTime()}',
-                                            color:
-                                                // isSelected ?
-                                                Colors.white,
-                                            // : Colors.black,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                        ],
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.calendar_month,
+                                                  color: AppColors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 5.sp,
+                                                ),
+                                                textWidget(
+                                                  text: consultantSchedule.day
+                                                      .toString(),
+                                                  color:
+                                                      // isSelected ?
+                                                      Colors.white,
+                                                  // : Colors.black,
+                                                  fWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.sp,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.schedule,
+                                                  color: AppColors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 5.sp,
+                                                ),
+                                                textWidget(
+                                                  text:
+                                                      'Start: ${consultantSchedule.startTime!.fromStringtoFormattedTime()}',
+                                                  color:
+                                                      // isSelected ?
+                                                      Colors.white,
+                                                  // : Colors.black,
+                                                  fWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.sp,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.schedule,
+                                                  color: AppColors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 5.sp,
+                                                ),
+                                                textWidget(
+                                                  text:
+                                                      'End: ${consultantSchedule.endTime!.fromStringtoFormattedTime()}',
+                                                  color: Colors.white,
+                                                  fWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: PopupMenuButton<String>(
+                                        iconColor: AppColors.white,
+                                        onSelected: (String selectedValue) {
+                                          if (selectedValue == 'Update') {
+                                          } else if (selectedValue ==
+                                              'Delete') {
+                                            CustomDialogue.displayDialogue(
+                                              context,
+                                              message:
+                                                  'Are you sure you want to delete?',
+                                              okayTap: () {
+                                                // deleteService(service);
+                                              },
+                                            );
+                                          }
+                                        },
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem(
+                                              child: textWidget(text: 'Update'),
+                                            ),
+                                            PopupMenuItem(
+                                              child: textWidget(text: 'Delete'),
+                                            ),
+                                          ];
+                                        },
+                                      ),
+                                    )
+                                  ],
                                 );
                               },
                             ),
