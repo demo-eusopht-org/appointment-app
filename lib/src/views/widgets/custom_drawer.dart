@@ -137,8 +137,9 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) =>
-                              const AssignConsultantSchedule(),
+                          builder: (context) => const AssignConsultantSchedule(
+                            updateSchedule: false,
+                          ),
                         ),
                       );
                     },

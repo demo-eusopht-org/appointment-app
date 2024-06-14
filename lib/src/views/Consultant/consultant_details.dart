@@ -14,6 +14,7 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking_doctor.dart';
+import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
@@ -574,6 +575,16 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                         onSelected:
                                             (String selectedValue) async {
                                           if (selectedValue == 'update') {
+                                            final route = CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  AssignConsultantSchedule(
+                                                updateSchedule: true,
+                                                consultantSchedule:
+                                                    consultantSchedule,
+                                                consultantId: consultant!.id,
+                                              ),
+                                            );
+                                            Navigator.push(context, route);
                                           } else if (selectedValue ==
                                               'delete') {
                                             final result =
@@ -873,12 +884,11 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
 
       if (res['status'] == 200) {
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
         CustomDialogue.message(context: context, message: res['message']);
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
-        // onUpdate();
       } else {
         if (res.toString().contains('message')) {
           // ignore: use_build_context_synchronously

@@ -5,6 +5,7 @@ import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_branches.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
+import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
@@ -22,7 +23,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AssignConsultantSchedule extends StatefulWidget {
-  const AssignConsultantSchedule({super.key});
+  final int? consultantId;
+  final ConsultantSchedule? consultantSchedule;
+  final bool updateSchedule;
+  const AssignConsultantSchedule({
+    super.key,
+    this.consultantId,
+    this.consultantSchedule,
+    required this.updateSchedule,
+  });
 
   @override
   State<AssignConsultantSchedule> createState() => AssigneBranchState();
@@ -59,6 +68,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
     'Saturday',
     'Sunday',
   ];
+  bool isEdit = false;
 
   @override
   void initState() {
@@ -84,7 +94,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: textWidget(
-              text: 'Assign Consultant Schedule',
+              text: '${isEdit ? 'Update' : 'Assign'} Consultant Schedule',
               color: Colors.black,
               fSize: 17.0,
               fWeight: FontWeight.w800,
@@ -92,8 +102,12 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                if (isEdit) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
               },
               icon: const Icon(
                 Icons.arrow_back,
@@ -162,9 +176,16 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                 .toList(),
                                             onChanged: (Consultant? value) {
                                               if (value != null) {
-                                                selectedConsultant = value;
-                                                log('message ${selectedConsultant!.toJson()}');
-                                                setState(() {});
+                                                if (isEdit) {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'You cannot change consultant');
+                                                } else {
+                                                  selectedConsultant = value;
+
+                                                  setState(() {});
+                                                }
                                               }
                                             },
                                           ),
@@ -443,7 +464,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   message: 'Please Select Day');
                                             }
                                           },
-                                          text: 'Assign Schedule',
+                                          text:
+                                              '${isEdit ? 'Update' : 'Assign'} Schedule',
                                         ),
                                       );
                                     }),
@@ -480,16 +502,31 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
       await getConsultantBranches();
 
       if (selectedConsultantBranch != null) {
-        dynamic res = await api!.assignConsultantBranchSchedule(
-          {
-            "branch_id": selectedBranch!.id.toString(),
-            "start_time": selectedStartTime!.toFormatted12Hours(),
-            "end_time": selectedEndTime!.toFormatted12Hours(),
-            "day": selectedDay,
-            "consultant_id": selectedConsultant!.id.toString(),
-            "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
-          },
-        );
+        dynamic res;
+        if (isEdit) {
+          res = await api!.updateConsultantSchedule(
+            {
+              "branch_id": selectedBranch!.id.toString(),
+              "start_time": selectedStartTime!.toFormatted12Hours(),
+              "end_time": selectedEndTime!.toFormatted12Hours(),
+              "day": selectedDay,
+              "consultant_id": selectedConsultant!.id.toString(),
+              "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
+              "schedule_id": widget.consultantSchedule!.scheduledId,
+            },
+          );
+        } else {
+          res = await api!.assignConsultantBranchSchedule(
+            {
+              "branch_id": selectedBranch!.id.toString(),
+              "start_time": selectedStartTime!.toFormatted12Hours(),
+              "end_time": selectedEndTime!.toFormatted12Hours(),
+              "day": selectedDay,
+              "consultant_id": selectedConsultant!.id.toString(),
+              "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
+            },
+          );
+        }
 
         if (res['status'] == 200) {
           // ignore: use_build_context_synchronously
@@ -514,10 +551,17 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
           }
         }
       } else {
-        CustomDialogue.message(
-            context: context,
-            message:
-                'This branch is not assigned to ${selectedConsultant!.name}');
+        if (isEdit) {
+          CustomDialogue.message(
+              // ignore: use_build_context_synchronously
+              context: context,
+              message: 'Schedule is not updated');
+        } else {
+          CustomDialogue.message(
+              context: context,
+              message:
+                  'This branch is not assigned to ${selectedConsultant!.name}');
+        }
       }
 
       setState(() {
@@ -539,6 +583,22 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
   TimeOfDay? selectedEndTime;
 
   Future<void> _init() async {
+    isEdit = widget.updateSchedule;
+    consultants = GetLocalData.getConsultants();
+    branches = GetLocalData.getBranches();
+
+    if (isEdit) {
+      selectedBranch = branches
+          .where(
+            (element) => element.id == widget.consultantSchedule!.branchId,
+          )
+          .first;
+      selectedConsultant = consultants
+          .where(
+            (element) => element.id == widget.consultantId,
+          )
+          .first;
+    }
     api ??= Api(
       dio,
       baseUrl: Constants.baseUrl,
@@ -548,10 +608,6 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
     setState(() {
       isLoading = true;
     });
-
-    consultants = GetLocalData.getConsultants();
-    branches = GetLocalData.getBranches();
-    // await getConsultantBranches();
 
     setState(() {
       isLoading = false;
