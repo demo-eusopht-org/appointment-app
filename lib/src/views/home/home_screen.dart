@@ -133,7 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         AppointmentCountWidget(
                             title: 'Total Appointments',
-                            totalappointments: totalappointments.toString()),
+                            totalappointments: isAdmin!
+                                ? totalappointments.toString()
+                                : allAppointments!.length.toString()),
                         AppointmentCountWidget(
                           title: 'Monthly Appointments',
                           totalappointments:
