@@ -266,8 +266,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
         dio,
         baseUrl: Constants.baseUrl,
       );
-      log('time1 ${time}');
-      log('time1 date ${date}');
+
       dynamic res = await api.reScheduleAppointment({
         "consultant_id": appointment.consultantId,
         "customer_id": appointment.customerId,

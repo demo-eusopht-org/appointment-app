@@ -2,30 +2,27 @@ import 'dart:developer';
 
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
-import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
-import 'package:appointment_management/src/views/customer/view_details.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PatientHistory extends StatefulWidget {
+class CustomerHistory extends StatefulWidget {
   final List<Appointment> customerAppointments;
-  const PatientHistory({
+  const CustomerHistory({
     super.key,
     required this.customerAppointments,
   });
 
   @override
-  State<PatientHistory> createState() => _PatientHistoryState();
+  State<CustomerHistory> createState() => _CustomerHistoryState();
 }
 
-class _PatientHistoryState extends State<PatientHistory> {
+class _CustomerHistoryState extends State<CustomerHistory> {
   List<Appointment> customerAppointments = [];
 
   int? totalSchedule, totalVisited, totalCancelled;
@@ -212,10 +209,11 @@ class _PatientHistoryState extends State<PatientHistory> {
                   itemCount: customerAppointments.length,
                   itemBuilder: (context, index) {
                     Appointment appointment = customerAppointments[index];
-                    Consultant tempConsultant = consultants.where((element) {
-                      log('element.id');
-                      return element.id == appointment.customerId;
-                    }).first;
+
+                    Consultant tempConsultant = consultants
+                        .where(
+                            (element) => element.id == appointment.consultantId)
+                        .first;
 
                     return Column(
                       children: [
@@ -228,21 +226,18 @@ class _PatientHistoryState extends State<PatientHistory> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 30,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: textWidget(
-                                      text: '${tempConsultant.name}',
-                                      fSize: 10.0,
-                                      fWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      backgroundColor: AppColors.primary,
-                                      foregroundColor: Colors.white,
-                                    ),
+                                  child: textWidget(
+                                    text:
+                                        tempConsultant.name!.toUpperCaseFirst(),
+                                    fSize: 12.0.sp,
+                                    maxline: 1,
+                                    textOverFlow: TextOverflow.ellipsis,
+                                    fWeight: FontWeight.w600,
+                                    color: appointment.status == 'booked'
+                                        ? AppColors.primary
+                                        : appointment.status == 'completed'
+                                            ? AppColors.success
+                                            : AppColors.danger,
                                   ),
                                 ),
                               ),
@@ -251,7 +246,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                                   child: textWidget(
                                     text: appointment.appointmentDate!
                                         .toPkFormattedDate(),
-                                    fSize: 10,
+                                    fSize: 12.sp,
                                     fWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -261,7 +256,7 @@ class _PatientHistoryState extends State<PatientHistory> {
                                   child: textWidget(
                                     text: appointment.scheduleTime!
                                         .fromStringtoFormattedTime(),
-                                    fSize: 10,
+                                    fSize: 12.sp,
                                     fWeight: FontWeight.w500,
                                   ),
                                 ),

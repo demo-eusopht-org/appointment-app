@@ -1,6 +1,9 @@
 import 'dart:developer';
 
+import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
+import 'package:appointment_management/api/auth_api/dio.dart';
+import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
@@ -12,7 +15,9 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
+import 'package:appointment_management/src/views/widgets/confirmation_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -566,26 +571,41 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                       right: 0,
                                       child: PopupMenuButton<String>(
                                         iconColor: AppColors.white,
-                                        onSelected: (String selectedValue) {
-                                          if (selectedValue == 'Update') {
+                                        onSelected:
+                                            (String selectedValue) async {
+                                          if (selectedValue == 'update') {
                                           } else if (selectedValue ==
-                                              'Delete') {
-                                            CustomDialogue.displayDialogue(
-                                              context,
-                                              message:
-                                                  'Are you sure you want to delete?',
-                                              okayTap: () {
-                                                // deleteService(service);
+                                              'delete') {
+                                            final result =
+                                                await showModalBottomSheet(
+                                              enableDrag: true,
+                                              context: context,
+                                              builder: (context) {
+                                                return const ConfirmationDialogue(
+                                                  message:
+                                                      'Are you sure you want to delete your schedule?',
+                                                );
                                               },
                                             );
+
+                                            if (result ?? false) {
+                                              deleteSchedule(
+                                                // ignore: use_build_context_synchronously
+                                                context,
+                                                consultantSchedule.scheduledId!,
+                                                consultant!.id!,
+                                              );
+                                            }
                                           }
                                         },
                                         itemBuilder: (context) {
                                           return [
                                             PopupMenuItem(
+                                              value: 'update',
                                               child: textWidget(text: 'Update'),
                                             ),
                                             PopupMenuItem(
+                                              value: 'delete',
                                               child: textWidget(text: 'Delete'),
                                             ),
                                           ];
@@ -831,5 +851,49 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
     }
 
     setState(() {});
+  }
+
+  static Future<void> deleteSchedule(
+    BuildContext context,
+    int scheduleId,
+    int consultantId,
+  ) async {
+    try {
+      Api api = Api(
+        dio,
+        baseUrl: Constants.baseUrl,
+      );
+
+      dynamic res = await api.deleteConsultantSchedule(
+        {
+          "schedule_id": scheduleId,
+          "consultant_id": consultantId,
+        },
+      );
+
+      if (res['status'] == 200) {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+        CustomDialogue.message(context: context, message: res['message']);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+        // onUpdate();
+      } else {
+        if (res.toString().contains('message')) {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['message']);
+        } else {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['error']);
+        }
+      }
+    } catch (e) {
+      log('Something went wrong in Delete Schedule api $e');
+      CustomDialogue.message(
+          // ignore: use_build_context_synchronously
+          context: context,
+          message: 'Schedule not Deleted $e');
+    }
   }
 }

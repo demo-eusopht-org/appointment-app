@@ -8,14 +8,13 @@ import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
-import 'package:appointment_management/src/views/customer/customer_history.dart';
+import 'package:appointment_management/src/views/Customer/customer_history.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_container_patient.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../resources/app_colors.dart';
@@ -78,7 +77,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => PatientHistory(
+                    builder: (context) => CustomerHistory(
                       customerAppointments: customerAppointments!,
                     ),
                   ),
@@ -501,9 +500,6 @@ class _CustomerDetailsState extends State<CustomerDetails> {
 
       if (res != null) {
         if (res.appointments!.isNotEmpty) {
-          for (var i = 0; i < res.appointments!.length; i++) {
-            log('res.appointments ${res.totalAppointments}');
-          }
           customerAppointments = res.appointments!
               .where((element) => element.customerId == customer.id)
               .toList();
