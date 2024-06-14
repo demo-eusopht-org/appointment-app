@@ -66,9 +66,9 @@ class _ScheduleListState extends State<ScheduleList> {
                           children: [
                             CircleAvatar(
                               radius: 35.sp,
-                              backgroundImage: currentCustomer.imagename != null
+                              backgroundImage: currentCustomer.imageName != null
                                   ? CachedNetworkImageProvider(
-                                      '${Constants.customerImageBaseUrl}${currentCustomer.imagename}')
+                                      '${Constants.customerImageBaseUrl}${currentCustomer.imageName}')
                                   : AssetImage(AppImages.noImage)
                                       as ImageProvider<Object>,
                             ),

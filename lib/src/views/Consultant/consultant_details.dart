@@ -4,6 +4,7 @@ import 'package:appointment_management/api/auth_api/api_services/api_services.da
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
+import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
@@ -41,6 +42,8 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
   bool isLoading = false;
 
   List<Branch> branches = [];
+
+  List<Service> services = [];
 
   @override
   void initState() {
@@ -99,9 +102,9 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                           padding: EdgeInsets.all(5.sp),
                           child: CircleAvatar(
                             radius: 45.sp,
-                            backgroundImage: consultant!.imagename != null
+                            backgroundImage: consultant!.imageName != null
                                 ? CachedNetworkImageProvider(
-                                    '${Constants.consultantImageBaseUrl}${consultant!.imagename}',
+                                    '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
                                   )
                                 : AssetImage(AppImages.noImage)
                                     as ImageProvider<Object>,
@@ -109,7 +112,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                         ),
                         // CachedNetworkImage(
                         //   imageUrl:
-                        //       '${Constants.consultantImageBaseUrl}${consultant!.imagename}',
+                        //       '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
                         //   fit: BoxFit.cover,
                         //   width: MediaQuery.sizeOf(context).width * 0.4,
                         //   height: MediaQuery.sizeOf(context).height * 0.18,
@@ -344,114 +347,61 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             fWeight: FontWeight.w600,
                             color: Colors.black,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          textWidget(
-                            text: 'Services',
-                            fSize: 18.0,
-                            fWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
+                          if (services.isEmpty)
+                            Center(
+                              child: textWidget(
+                                text: 'No services found',
+                                fWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            )
+                          else
+                            textWidget(
+                              text: 'Services',
+                              fSize: 18.0,
+                              fWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          const SizedBox(
                             height: 10,
                           ),
-                          Row(
-                            children: [
+                          if (services.isNotEmpty)
+                            for (int i = 0; i < services.length; i++)
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.fiber_manual_record,
                                     size: 10,
                                     color: Colors.black,
                                   ),
-                                  SizedBox(width: 5),
-                                  textWidget(
-                                    text: 'Check-ups',
-                                    fSize: 18.0,
-                                    fWeight: FontWeight.w600,
-                                    color: Colors.black,
+                                  SizedBox(
+                                    width: 5.sp,
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        textWidget(
+                                          text: '${services[i].serviceName}',
+                                          fSize: 15.sp,
+                                          fWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                        textWidget(
+                                          text: '${services[i].price}',
+                                          fSize: 15.sp,
+                                          fWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.15),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.fiber_manual_record,
-                                    size: 10,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(width: 5),
-                                  textWidget(
-                                    text: 'Assessments',
-                                    fSize: 18.0,
-                                    fWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.fiber_manual_record,
-                                size: 10,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 5),
-                              textWidget(
-                                text: 'Vaccinations',
-                                fSize: 18.0,
-                                fWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.1),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.fiber_manual_record,
-                                    size: 10,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(width: 5),
-                                  textWidget(
-                                    text: 'Guidance',
-                                    fSize: 18.0,
-                                    fWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.fiber_manual_record,
-                                size: 10,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 5),
-                              textWidget(
-                                text: 'Treatment',
-                                fSize: 18.0,
-                                fWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -795,6 +745,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
     consultant = widget.consultant;
     user = locator<LocalStorageService>().getData(key: 'user');
     branches = GetLocalData.getBranches();
+    services = GetLocalData.getServices();
     await getConsultantSchedule();
     setState(() {
       isLoading = false;

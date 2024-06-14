@@ -38,17 +38,17 @@ class ApiServices {
         return tempConsutlant;
       }
       return null;
-    } on SocketException catch (e) {
+    } on SocketException {
       CustomDialogue.message(
           context: context,
           message:
               'Consultant not found\nPlease check your internet connection');
       return null;
     } catch (e, stack) {
-      CustomDialogue.message(
-          context: context, message: 'Consultant not found: Please try again');
+      // CustomDialogue.message(
+      //     context: context, message: 'Consultant not found: Please try again');
 
-      print('Consultant not found: Please try again : ${e}');
+      log('Consultant not found: Please try again : ${e}', stackTrace: stack);
       return null;
     }
   }

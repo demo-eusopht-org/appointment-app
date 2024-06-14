@@ -7,6 +7,7 @@ import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
@@ -73,7 +74,7 @@ class AssigneBranchState extends State<VerifyEmail> {
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                if (isVerified || userData!.verified == 1)
+                if (isVerified || userData!.verified == (isAdmin! ? 1 : 2))
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width,
                     child: textWidget(
@@ -254,6 +255,7 @@ class AssigneBranchState extends State<VerifyEmail> {
         {
           "email": userData!.email,
           "user_OTP": otp,
+          'role_id': userData!.roleId,
         },
       );
 
@@ -309,7 +311,7 @@ class AssigneBranchState extends State<VerifyEmail> {
         createdAt: userData!.createdAt,
         updatedAt: userData!.updatedAt,
         id: userData!.id,
-        verified: 1,
+        verified: isAdmin! ? 1 : 2,
         roleId: userData!.roleId);
 
     final tempUser = locator<LocalStorageService>().getData(key: 'user');

@@ -39,7 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _init();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _init();
+    });
   }
 
   void _navigateToNextScreen() {
@@ -86,14 +88,16 @@ class _SplashScreenState extends State<SplashScreen> {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
 
-    userData = GetLocalData.getUser();
-    utils.setUserRole(userData!);
+    if (user != null) {
+      userData = GetLocalData.getUser();
+      utils.setUserRole(userData!);
 
-    await getCustomerData();
-    await getBusinessBranch();
-    await getConsultantData();
-    await getBusinessData();
-    await getServices();
+      await getCustomerData();
+      await getBusinessBranch();
+      await getConsultantData();
+      await getBusinessData();
+      await getServices();
+    }
 
     _navigateToNextScreen();
   }
@@ -169,9 +173,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> getBusinessData() async {
+    final user = locator<LocalStorageService>().getData(key: 'user');
+
+    int businessId = isAdmin! ? user['user']['id'] : user['business_owner_id'];
+
     GetBusinessData? tempBusiness = await ApiServices.getBusinessData(
       context,
-      Constants.getBusinessData + user['user']['id'].toString(),
+      Constants.getBusinessData + businessId.toString(),
       user,
     );
 

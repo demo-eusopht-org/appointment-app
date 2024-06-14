@@ -149,9 +149,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   ? CircleAvatar(
                                       radius: 35.sp,
                                       backgroundImage:
-                                          business!.imagename != null
+                                          business!.imageName != null
                                               ? CachedNetworkImageProvider(
-                                                  business!.imagename!,
+                                                  business!.imageName!,
                                                 )
                                               : AssetImage(AppImages.noImage)
                                                   as ImageProvider<Object>)

@@ -56,17 +56,29 @@ class GetLocalData {
     return [];
   }
 
-  static User getUser() {
+  static User? getUser() {
     final user = locator<LocalStorageService>().getData(key: 'user');
-    final userData = user['user'];
 
-    return User(
-        name: userData['username'],
+    if (user != null) {
+      final userData = user['user'];
+
+      return User(
+        name: userData['name'],
         email: userData['email'],
         createdAt: userData['created_at'],
         updatedAt: userData['updated_at'],
         id: userData['id'],
         verified: userData['verified'],
-        roleId: userData['role_id']);
+        roleId: userData['role_id'],
+        about: userData['about'],
+        businessId: userData['businessId'],
+        experience: userData['experience'],
+        field: userData['field'],
+        imageName: userData['imageName'],
+        phoneNumber: userData['phoneNumber'],
+        userid: userData['userid'],
+      );
+    }
+    return null;
   }
 }

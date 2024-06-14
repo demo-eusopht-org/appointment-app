@@ -39,7 +39,7 @@ class Business {
   int? userId;
   String? startTime;
   String? endTime;
-  String? imagename;
+  String? imageName;
 
   Business({
     this.id,
@@ -59,7 +59,7 @@ class Business {
     this.userId,
     this.startTime,
     this.endTime,
-    this.imagename,
+    this.imageName,
   });
 
   factory Business.fromJson(Map<String, dynamic> json) =>

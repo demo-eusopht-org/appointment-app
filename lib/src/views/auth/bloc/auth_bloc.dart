@@ -41,8 +41,15 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       );
 
       if (res.status == 200) {
-        AuthResponse user = AuthResponse(token: res.token, user: res.user);
+        AuthResponse user = AuthResponse(
+          token: res.token,
+          user: res.user,
+          businessOwnerId: res.businessOwnerId,
+          businessId: res.businessId,
+        );
+
         utils.setUserRole(res.user!);
+        log('res.user ${res.user!.id}');
 
         await locator<LocalStorageService>().saveData(
           key: 'user',

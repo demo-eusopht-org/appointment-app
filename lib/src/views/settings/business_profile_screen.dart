@@ -117,10 +117,10 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                       radius: 35.sp,
                                                       backgroundImage: business![
                                                                       i]
-                                                                  .imagename !=
+                                                                  .imageName !=
                                                               null
                                                           ? CachedNetworkImageProvider(
-                                                              '${Constants.businessImageBaseUrl}${business![i].imagename}')
+                                                              '${Constants.businessImageBaseUrl}${business![i].imageName}')
                                                           : AssetImage(AppImages
                                                                   .noImage)
                                                               as ImageProvider<

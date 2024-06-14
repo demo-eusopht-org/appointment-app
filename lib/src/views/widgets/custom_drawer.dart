@@ -9,6 +9,8 @@ import 'package:appointment_management/src/views/Appointments/appointments.dart'
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
 import 'package:appointment_management/src/views/Settings%20page/settings_page.dart';
+import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/User%20Profile/user_profile.dart';
 import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_directory.dart';
@@ -18,6 +20,7 @@ import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key});
@@ -37,16 +40,24 @@ class CustomDrawer extends StatelessWidget {
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.05,
             ),
-            Row(
-              children: [
-                Image.asset('assets/images/Male User.png'),
-                SizedBox(width: 5),
-                textWidget(
-                  text: '${user!['user']['name']}',
-                  fSize: 20.0,
-                  fWeight: FontWeight.w700,
-                ),
-              ],
+            GestureDetector(
+              onTap: () {
+                final route = CupertinoPageRoute(
+                  builder: (context) => const UserProfileScreen(),
+                );
+                Navigator.push(context, route);
+              },
+              child: Row(
+                children: [
+                  Image.asset('assets/images/Male User.png'),
+                  SizedBox(width: 5),
+                  textWidget(
+                    text: '${user!['user']['name']}',
+                    fSize: 20.0,
+                    fWeight: FontWeight.w700,
+                  ),
+                ],
+              ),
             ),
             if (isAdmin!)
               Column(
@@ -243,6 +254,23 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const PrivacyPolicy(),
+                  ),
+                );
+              },
+              child: textWidget(
+                text: "Privacy Policy",
+                fSize: 14.0,
+                fWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 20),
             InkWell(
               onTap: () {
                 Navigator.push(

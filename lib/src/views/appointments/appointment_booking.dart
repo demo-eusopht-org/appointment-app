@@ -96,40 +96,31 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       body: isLoading
           ? const Loader()
           : customers!.isEmpty
-              ? Expanded(
-                  child: Center(
-                    child: textWidget(
-                      text: 'No Customer found to set appointment',
-                      fWeight: FontWeight.bold,
-                    ),
+              ? Center(
+                  child: textWidget(
+                    text: 'No Customer found to set appointment',
+                    fWeight: FontWeight.bold,
                   ),
                 )
               : consultants!.isEmpty
-                  ? Expanded(
-                      child: Center(
-                        child: textWidget(
-                          text: 'No Consutant found to set appointment',
-                          fWeight: FontWeight.bold,
-                        ),
+                  ? Center(
+                      child: textWidget(
+                        text: 'No Consutant found to set appointment',
+                        fWeight: FontWeight.bold,
                       ),
                     )
                   : branches!.isEmpty
-                      ? Expanded(
-                          child: Center(
-                            child: textWidget(
-                              text:
-                                  'No Business Branch found, Please create one',
-                              fWeight: FontWeight.bold,
-                            ),
+                      ? Center(
+                          child: textWidget(
+                            text: 'No Business Branch found, Please create one',
+                            fWeight: FontWeight.bold,
                           ),
                         )
                       : services!.isEmpty
-                          ? Expanded(
-                              child: Center(
-                                child: textWidget(
-                                  text: 'No Service found, Please create one',
-                                  fWeight: FontWeight.bold,
-                                ),
+                          ? Center(
+                              child: textWidget(
+                                text: 'No Service found, Please create one',
+                                fWeight: FontWeight.bold,
                               ),
                             )
                           : Padding(
@@ -672,7 +663,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                               },
                                               text: "Add Appointment",
                                             ),
-                                          )
+                                          ),
                                   ],
                                 ),
                               ),

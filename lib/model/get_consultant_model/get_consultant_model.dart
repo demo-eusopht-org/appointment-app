@@ -27,11 +27,11 @@ class Consultant {
   int? id;
   String? name;
   String? field;
-  int? experience;
+  String? experience;
   String? about;
   String? createdAt;
   String? updatedAt;
-  String? imagename;
+  String? imageName;
   int? userId;
   int? roleId;
   int? businessId;
@@ -46,7 +46,7 @@ class Consultant {
     this.about,
     this.createdAt,
     this.updatedAt,
-    this.imagename,
+    this.imageName,
     this.userId,
     this.roleId,
     this.businessId,

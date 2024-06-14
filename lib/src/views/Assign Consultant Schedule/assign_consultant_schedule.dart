@@ -482,15 +482,14 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
       if (selectedConsultantBranch != null) {
         dynamic res = await api!.assignConsultantBranchSchedule(
           {
-            "branch_id": selectedBranch!.id,
+            "branch_id": selectedBranch!.id.toString(),
             "start_time": selectedStartTime!.toFormatted12Hours(),
             "end_time": selectedEndTime!.toFormatted12Hours(),
             "day": selectedDay,
-            "consultant_id": selectedConsultant!.id,
-            "consultant_branch_id": selectedConsultantBranch!.cbid,
+            "consultant_id": selectedConsultant!.id.toString(),
+            "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
           },
         );
-        
 
         if (res['status'] == 200) {
           // ignore: use_build_context_synchronously

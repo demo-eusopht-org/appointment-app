@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
@@ -9,8 +10,8 @@ import 'package:appointment_management/src/views/Auth/bloc/auth_bloc.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/onboarding/onboarding_form.dart';
-import 'package:appointment_management/theme/light/light_theme.dart'
-    as Appcolors;
+import 'package:appointment_management/src/views/widgets/text_widget.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,24 +82,22 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.1),
 
-                        // "Sign Up" text
-                        Text(
-                          'Sign Up',
-                          style: MyTextStyles.boldtitleblack,
+                        textWidget(
+                          text: 'Sign Up',
+                          fSize: 25.sp,
+                          fWeight: FontWeight.bold,
                         ),
-
-                        // Account Icon in Circle
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Appcolors.lightTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
+                          padding: EdgeInsets.only(left: 10, right: 10),
                           child: Image(
                             image: AssetImage(AppImages.account),
                             width: MediaQuery.of(context).size.width * 0.2,
                             height: MediaQuery.of(context).size.height * 0.2,
                           ),
-                          padding: EdgeInsets.only(left: 10, right: 10),
                         ),
                         // SizedBox(height: MediaQuery.of(context).size.height * 0.001), // 2% of the screen height for spacing
 
@@ -171,8 +170,7 @@ class _SignupPageState extends State<SignupPage> {
 
                               return ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Appcolors.lightTheme.primaryColor,
+                                  backgroundColor: AppColors.primary,
                                   minimumSize: Size(
                                     MediaQuery.of(context).size.width * 0.3,
                                     MediaQuery.of(context).size.height * 0.06,
@@ -191,60 +189,56 @@ class _SignupPageState extends State<SignupPage> {
                                     }
                                   }
                                 },
-                                child: Text(
-                                  'Sign up',
-                                  style: MyTextStyles.boldTextWhite,
+                                child: textWidget(
+                                  text: 'Sign up',
+                                  color: AppColors.white,
+                                  fWeight: FontWeight.bold,
                                 ),
                               );
                             }),
 
                         SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        // textWidget(
+                        //   text: 'CONTINUE WITH',
+                        // ),
+
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          'CONTINUE WITH',
-                          style: TextStyle(fontSize: 10.sp),
-                        ),
 
-                        SizedBox(
-                          height: 5,
-                        ), // 2% of the screen height for spacing
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {
+                        //         // Implement your Google sign up logic here
+                        //       },
+                        //       icon: Image.asset(
+                        //         'assets/images/google_logo.png',
+                        //         width: MediaQuery.of(context).size.width *
+                        //             0.05, // 8% of the screen width
+                        //         height: MediaQuery.of(context).size.width *
+                        //             0.05, // 8% of the screen width
+                        //       ),
+                        //     ),
+                        //     // Reduce the gap here
+                        //     IconButton(
+                        //       onPressed: () {
+                        //         // Implement your Apple sign up logic here
+                        //       },
+                        //       icon: Image.asset(
+                        //         'assets/images/apple_logo.png',
+                        //         width: MediaQuery.of(context).size.width *
+                        //             0.05, // 8% of the screen width
+                        //         height: MediaQuery.of(context).size.width *
+                        //             0.05, // 8% of the screen width
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
 
-                        // Buttons Row
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                // Implement your Google sign up logic here
-                              },
-                              icon: Image.asset(
-                                'assets/images/google_logo.png',
-                                width: MediaQuery.of(context).size.width *
-                                    0.05, // 8% of the screen width
-                                height: MediaQuery.of(context).size.width *
-                                    0.05, // 8% of the screen width
-                              ),
-                            ),
-                            // Reduce the gap here
-                            IconButton(
-                              onPressed: () {
-                                // Implement your Apple sign up logic here
-                              },
-                              icon: Image.asset(
-                                'assets/images/apple_logo.png',
-                                width: MediaQuery.of(context).size.width *
-                                    0.05, // 8% of the screen width
-                                height: MediaQuery.of(context).size.width *
-                                    0.05, // 8% of the screen width
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // 2% of the screen height for spacing
-
-                        // "Already have an account" text
                         GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(
@@ -253,11 +247,12 @@ class _SignupPageState extends State<SignupPage> {
                                   builder: (context) => LoginPage()),
                             );
                           },
-                          child: Text(
-                            'Already Have An Account?',
+                          child: textWidget(
+                            text: 'Already Have An Account? Login',
+                            color: AppColors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         )
                       ],

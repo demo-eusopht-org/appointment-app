@@ -212,7 +212,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       if (widget.fromSettingPage) {
         final userData = GetLocalData.getUser();
         res = await api!.updatePassword({
-          "email": userData.email,
+          "email": userData!.email,
           "old_password": oldPassword,
           "password": password,
           "role_id": userData.roleId,

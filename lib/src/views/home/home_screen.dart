@@ -165,8 +165,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .mergingDateTime(appointment)
                                     .add(const Duration(minutes: 30));
 
-                                return startTime.isAfter(visibleRange.start) &&
-                                        endTime.isBefore(visibleRange.end) &&
+                                return startTime
+                                            .copyWith(isUtc: true)
+                                            .isAfter(visibleRange.start) &&
+                                        endTime
+                                            .copyWith(isUtc: true)
+                                            .isBefore(visibleRange.end) &&
                                         appointment.start
                                             .isAfter(visibleRange.start) &&
                                         appointment.end
@@ -352,10 +356,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: CircleAvatar(
                                             radius: 40.sp,
                                             backgroundImage: consultant
-                                                        .imagename !=
+                                                        .imageName !=
                                                     null
                                                 ? CachedNetworkImageProvider(
-                                                    '${Constants.consultantImageBaseUrl}${consultant.imagename}',
+                                                    '${Constants.consultantImageBaseUrl}${consultant.imageName}',
                                                   )
                                                 : AssetImage(AppImages.noImage)
                                                     as ImageProvider<Object>,
@@ -466,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isAdmin!) {
       consultants = GetLocalData.getConsultants();
     }
-    userData = GetLocalData.getUser(); 
+    userData = GetLocalData.getUser();
     await getAllAppointments();
 
     setState(() {

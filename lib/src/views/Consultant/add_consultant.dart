@@ -345,7 +345,6 @@ class _AddConsultantState extends State<AddConsultant> {
     try {
       if (businessId != null) {
         if (user != null && user['token'] != null) {
-          print('Constants.addConsultant ${Constants.addConsultant}');
           var request =
               http.MultipartRequest('POST', Uri.parse(Constants.addConsultant));
           request.headers['Authorization'] = 'Bearer ${user['token']}';

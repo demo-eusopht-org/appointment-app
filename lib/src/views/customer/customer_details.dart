@@ -114,9 +114,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                     children: [
                       CircleAvatar(
                         radius: 35.sp,
-                        backgroundImage: customer.imagename != null
+                        backgroundImage: customer.imageName != null
                             ? CachedNetworkImageProvider(
-                                '${customer.imagename}',
+                                '${customer.imageName}',
                               )
                             : AssetImage(AppImages.noImage)
                                 as ImageProvider<Object>,
@@ -193,9 +193,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                             height: 5,
                                           ),
                                           textWidget(
-                                            text: (customer.refrenceno != '' &&
-                                                    customer.refrenceno != null)
-                                                ? customer.refrenceno!
+                                            text: (customer.refrenceNo != '' &&
+                                                    customer.refrenceNo != null)
+                                                ? customer.refrenceNo!
                                                 : '--',
                                             fWeight: FontWeight.w700,
                                             color: Colors.white,

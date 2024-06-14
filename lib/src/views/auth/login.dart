@@ -29,6 +29,7 @@ import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -47,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener(
         bloc: BlocProvider.of<AuthBloc>(context),
         listener: (context, state) {
-          log('state is ${state}');
           if (state is AuthFailureState) {
             CustomDialogue.message(context: context, message: state.message);
           } else if (state is AuthSuccessState) {
@@ -93,10 +93,10 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.1),
 
-                      // Title
-                      Text(
-                        'Sign in',
-                        style: MyTextStyles.boldtitleblack,
+                      textWidget(
+                        text: 'Sign in',
+                        fSize: 25.sp,
+                        fWeight: FontWeight.bold,
                       ),
 
                       Container(
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       TextFormField(
                         controller: emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                         ),
                         validator: (String? value) {
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextFormField(
                         controller: passwordController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Password',
                         ),
                         validator: (String? value) {
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         obscureText: true,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Row(
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                               valueListenable: selectedRole,
                               builder: (context, value, child) {
                                 return Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 5,
                                   ),
                                   decoration: BoxDecoration(
@@ -194,22 +194,18 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => ForgotPasswordScreen(),
+                              builder: (context) =>
+                                  const ForgotPasswordScreen(),
                             ),
                           );
                         },
                         child: Align(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            'Forgot Password?',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
+                            alignment: Alignment.topRight,
+                            child: textWidget(
+                              text: 'Forgot Password?',
+                            )),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       // Login Button
@@ -217,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                         bloc: BlocProvider.of<AuthBloc>(context),
                         builder: (context, state) {
                           if (state is AuthLoadingState) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           }
 
                           return ElevatedButton(
@@ -240,10 +236,6 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }
                             },
-                            // child: Text(
-                            //   'Sign in',
-                            //   style: MyTextStyles.boldTextWhite,
-                            // ),
                             child: textWidget(
                               text: 'Sign in',
                               color: AppColors.white,
@@ -257,73 +249,63 @@ class _LoginPageState extends State<LoginPage> {
                       BlocBuilder<LoaderBloc, bool>(
                         builder: (context, isLoading) {
                           if (isLoading) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else {
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           }
                         },
                       ),
 
-                      // Increase the gap here
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
-                      ), // Increase the gap here
-                      Text(
-                        'CONTINUE WITH',
-                        style: TextStyle(fontSize: 10.sp),
                       ),
+                      // textWidget(
+                      //   text: 'CONTINUE WITH',
+                      // ),
 
-                      SizedBox(
-                        height: 10,
-                      ), // Increase the gap here
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
 
-                      // Buttons Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              // Implement your Google sign up logic here
-                            },
-                            icon: Image.asset(
-                              'assets/images/google_logo.png',
-                              width: MediaQuery.of(context).size.width *
-                                  0.05, // 8% of the screen width
-                              height: MediaQuery.of(context).size.width *
-                                  0.05, // 8% of the screen width
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width *
-                                0.001, // Reduce the gap here
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              // Implement your Apple sign up logic here
-                            },
-                            icon: Image.asset(
-                              'assets/images/apple_logo.png',
-                              width: MediaQuery.of(context).size.width *
-                                  0.05, // 8% of the screen width
-                              height: MediaQuery.of(context).size.width *
-                                  0.05, // 8% of the screen width
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () {
+                      //         // Implement your Google sign up logic here
+                      //       },
+                      //       icon: Image.asset(
+                      //         'assets/images/google_logo.png',
+                      //         width: MediaQuery.of(context).size.width *
+                      //             0.05, // 8% of the screen width
+                      //         height: MediaQuery.of(context).size.width *
+                      //             0.05, // 8% of the screen width
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: MediaQuery.of(context).size.width * 0.001,
+                      //     ),
+                      //     IconButton(
+                      //       onPressed: () {},
+                      //       icon: Image.asset(
+                      //         'assets/images/apple_logo.png',
+                      //         width: MediaQuery.of(context).size.width * 0.05,
+                      //         height: MediaQuery.of(context).size.width * 0.05,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
 
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ), // 2% of the screen height for spacing
-                      Text(
-                        'OR',
-                        style: TextStyle(fontSize: 10.sp),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ), // 2% of the screen height for spacing
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.02,
+                      // ),
+                      // textWidget(
+                      //   text: 'OR',
+                      // ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.02,
+                      // ),
 
-                      // "Create an Account" text
                       GestureDetector(
                         onTap: () {
                           Navigator.pushReplacement(
@@ -332,11 +314,11 @@ class _LoginPageState extends State<LoginPage> {
                                 builder: (context) => SignupPage()),
                           );
                         },
-                        child: Text(
-                          'Create an Account',
+                        child: textWidget(
+                          text: 'Create an Account',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       )
                     ],

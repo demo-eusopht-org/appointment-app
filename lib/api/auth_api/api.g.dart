@@ -13,7 +13,7 @@ class _Api implements Api {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://appointment.eusopht.com/apis';
+    baseUrl ??= 'http://192.168.100.121:3002';
   }
 
   final Dio _dio;

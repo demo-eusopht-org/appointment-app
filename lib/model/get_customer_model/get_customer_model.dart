@@ -29,13 +29,13 @@ class Customer {
   String? mobile;
   String? email;
   int? age;
-  String? refrenceno;
+  String? refrenceNo;
   String? occupation;
   String? address;
   DateTime? dob;
   int? height;
   int? weight;
-  String? imagename;
+  String? imageName;
   DateTime? createdAt;
   DateTime? updatedAt;
   int? roleId;
@@ -49,13 +49,13 @@ class Customer {
     this.mobile,
     this.email,
     this.age,
-    this.refrenceno,
+    this.refrenceNo,
     this.occupation,
     this.address,
     this.dob,
     this.height,
     this.weight,
-    this.imagename,
+    this.imageName,
     this.createdAt,
     this.updatedAt,
     this.roleId,

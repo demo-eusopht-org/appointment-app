@@ -44,7 +44,7 @@ Business _$BusinessFromJson(Map<String, dynamic> json) => Business(
       userId: (json['user_id'] as num?)?.toInt(),
       startTime: json['start_time'] as String?,
       endTime: json['end_time'] as String?,
-      imagename: json['imagename'] as String?,
+      imageName: json['image_name'] as String?,
     );
 
 Map<String, dynamic> _$BusinessToJson(Business instance) => <String, dynamic>{
@@ -65,5 +65,5 @@ Map<String, dynamic> _$BusinessToJson(Business instance) => <String, dynamic>{
       'user_id': instance.userId,
       'start_time': instance.startTime,
       'end_time': instance.endTime,
-      'imagename': instance.imagename,
+      'image_name': instance.imageName,
     };

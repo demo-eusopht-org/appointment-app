@@ -19,6 +19,7 @@ class BusinessItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 20,
@@ -30,7 +31,7 @@ class BusinessItem extends StatelessWidget {
               color: Colors.white, // Optional: Apply color to the image
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Column(
@@ -40,11 +41,6 @@ class BusinessItem extends StatelessWidget {
                 text: name,
                 fSize: 14.0,
                 fWeight: FontWeight.w700,
-              ),
-              textWidget(
-                text: type ?? '',
-                fSize: 10.0,
-                fWeight: FontWeight.w400,
               ),
             ],
           )

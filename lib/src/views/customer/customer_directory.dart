@@ -144,9 +144,9 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                 //               children: [
                 //                 CircleAvatar(
                 //                   radius: 30.sp,
-                //                   backgroundImage: customer.imagename != null
+                //                   backgroundImage: customer.imageName != null
                 //                       ? CachedNetworkImageProvider(
-                //                           '${Constants.customerImageBaseUrl}${customer.imagename}')
+                //                           '${Constants.customerImageBaseUrl}${customer.imageName}')
                 //                       : AssetImage(AppImages.noImage)
                 //                           as ImageProvider<Object>,
                 //                 ),
@@ -215,7 +215,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                     itemBuilder: (context, index) {
                       final customer = customers![index];
 
-                      log('image ${Constants.customerImageBaseUrl}${customer.imagename}');
+                      log('image ${Constants.customerImageBaseUrl}${customer.imageName}');
                       return Column(
                         children: [
                           Divider(
@@ -229,9 +229,9 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                                 children: [
                                   CircleAvatar(
                                     radius: radius,
-                                    backgroundImage: customer.imagename != null
+                                    backgroundImage: customer.imageName != null
                                         ? CachedNetworkImageProvider(
-                                            '${Constants.customerImageBaseUrl}${customer.imagename}')
+                                            '${Constants.customerImageBaseUrl}${customer.imageName}')
                                         : AssetImage(AppImages.noImage)
                                             as ImageProvider<Object>,
                                   ),
