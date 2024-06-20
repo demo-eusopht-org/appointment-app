@@ -136,35 +136,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   ],
                                 ),
                                 const Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    final route = CupertinoPageRoute(
-                                      builder: (context) =>
-                                          UpdateConsultantProfile(
-                                              user: userData!),
-                                    );
+                                if (!isAdmin!)
+                                  GestureDetector(
+                                    onTap: () {
+                                      final route = CupertinoPageRoute(
+                                        builder: (context) =>
+                                            UpdateConsultantProfile(
+                                                user: userData!),
+                                      );
 
-                                    Navigator.push(context, route);
-                                  },
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.sp),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                          size: 25.sp,
-                                        ),
-                                        textWidget(
-                                          text: "Edit",
-                                          fWeight: FontWeight.w400,
-                                          color: Colors.white,
-                                        )
-                                      ],
+                                      Navigator.push(context, route);
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.sp),
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                            size: 25.sp,
+                                          ),
+                                          textWidget(
+                                            text: "Edit",
+                                            fWeight: FontWeight.w400,
+                                            color: Colors.white,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )
+                                  )
                               ],
                             ),
                           ],
