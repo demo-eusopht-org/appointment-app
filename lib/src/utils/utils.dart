@@ -1,5 +1,7 @@
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/auth_model/auth_model.dart';
+import 'package:appointment_management/services/local_storage_service.dart';
+import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
@@ -105,5 +107,42 @@ class utils {
     } else {
       isAdmin = false;
     }
+  }
+
+  static Future<void> updatingUser({
+    required bool updateProfile,
+    required User userData,
+    String? name,
+    String? field,
+    String? about,
+  }) async {
+    final updatedUser = User(
+      userid: userData.userid,
+      businessId: userData.businessId,
+      name: updateProfile ? name : userData.name,
+      about: updateProfile ? about : userData.about,
+      field: updateProfile ? field : userData.field,
+      email: userData.email,
+      createdAt: userData.createdAt,
+      updatedAt: userData.updatedAt,
+      id: userData.id,
+      verified: isAdmin! ? 1 : 2,
+      roleId: userData.roleId,
+      experience: userData.experience,
+      imageName: userData.imageName,
+      phoneNumber: userData.phoneNumber,
+    );
+
+    final tempUser = locator<LocalStorageService>().getData(key: 'user');
+
+    String token = tempUser['token'];
+
+    AuthResponse user = AuthResponse(token: token, user: updatedUser);
+
+    await locator<LocalStorageService>().delete('user');
+    await locator<LocalStorageService>().saveData(
+      key: 'user',
+      value: user.toJson(),
+    );
   }
 }

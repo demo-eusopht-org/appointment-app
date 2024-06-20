@@ -12,9 +12,10 @@ Widget textWidget({
   bool underlined = false,
   TextAlign? textAlign,
   TextOverflow? textOverFlow,
+  bool? isUpperCase,
 }) {
   return Text(
-    text.toUpperCaseFirst(),
+    (isUpperCase != null && !isUpperCase) ? text : text.toUpperCaseFirst(),
     style: GoogleFonts.poppins(
       color: color,
       fontWeight: fWeight ?? FontWeight.normal,

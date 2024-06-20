@@ -303,4 +303,49 @@ class ApiServices {
       return null;
     }
   }
+
+  static Future<void> reSaveConsultant(BuildContext context) async {
+    final user = locator<LocalStorageService>().getData(key: 'user');
+    final businessId =
+        locator<LocalStorageService>().getData(key: 'businessId');
+    GetConsultant? tempConsultant = await ApiServices.getConsultant(
+      context,
+      Constants.getBusiness + businessId.toString(),
+      user,
+    );
+
+    if (tempConsultant != null) {
+      await locator<LocalStorageService>().delete('consultants');
+      await locator<LocalStorageService>().saveData(
+        key: 'consultants',
+        value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
+      );
+      log('waiting here done');
+    }
+  }
+
+  static Future<void> reSaveCustomer(BuildContext context) async {
+    log('waiting here ');
+    final user = locator<LocalStorageService>().getData(key: 'user');
+    final businessId =
+        locator<LocalStorageService>().getData(key: 'businessId');
+    GetCustomer? tempCustomer = await ApiServices.getCustomer(
+      context,
+      Constants.getCustomers + businessId.toString(),
+      user,
+    );
+
+    if (tempCustomer != null) {
+      await locator<LocalStorageService>().delete('customers');
+      await locator<LocalStorageService>().saveData(
+        key: 'customers',
+        value: tempCustomer.customers!
+            .map(
+              (e) => e.toJson(),
+            )
+            .toList(),
+      );
+    }
+    log('waiting here done');
+  }
 }

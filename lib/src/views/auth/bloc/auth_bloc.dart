@@ -49,13 +49,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         );
 
         utils.setUserRole(res.user!);
-        log('res.user ${res.user!.id}');
 
         await locator<LocalStorageService>().saveData(
           key: 'user',
           value: user.toJson(),
         );
-        if (event.roleId == 1) {}
 
         await locator<LocalStorageService>().saveData(
           key: 'businessId',

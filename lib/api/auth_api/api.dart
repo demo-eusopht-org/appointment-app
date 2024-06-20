@@ -48,4 +48,8 @@ abstract class Api {
   Future<dynamic> deleteConsultantSchedule(@Body() Map<String, dynamic> body);
   @POST('/consultant/update-consultant-shedule')
   Future<dynamic> updateConsultantSchedule(@Body() Map<String, dynamic> body);
+  @POST('/consultant/update-consultant')
+  Future<dynamic> updateConsultantProfile(@Body() Map<String, dynamic> body);
+  @POST('/customer/update-customer')
+  Future<dynamic> updateCustomerProfile(@Body() Map<String, dynamic> body);
 }

@@ -8,6 +8,7 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/enums.dart';
+import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
@@ -263,7 +264,11 @@ class AssigneBranchState extends State<VerifyEmail> {
         CustomDialogue.message(context: context, message: res['message']);
         isVerified = true;
 
-        updatingUser();
+        utils.updatingUser(
+          updateProfile: false,
+          userData: userData!,
+          
+        );
       } else {
         if (res.toString().contains('message')) {
           CustomDialogue.message(context: context, message: res['message']);
@@ -302,28 +307,5 @@ class AssigneBranchState extends State<VerifyEmail> {
       controller.dispose();
     }
     super.dispose();
-  }
-
-  Future<void> updatingUser() async {
-    final userUpdate = User(
-        name: userData!.name,
-        email: userData!.email,
-        createdAt: userData!.createdAt,
-        updatedAt: userData!.updatedAt,
-        id: userData!.id,
-        verified: isAdmin! ? 1 : 2,
-        roleId: userData!.roleId);
-
-    final tempUser = locator<LocalStorageService>().getData(key: 'user');
-
-    String token = tempUser['token'];
-
-    AuthResponse user = AuthResponse(token: token, user: userUpdate);
-
-    await locator<LocalStorageService>().delete('user');
-    await locator<LocalStorageService>().saveData(
-      key: 'user',
-      value: user.toJson(),
-    );
   }
 }

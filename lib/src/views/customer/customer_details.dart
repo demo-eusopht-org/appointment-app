@@ -7,8 +7,10 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Customer/customer_history.dart';
+import 'package:appointment_management/src/views/Customer/update_customer.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_container_patient.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
@@ -83,10 +85,25 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   ),
                 );
               },
+              child: const Icon(
+                Icons.history,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => UpdateCustomerProfile(
+                      customer: customer,
+                    ),
+                  ),
+                );
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.sp),
                 child: const Icon(
-                  Icons.history,
+                  Icons.edit,
                 ),
               ),
             ),
@@ -282,6 +299,16 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         //   height: 10,
                         // ),
                         CustomInfoContainer(
+                          label: 'Occupation:',
+                          value: '${customer.occupation ?? '--'}',
+                          color: AppColors.primary,
+                          height: MediaQuery.of(context).size.width * 0.065,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomInfoContainer(
                           label: 'Age:',
                           value: '${customer.age ?? '--'}',
                           color: AppColors.primary,
@@ -321,168 +348,166 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                     ),
                   if (customerAppointments != null &&
                       customerAppointments!.isNotEmpty)
-                    Padding(
+                    appointmentsSchedule(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget appointmentsSchedule() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textWidget(
+                text: 'Appointment Date and Time',
+                fWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.sp,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  textWidget(
+                    text: 'Schedule',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.primary,
+                  ),
+                  SizedBox(
+                    width: 5.sp,
+                  ),
+                  CircleAvatar(
+                    radius: 5.sp,
+                    backgroundColor: AppColors.primary,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  textWidget(
+                    text: 'Conducted',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.success,
+                  ),
+                  SizedBox(
+                    width: 5.sp,
+                  ),
+                  CircleAvatar(
+                    radius: 5.sp,
+                    backgroundColor: AppColors.success,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  textWidget(
+                    text: 'Cancelled',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.danger,
+                  ),
+                  SizedBox(
+                    width: 5.sp,
+                  ),
+                  CircleAvatar(
+                    radius: 5.sp,
+                    backgroundColor: AppColors.danger,
+                  ),
+                ],
+              )
+            ],
+          ),
+          SizedBox(height: 10.sp),
+          SizedBox(
+            height: 75.sp,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: customerAppointments!.length,
+              itemBuilder: (context, index) {
+                // bool isSelected = (index == selectedDateIndex);
+
+                sortAppointmentList();
+                Appointment appointmentSchedule = customerAppointments![index];
+
+                isBooked =
+                    appointmentSchedule.status!.toLowerCase() == 'booked';
+                isConducted =
+                    appointmentSchedule.status!.toLowerCase() == 'conducted';
+                isCancelled =
+                    appointmentSchedule.status!.toLowerCase() == 'cancelled';
+                return GestureDetector(
+                  onTap: () {
+                    final route = MaterialPageRoute(
+                      builder: (context) => AppointmentDetails(
+                          appointments: [customerAppointments![index]],
+                          onUpdate: () async {}),
+                    );
+                    Navigator.push(context, route);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                    ),
+                    child: Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 10.sp, vertical: 5.sp),
+                        horizontal: 10.sp,
+                        vertical: 10.sp,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.black),
+                        color:
+                            // isSelected ?
+                            isBooked
+                                ? AppColors.primary
+                                : isConducted
+                                    ? AppColors.success
+                                    : AppColors.danger,
+                        // :   AppColors.ratingbarColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              textWidget(
-                                text: 'Appointment Date and Time',
-                                fWeight: FontWeight.w700,
-                                color: Colors.black,
-                              ),
-                            ],
+                          textWidget(
+                            text: appointmentSchedule.appointmentDate!
+                                .toPkFormattedDate(),
+                            color:
+                                // isSelected ?
+                                Colors.white,
+                            // : Colors.black,
+                            fWeight: FontWeight.w700,
                           ),
                           SizedBox(
-                            height: 10.sp,
+                            height: 5.sp,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  textWidget(
-                                    text: 'Schedule',
-                                    fWeight: FontWeight.w500,
-                                    color: AppColors.primary,
-                                  ),
-                                  SizedBox(
-                                    width: 5.sp,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 5.sp,
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  textWidget(
-                                    text: 'Conducted',
-                                    fWeight: FontWeight.w500,
-                                    color: AppColors.success,
-                                  ),
-                                  SizedBox(
-                                    width: 5.sp,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 5.sp,
-                                    backgroundColor: AppColors.success,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  textWidget(
-                                    text: 'Cancelled',
-                                    fWeight: FontWeight.w500,
-                                    color: AppColors.danger,
-                                  ),
-                                  SizedBox(
-                                    width: 5.sp,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 5.sp,
-                                    backgroundColor: AppColors.danger,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 10.sp),
-                          SizedBox(
-                            height: 75.sp,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: customerAppointments!.length,
-                              itemBuilder: (context, index) {
-                                // bool isSelected = (index == selectedDateIndex);
-
-                                sortAppointmentList();
-                                Appointment appointmentSchedule =
-                                    customerAppointments![index];
-
-                                isBooked =
-                                    appointmentSchedule.status!.toLowerCase() ==
-                                        'booked';
-                                isConducted =
-                                    appointmentSchedule.status!.toLowerCase() ==
-                                        'conducted';
-                                isCancelled =
-                                    appointmentSchedule.status!.toLowerCase() ==
-                                        'cancelled';
-                                return GestureDetector(
-                                  onTap: () {
-                                    // setState(() {
-                                    //   selectedDateIndex = index;
-                                    // });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0,
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.sp,
-                                        vertical: 10.sp,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: AppColors.black),
-                                        color:
-                                            // isSelected ?
-                                            isBooked
-                                                ? AppColors.primary
-                                                : isConducted
-                                                    ? AppColors.success
-                                                    : AppColors.danger,
-                                        // :   AppColors.ratingbarColor,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          textWidget(
-                                            text: appointmentSchedule
-                                                .appointmentDate!
-                                                .toPkFormattedDate(),
-                                            color:
-                                                // isSelected ?
-                                                Colors.white,
-                                            // : Colors.black,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                          SizedBox(
-                                            height: 5.sp,
-                                          ),
-                                          textWidget(
-                                            text: appointmentSchedule
-                                                .scheduleTime!
-                                                .fromStringtoFormattedTime(),
-                                            color:
-                                                //  isSelected     ?
-                                                Colors.white,
-                                            // : Colors.black,
-                                            fWeight: FontWeight.w700,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                          textWidget(
+                            text: appointmentSchedule.scheduleTime!
+                                .fromStringtoFormattedTime(),
+                            color:
+                                //  isSelected     ?
+                                Colors.white,
+                            // : Colors.black,
+                            fWeight: FontWeight.w700,
                           ),
                         ],
                       ),
                     ),
-                ],
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ],

@@ -87,6 +87,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _init() async {
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     user = locator<LocalStorageService>().getData(key: 'user');
+    log('user ${user}');
+    log('businessId ${businessId}');
 
     if (user != null) {
       userData = GetLocalData.getUser();

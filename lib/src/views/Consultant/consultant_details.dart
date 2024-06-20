@@ -4,6 +4,7 @@ import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
+import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
@@ -17,6 +18,7 @@ import 'package:appointment_management/src/views/Appointments/appointment_bookin
 import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
+import 'package:appointment_management/src/views/User%20Profile/update_consultant_profile.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/confirmation_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
@@ -82,17 +84,47 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-        context: context,
-        leadingIcon: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
+          context: context,
+          leadingIcon: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+            ),
           ),
-        ),
-        title: 'Consultant Details ',
-      ),
+          title: 'Consultant Details ',
+          action: [
+            InkWell(
+              onTap: () {
+                User user = User(
+                  id: consultant!.id,
+                  name: consultant!.name,
+                  userid: consultant!.userId.toString(),
+                  about: consultant!.about,
+                  imageName: consultant!.imageName,
+                  roleId: consultant!.roleId,
+                  businessId: consultant!.businessId,
+                  email: consultant!.email,
+                  experience: consultant!.experience,
+                  field: consultant!.field,
+                  createdAt: consultant!.createdAt,
+                  updatedAt: consultant!.updatedAt,
+                );
+                final route = CupertinoPageRoute(
+                  builder: (context) => UpdateConsultantProfile(user: user),
+                );
+
+                Navigator.push(context, route);
+              },
+              child: Padding(
+                padding: EdgeInsets.all(8.sp),
+                child: const Icon(
+                  Icons.edit,
+                ),
+              ),
+            )
+          ]),
       body: isLoading
           ? const Loader()
           : SingleChildScrollView(
@@ -473,7 +505,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                                         ),
                                         width:
                                             MediaQuery.sizeOf(context).width *
-                                                0.9,
+                                                0.6,
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: AppColors.black),

@@ -31,7 +31,7 @@ class AuthResponse {
 class User {
   int? id;
   String? name;
-  String? experience;
+  String? experience; 
   String? field;
   String? about;
   String? imageName;

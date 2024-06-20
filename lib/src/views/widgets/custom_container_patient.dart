@@ -26,7 +26,7 @@ class CustomInfoContainer extends StatelessWidget {
       // height: height,
       // width: width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(5),
         color: color.withOpacity(0.9),
       ),
       child: Row(

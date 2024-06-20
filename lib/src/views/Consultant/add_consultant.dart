@@ -378,7 +378,9 @@ class _AddConsultantState extends State<AddConsultant> {
 
           if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
-            await getConsultantData();
+            // await getConsultantData();
+            // ignore: use_build_context_synchronously
+            await ApiServices.reSaveConsultant(context);
 
             final route = MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -422,24 +424,24 @@ class _AddConsultantState extends State<AddConsultant> {
     });
   }
 
-  Future<void> getConsultantData() async {
-    log('waiting here');
-    GetConsultant? tempConsultant = await ApiServices.getConsultant(
-      context,
-      Constants.getBusiness + businessId.toString(),
-      user,
-    );
+  // Future<void> getConsultantData() async {
+  //   log('waiting here');
+  //   GetConsultant? tempConsultant = await ApiServices.getConsultant(
+  //     context,
+  //     Constants.getBusiness + businessId.toString(),
+  //     user,
+  //   );
 
-    if (tempConsultant != null) {
-      await locator<LocalStorageService>().delete('consultants');
-      await locator<LocalStorageService>().saveData(
-        key: 'consultants',
-        value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
-      );
-      log('waiting here done');
-    }
-    setState(() {});
-  }
+  //   if (tempConsultant != null) {
+  //     await locator<LocalStorageService>().delete('consultants');
+  //     await locator<LocalStorageService>().saveData(
+  //       key: 'consultants',
+  //       value: tempConsultant.consultants.map((e) => e.toJson()).toList(),
+  //     );
+  //     log('waiting here done');
+  //   }
+  //   setState(() {});
+  // }
 
   Future<void> _init() async {
     user = locator<LocalStorageService>().getData(key: 'user');

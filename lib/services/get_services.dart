@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:appointment_management/model/auth_model/auth_model.dart';
@@ -29,19 +30,22 @@ class GetLocalData {
   }
 
   static List<Consultant> getConsultants() {
-    List<Map<String, dynamic>>? tempServices =
+    List<Map<String, dynamic>>? tempConsultant =
         locator<LocalStorageService>().getData(key: 'consultants');
-    if (tempServices != null) {
-      return tempServices.map((e) => Consultant.fromJson(e)).toList();
+
+    if (tempConsultant != null) {
+      return tempConsultant
+          .map((Map<String, dynamic> e) => Consultant.fromJson(e))
+          .toList();
     }
     return [];
   }
 
   static List<Branch> getBranches() {
-    List<Map<String, dynamic>>? tempServices =
+    List<Map<String, dynamic>>? tempBranches =
         locator<LocalStorageService>().getData(key: 'branches');
-    if (tempServices != null) {
-      return tempServices.map((e) => Branch.fromJson(e)).toList();
+    if (tempBranches != null) {
+      return tempBranches.map((e) => Branch.fromJson(e)).toList();
     }
     return [];
   }

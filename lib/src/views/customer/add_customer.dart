@@ -427,7 +427,8 @@ class _AddCustomerState extends State<AddCustomer> {
           log('res data ${res}');
           if (res['status'] == 200) {
             CustomDialogue.message(context: context, message: res['message']);
-            await getCustomerData();
+
+            await ApiServices.reSaveCustomer(context);
 
             final route = MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -464,27 +465,6 @@ class _AddCustomerState extends State<AddCustomer> {
     });
   }
 
-  // Future<void> getConsultantData() async {
-  //   try {
-  //     final res = await ApiServices.getConsultant(
-  //       context,
-  //       Constants.getBusiness + businessId.toString(),
-  //       user,
-  //     );
-  //     if (res != null) {
-  //       consultantsData = res;
-  //     }
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   } catch (e) {
-  //     log('Something went wrong in getConsultant Api $e');
-  //     setState(() {
-  //       findingConsultant = false;
-  //     });
-  //   }
-  // }
-
   DateTime? selectedDate;
 
   Future<void> _init() async {
@@ -504,22 +484,6 @@ class _AddCustomerState extends State<AddCustomer> {
       setState(() {
         selectedDate = pickedDate;
       });
-    }
-  }
-
-  Future<void> getCustomerData() async {
-    GetCustomer? tempCustomer = await ApiServices.getCustomer(
-      context,
-      Constants.getCustomers + businessId.toString(),
-      user,
-    );
-
-    if (tempCustomer != null) {
-      await locator<LocalStorageService>().delete('customers');
-      await locator<LocalStorageService>().saveData(
-        key: 'customers',
-        value: tempCustomer.customers!.map((e) => e.toJson()).toList(),
-      );
     }
   }
 }
