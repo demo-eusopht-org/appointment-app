@@ -74,21 +74,22 @@ class _CustomerDetailsState extends State<CustomerDetails> {
           ),
           title: 'Customer Details ',
           action: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => CustomerHistory(
-                      customerAppointments: customerAppointments!,
+            if (!isLoading)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => CustomerHistory(
+                        customerAppointments: customerAppointments!,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Icon(
-                Icons.history,
+                  );
+                },
+                child: const Icon(
+                  Icons.history,
+                ),
               ),
-            ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
