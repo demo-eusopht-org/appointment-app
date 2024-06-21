@@ -58,24 +58,29 @@ class MySharePlus {
     ).first;
 
     try {
+      String appointmentText = '''Hi ${customerName.toUpperCaseFirst()},
+
+Your appointment with consultant ${consultantName.toUpperCaseFirst()} is scheduled as follows:
+
+Date: $appointmentData
+Time: $startTime to $endTime
+Address: $branch
+
+Please arrive 10 minutes early.
+
+For any concerns, contact us at ${business.phoneNumber}.
+
+Best Regards,
+${business.name!.toUpperCaseFirst()}''';
+
       await Share.share(
-        '''
-Hello ${customerName.toUpperCaseFirst()},
-
-We are pleased to inform you that you have an upcoming appointment scheduled on $appointmentData between $startTime to $endTime with Consultant ${consultantName.toUpperCaseFirst()}. The appointment will take place at $branch. Please make sure to arrive at least 10 minutes before the scheduled time to complete any necessary preparations.
-
-If you have any questions or need to reschedule, please feel free to contact us at ${business.phoneNumber}. We look forward to seeing you soon and appreciate your punctuality.
-
-Best regards,
-
-${business.name!.toUpperCaseFirst()}
-  ''',
+        appointmentText,
         subject: "Appoitment Schedule",
       );
 
       return true;
     } catch (e) {
-      CustomDialogue.message(context: context, message: '${e.toString()}');
+      CustomDialogue.message(context: context, message: e.toString());
       print(e.toString());
       return false;
     }
