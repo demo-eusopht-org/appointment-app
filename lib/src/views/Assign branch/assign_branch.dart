@@ -32,7 +32,11 @@ import 'package:http/http.dart' as http;
 import 'package:appointment_management/src/utils/extensions.dart';
 
 class AssignBranch extends StatefulWidget {
-  const AssignBranch({super.key});
+  final Consultant consultant;
+  const AssignBranch({
+    super.key,
+    required this.consultant,
+  });
 
   @override
   State<AssignBranch> createState() => AssigneBranchState();
@@ -89,7 +93,6 @@ class AssigneBranchState extends State<AssignBranch> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
                 Navigator.pop(context);
               },
               icon: const Icon(
@@ -382,6 +385,12 @@ class AssigneBranchState extends State<AssignBranch> {
     });
 
     consultants = GetLocalData.getConsultants();
+    selectedConsultant = consultants
+        .where(
+          (element) => element.id == widget.consultant.id,
+        )
+        .first;
+
     branches = GetLocalData.getBranches();
 
     setState(() {

@@ -8,19 +8,17 @@ import 'package:appointment_management/src/views/Appointments/appointment_bookin
 import 'package:appointment_management/src/views/Appointments/appointments.dart';
 import 'package:appointment_management/src/views/Auth/login.dart';
 import 'package:appointment_management/src/views/Consultant%20Branch/create_branch.dart';
+import 'package:appointment_management/src/views/Consultant/consultant_directory.dart';
+import 'package:appointment_management/src/views/Customer/customer_directory.dart';
 import 'package:appointment_management/src/views/Settings%20page/settings_page.dart';
-import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
 import 'package:appointment_management/src/views/User%20Profile/user_profile.dart';
-import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
-import 'package:appointment_management/src/views/customer/customer_directory.dart';
 import 'package:appointment_management/src/views/Services/services_list.dart';
 import 'package:appointment_management/src/views/Settings/business_profile_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key});
@@ -86,7 +84,7 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => AddCustomer(),
+                          builder: (context) => const AddCustomer(),
                         ),
                       );
                     },
@@ -114,54 +112,72 @@ class CustomDrawer extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
+                  // SizedBox(height: 20),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       CupertinoPageRoute(
+                  //         builder: (context) => const AssignBranch(),
+                  //       ),
+                  //     );
+
+                  //   },
+                  //   child: textWidget(
+                  //     text: 'Assign Branch',
+                  //     fSize: 14.0,
+                  //     fWeight: FontWeight.w600,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                  // SizedBox(height: 20),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       CupertinoPageRoute(
+                  //         builder: (context) => const AssignConsultantSchedule(
+                  //           updateSchedule: false,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: textWidget(
+                  //     text: 'Assign Consultant Schedule',
+                  //     fSize: 14.0,
+                  //     fWeight: FontWeight.w600,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
                   InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => const AssignBranch(),
-                        ),
-                      );
-                    },
-                    child: textWidget(
-                      text: 'Assign Branch',
-                      fSize: 14.0,
-                      fWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => const AssignConsultantSchedule(
-                            updateSchedule: false,
-                          ),
-                        ),
-                      );
-                    },
-                    child: textWidget(
-                      text: 'Assign Consultant Schedule',
-                      fSize: 14.0,
-                      fWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => PatientDirectory(),
+                          builder: (context) => const CustomerDirectory(),
                         ),
                       );
                     },
                     child: textWidget(
                       text: 'Customer Directory',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const ConsultantDirectory(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Consultant Directory',
                       fSize: 14.0,
                       fWeight: FontWeight.w600,
                       color: Colors.black,

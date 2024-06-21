@@ -147,7 +147,7 @@ class CustomDialogue {
                   labelText: 'Add Note',
                   alignLabelWithHint: true,
                 ),
-                maxLines: 3,
+                maxLines: 10,
               ),
             ],
           ),

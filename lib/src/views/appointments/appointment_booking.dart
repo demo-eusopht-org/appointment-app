@@ -655,57 +655,65 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.6,
-                                            child: RoundedElevatedButton(
-                                              borderRadius: 36,
-                                              onPressed: () {
-                                                if (selectedCustomer == null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select customer');
-                                                } else if (selectedConsultant ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select consultant');
-                                                } else if (selectedBranch ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select business branch');
-                                                } else if (selectedDay ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select day');
-                                                } else if (selectedService ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select service');
-                                                } else if (selectedDate ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select date');
-                                                } else if (selectedTime ==
-                                                    null) {
-                                                  CustomDialogue.message(
-                                                      context: context,
-                                                      message:
-                                                          'Please select start time');
-                                                } else {
-                                                  addAppointment();
-                                                }
-                                              },
-                                              text:
-                                                  "${widget.reSchedule ? 'Reschedule' : 'Add'} Appointment",
-                                            ),
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      AppColors.primary,
+                                                ),
+                                                onPressed: () {
+                                                  if (selectedCustomer ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select customer');
+                                                  } else if (selectedConsultant ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select consultant');
+                                                  } else if (selectedBranch ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select business branch');
+                                                  } else if (selectedDay ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select day');
+                                                  } else if (selectedService ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select service');
+                                                  } else if (selectedDate ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select date');
+                                                  } else if (selectedTime ==
+                                                      null) {
+                                                    CustomDialogue.message(
+                                                        context: context,
+                                                        message:
+                                                            'Please select start time');
+                                                  } else {
+                                                    addAppointment();
+                                                  }
+                                                },
+                                                child: textWidget(
+                                                  text:
+                                                      "${widget.reSchedule ? 'Reschedule' : 'Add'} Appointment",
+                                                  fSize: 12.sp,
+                                                  fWeight: FontWeight.w500,
+                                                  color: AppColors.white,
+                                                )),
                                           ),
                                   ],
                                 ),

@@ -23,11 +23,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AssignConsultantSchedule extends StatefulWidget {
+   
   final int? consultantId;
   final ConsultantSchedule? consultantSchedule;
   final bool updateSchedule;
   const AssignConsultantSchedule({
     super.key,
+     
     this.consultantId,
     this.consultantSchedule,
     required this.updateSchedule,
@@ -105,7 +107,6 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                 if (isEdit) {
                   Navigator.pop(context);
                 } else {
-                  Navigator.pop(context);
                   Navigator.pop(context);
                 }
               },
@@ -593,12 +594,12 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
             (element) => element.id == widget.consultantSchedule!.branchId,
           )
           .first;
-      selectedConsultant = consultants
-          .where(
-            (element) => element.id == widget.consultantId,
-          )
-          .first;
     }
+    selectedConsultant = consultants
+        .where(
+          (element) => element.id == widget.consultantId,
+        )
+        .first;
     api ??= Api(
       dio,
       baseUrl: Constants.baseUrl,

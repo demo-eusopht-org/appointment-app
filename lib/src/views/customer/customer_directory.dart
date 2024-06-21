@@ -1,35 +1,31 @@
 import 'dart:developer';
-
-import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
-import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/utils.dart';
+import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/customer/customer_details.dart';
-import 'package:appointment_management/src/views/widgets/cached_network_image.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 
-class PatientDirectory extends StatefulWidget {
-  const PatientDirectory({super.key});
+class CustomerDirectory extends StatefulWidget {
+  const CustomerDirectory({super.key});
 
   @override
-  State<PatientDirectory> createState() => _PatientDirectoryState();
+  State<CustomerDirectory> createState() => _CustomerDirectoryState();
 }
 
-class _PatientDirectoryState extends State<PatientDirectory> {
+class _CustomerDirectoryState extends State<CustomerDirectory> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   dynamic user, businessId;
@@ -50,28 +46,46 @@ class _PatientDirectoryState extends State<PatientDirectory> {
     return Scaffold(
         key: scaffoldKey,
         appBar: customAppBar(
-          context: context,
-          title: 'Customer Directory',
-          leadingIcon: Icon(
-            Icons.arrow_back_outlined,
-          ),
-          leadingIconOnTap: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
-          // leadingIcon: Image.asset(
-          //   AppImages.menuIcon,
-          // ),
-          // leadingIconOnTap: () {
-          //   scaffoldKey.currentState!.openDrawer();
-          // },
-          // action: [
-          //   Image.asset(
-          //     AppImages.notification,
-          //     width: 50,
-          //   ),
-          // ],
-        ),
+            context: context,
+            title: 'Customer Directory',
+            leadingIcon: Icon(
+              Icons.arrow_back_outlined,
+            ),
+            leadingIconOnTap: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            action: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const AddCustomer(),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(10.sp),
+                  child: const Icon(
+                    Icons.add,
+                  ),
+                ),
+              )
+            ]
+            // leadingIcon: Image.asset(
+            //   AppImages.menuIcon,
+            // ),
+            // leadingIconOnTap: () {
+            //   scaffoldKey.currentState!.openDrawer();
+            // },
+            // action: [
+            //   Image.asset(
+            //     AppImages.notification,
+            //     width: 50,
+            //   ),
+            // ],
+            ),
         drawer: CustomDrawer(),
         body:
             //  findingCustomer
@@ -289,7 +303,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                                                 },
                                                 child: const Icon(
                                                   Icons.phone,
-                                                  color: Colors.black,
+                                                  color: AppColors.primary,
                                                 ),
                                               ),
                                               SizedBox(
@@ -297,7 +311,7 @@ class _PatientDirectoryState extends State<PatientDirectory> {
                                               ),
                                               const Icon(
                                                 Icons.arrow_forward_ios,
-                                                color: AppColors.black,
+                                                color: AppColors.primary,
                                               ),
                                             ],
                                           ),
