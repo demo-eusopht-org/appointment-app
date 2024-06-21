@@ -108,7 +108,7 @@ class CustomDialogue {
     showDialog(
       context: context,
       builder: (context) {
-        String status = 'cancelled';
+        String status = 'conducted';
         final TextEditingController notesController = TextEditingController();
 
         return AlertDialog(
@@ -144,7 +144,9 @@ class CustomDialogue {
                 controller: notesController,
                 decoration: const InputDecoration(
                   labelText: 'Add Note',
+                  alignLabelWithHint: true,
                 ),
+                maxLines: 3,
               ),
             ],
           ),
