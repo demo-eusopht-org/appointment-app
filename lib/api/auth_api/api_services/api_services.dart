@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:appointment_management/api/auth_api/api.dart';
+import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
@@ -13,8 +15,10 @@ import 'package:appointment_management/model/get_services/get_services_model.dar
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
+import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
@@ -325,7 +329,6 @@ class ApiServices {
   }
 
   static Future<void> reSaveCustomer(BuildContext context) async {
-    log('waiting here ');
     final user = locator<LocalStorageService>().getData(key: 'user');
     final businessId =
         locator<LocalStorageService>().getData(key: 'businessId');
@@ -346,6 +349,54 @@ class ApiServices {
             .toList(),
       );
     }
-    log('waiting here done');
+  }
+
+  static Future<void> updateAppointment(
+    BuildContext context,
+    String appointmentId,
+    String status,
+    String notes, [
+    Function? onUpdate,
+  ]) async {
+    try {
+      Api api = Api(
+        dio,
+        baseUrl: Constants.baseUrl,
+      );
+
+      dynamic res = await api.updateAppointment(
+        {
+          "id": appointmentId,
+          "status": status,
+          "notes": notes,
+        },
+      );
+
+      if (res['status'] == 200) {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+        // ignore: use_build_context_synchronously
+        CustomDialogue.message(context: context, message: res['message']);
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+        // onUpdate();
+      } else {
+        if (res.toString().contains('message')) {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['message']);
+        } else {
+          // ignore: use_build_context_synchronously
+          CustomDialogue.message(context: context, message: res['error']);
+        }
+      }
+    } catch (e) {
+      log('Something went wrong in update Appointment api $e');
+      CustomDialogue.message(
+          // ignore: use_build_context_synchronously
+          context: context,
+          message: 'Appointment not updated $e');
+    }
   }
 }

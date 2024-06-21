@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
@@ -124,7 +125,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Row(
@@ -186,7 +187,14 @@ class _ScheduleListState extends State<ScheduleList> {
                                       },
                                     );
 
-                                    if (result ?? false) {}
+                                    if (result ?? false) {
+                                      await ApiServices.updateAppointment(
+                                        context,
+                                        appointment.appointmentId.toString(),
+                                        'cancelled',
+                                        '',
+                                      );
+                                    }
                                   }),
                             ],
                           ),

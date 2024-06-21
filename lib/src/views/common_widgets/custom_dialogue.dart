@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appointment_management/api/auth_api/api.dart';
+import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
@@ -159,7 +160,7 @@ class CustomDialogue {
             ),
             TextButton(
               onPressed: () async {
-                await updateAppointment(
+                await ApiServices.updateAppointment(
                   context,
                   appointment.appointmentId.toString(),
                   status,
@@ -173,53 +174,6 @@ class CustomDialogue {
         );
       },
     );
-  }
-
-  static Future<void> updateAppointment(
-    BuildContext context,
-    String appointmentId,
-    String status,
-    String notes,
-    Function onUpdate,
-  ) async {
-    try {
-      Api api = Api(
-        dio,
-        baseUrl: Constants.baseUrl,
-      );
-
-      dynamic res = await api.updateAppointment(
-        {
-          "id": appointmentId,
-          "status": status,
-          "notes": notes,
-        },
-      );
-
-      if (res['status'] == 200) {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-        CustomDialogue.message(context: context, message: res['message']);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-        // onUpdate();
-      } else {
-        if (res.toString().contains('message')) {
-          // ignore: use_build_context_synchronously
-          CustomDialogue.message(context: context, message: res['message']);
-        } else {
-          // ignore: use_build_context_synchronously
-          CustomDialogue.message(context: context, message: res['error']);
-        }
-      }
-    } catch (e) {
-      log('Something went wrong in update Appointment api $e');
-      CustomDialogue.message(
-          // ignore: use_build_context_synchronously
-          context: context,
-          message: 'Appointment not updated $e');
-    }
   }
 
   static void showRecheduleDialogue(
