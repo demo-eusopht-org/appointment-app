@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/views/Auth/widgets/change_password.dart';
+import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
@@ -34,8 +36,57 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 10.sp),
           Padding(
-            padding: EdgeInsets.all(5.sp),
+            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+            child: Card(
+              color: AppColors.primary,
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const VerifyEmail(),
+                    ),
+                  );
+                },
+                title: textWidget(
+                  text: 'Verify Email',
+                  color: AppColors.white,
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+            child: Card(
+              color: AppColors.primary,
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const PrivacyPolicy(),
+                    ),
+                  );
+                },
+                title: textWidget(
+                  text: 'Privacy Policy',
+                  color: AppColors.white,
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.sp),
             child: Card(
               color: AppColors.primary,
               child: ListTile(

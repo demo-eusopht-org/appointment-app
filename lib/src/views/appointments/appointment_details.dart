@@ -10,10 +10,12 @@ import 'package:appointment_management/services/share_service.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:appointment_management/api/auth_api/api.dart';
@@ -215,16 +217,28 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     onUpdate: widget.onUpdate,
                   );
                 } else if (value == 'reSchedule') {
-                  CustomDialogue.showRecheduleDialogue(
+                  // CustomDialogue.showRecheduleDialogue(
+                  //   context,
+                  //   appointment,
+                  //   onUpdate: (Map<String, dynamic> selectedValue) {
+                  //     reScheduleAppointment(
+                  //         context,
+                  //         appointment,
+                  //         selectedValue['selectedDate'],
+                  //         selectedValue['selectedTime']);
+                  //   },
+                  // );
+                  Navigator.push(
                     context,
-                    appointment,
-                    onUpdate: (Map<String, dynamic> selectedValue) {
-                      reScheduleAppointment(
-                          context,
-                          appointment,
-                          selectedValue['selectedDate'],
-                          selectedValue['selectedTime']);
-                    },
+                    CupertinoPageRoute(
+                      builder: (context) => AppointmentBooking(
+                        reSchedule: true,
+                        appointment: appointment,
+                        customer: customer,
+                        consultant: consultant,
+                        branch: branch,
+                      ),
+                    ),
                   );
                 } else if (value == 'share') {
                   MySharePlus.onShare(

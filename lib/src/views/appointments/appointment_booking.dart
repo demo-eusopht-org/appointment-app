@@ -31,7 +31,19 @@ import '../../resources/app_colors.dart';
 import 'package:appointment_management/model/get_services/get_services_model.dart';
 
 class AppointmentBooking extends StatefulWidget {
-  const AppointmentBooking({super.key});
+  final bool reSchedule;
+  final Appointment? appointment;
+  final Customer? customer;
+  final Consultant? consultant;
+  final Branch? branch;
+  const AppointmentBooking({
+    super.key,
+    required this.reSchedule,
+    this.appointment,
+    this.customer,
+    this.consultant,
+    this.branch,
+  });
 
   @override
   State<AppointmentBooking> createState() => _AppointmentBookingState();
@@ -83,13 +95,17 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       key: scaffoldKey,
       appBar: customAppBar(
         context: context,
-        title: 'Appointment Booking',
+        title: 'Appointment ${widget.reSchedule ? 'Reschedule' : 'Booking'}',
         leadingIcon: const Icon(
           Icons.arrow_back_outlined,
         ),
         leadingIconOnTap: () {
-          Navigator.pop(context);
-          Navigator.pop(context);
+          if (widget.reSchedule) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
         },
       ),
       drawer: const CustomDrawer(),
@@ -156,8 +172,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.email!
-                                                          .toUpperCaseFirst(),
+                                                      e.email!,
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
@@ -166,8 +181,15 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                 .toList(),
                                             onChanged: (Customer? value) {
                                               if (value != null) {
-                                                selectedCustomer = value;
-                                                setState(() {});
+                                                if (!widget.reSchedule) {
+                                                  selectedCustomer = value;
+                                                  setState(() {});
+                                                } else {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'You cannot change the customer');
+                                                }
                                               }
                                             },
                                           ),
@@ -201,8 +223,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   (e) => DropdownMenuItem(
                                                     value: e,
                                                     child: Text(
-                                                      e.email!
-                                                          .toUpperCaseFirst(),
+                                                      e.email!,
                                                       style: MyTextStyles
                                                           .smallBlacktext,
                                                     ),
@@ -212,15 +233,22 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                             onChanged:
                                                 (Consultant? value) async {
                                               if (value != null) {
-                                                consultantSchedule = null;
-                                                selectedConsultantSchedule =
-                                                    null;
-                                                selectedDay = null;
-                                                selectedBranch = null;
-                                                selectedConsultant = value;
+                                                if (widget.reSchedule) {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'You cannot change the consultant');
+                                                } else {
+                                                  consultantSchedule = null;
+                                                  selectedConsultantSchedule =
+                                                      null;
+                                                  selectedDay = null;
+                                                  selectedBranch = null;
+                                                  selectedConsultant = value;
 
-                                                setState(() {});
-                                                await getConsultantSchedule();
+                                                  setState(() {});
+                                                  await getConsultantSchedule();
+                                                }
                                               }
                                             },
                                           ),
@@ -470,10 +498,17 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                         ),
                                         GestureDetector(
                                           onTap: () async {
-                                            selectedDate =
-                                                await utils.selectDate(context);
+                                            if (widget.reSchedule) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message:
+                                                      'You cannot change the date');
+                                            } else {
+                                              selectedDate = await utils
+                                                  .selectDate(context);
 
-                                            setState(() {});
+                                              setState(() {});
+                                            }
                                           },
                                           child: Container(
                                             height: 36,
@@ -534,6 +569,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           onTap: () async {
                                             selectedTime =
                                                 await utils.selectTime(context);
+                                            log(' scheduleTime ${selectedTime}');
 
                                             setState(() {});
                                           },
@@ -639,6 +675,12 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                       context: context,
                                                       message:
                                                           'Please select business branch');
+                                                } else if (selectedDay ==
+                                                    null) {
+                                                  CustomDialogue.message(
+                                                      context: context,
+                                                      message:
+                                                          'Please select day');
                                                 } else if (selectedService ==
                                                     null) {
                                                   CustomDialogue.message(
@@ -661,7 +703,8 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   addAppointment();
                                                 }
                                               },
-                                              text: "Add Appointment",
+                                              text:
+                                                  "${widget.reSchedule ? 'Reschedule' : 'Add'} Appointment",
                                             ),
                                           ),
                                   ],
@@ -685,6 +728,34 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     consultants = GetLocalData.getConsultants();
     services = GetLocalData.getServices();
     branches = GetLocalData.getBranches();
+    if (widget.reSchedule) {
+      selectedCustomer = customers!
+          .where(
+            (element) => element.id == widget.customer!.id,
+          )
+          .first;
+      selectedConsultant = consultants!
+          .where(
+            (element) => element.id == widget.consultant!.id,
+          )
+          .first;
+
+      await getConsultantSchedule();
+
+      selectedBranch = branches!
+          .where(
+            (element) => element.id == widget.branch!.id,
+          )
+          .first;
+
+      selectedDate = widget.appointment!.appointmentDate;
+
+      final tempScheduleTime = widget.appointment!.scheduleTime!.split(':');
+
+      selectedTime = TimeOfDay(
+          hour: int.parse(tempScheduleTime[0]),
+          minute: int.parse(tempScheduleTime[1]));
+    }
 
     setState(() {
       isLoading = false;
@@ -696,17 +767,30 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       setState(() {
         isAddingAppointment = true;
       });
-
-      dynamic res = await api!.createAppointment(
-        {
+      dynamic res;
+      if (widget.reSchedule) {
+        res = await api!.reScheduleAppointment({
           "consultant_id": selectedConsultant!.id,
           "customer_id": selectedCustomer!.id,
           "business_id": businessId,
           "schedule_time": selectedTime!.toFormatted12Hours(),
           "appointment_date": selectedDate!.toFormattedDate(),
+          "id": widget.appointment!.appointmentId,
           "branch_id": selectedBranch!.id,
-        },
-      );
+        });
+        log('i m here widget.reSchedule ${res}');
+      } else {
+        res = await api!.createAppointment(
+          {
+            "consultant_id": selectedConsultant!.id,
+            "customer_id": selectedCustomer!.id,
+            "business_id": businessId,
+            "schedule_time": selectedTime!.toFormatted12Hours(),
+            "appointment_date": selectedDate!.toFormattedDate(),
+            "branch_id": selectedBranch!.id,
+          },
+        );
+      }
 
       if (res['status'] == 200) {
         // ignore: use_build_context_synchronously
@@ -737,27 +821,34 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       });
       log('Something went wrong in create Appointment api $e');
       CustomDialogue.message(
-          context: context, message: 'Appointment not created $e');
+          context: context,
+          message:
+              'Appointment not ${widget.reSchedule ? 'updated' : 'created'} $e');
     }
   }
 
   Future<void> getConsultantSchedule() async {
-    GetConsultantSchedule? tempBranch = await ApiServices.getConsultantSchedule(
+    GetConsultantSchedule? tempConsutlantSchedule =
+        await ApiServices.getConsultantSchedule(
       context,
-      Constants.getConsultantSchedule + selectedConsultant!.id.toString(),
+      Constants.getConsultantSchedule +
+          (widget.reSchedule
+              ? widget.consultant!.id.toString()
+              : selectedConsultant!.id.toString()),
       user,
     );
 
-    if (tempBranch != null) {
-      if (tempBranch.consultantSchedule!.isNotEmpty &&
-          tempBranch.consultantSchedule!.first.cbid != null) {
-        consultantSchedule = tempBranch.consultantSchedule;
+    if (tempConsutlantSchedule != null) {
+      if (tempConsutlantSchedule.consultantSchedule!.isNotEmpty &&
+          tempConsutlantSchedule.consultantSchedule!.first.cbid != null) {
+        consultantSchedule = tempConsutlantSchedule.consultantSchedule;
       } else {
         consultantSchedule = [];
       }
     } else {
       consultantSchedule = [];
     }
+    log('consultantSchedule=> ${consultantSchedule!.length}');
 
     setState(() {});
   }

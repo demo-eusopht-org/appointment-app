@@ -173,7 +173,9 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => AppointmentBooking(),
+                          builder: (context) => const AppointmentBooking(
+                            reSchedule: false,
+                          ),
                         ),
                       );
                     },
@@ -232,40 +234,6 @@ class CustomDrawer extends StatelessWidget {
               },
               child: textWidget(
                 text: 'Appointments',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const VerifyEmail(),
-                  ),
-                );
-              },
-              child: textWidget(
-                text: 'Verify Email',
-                fSize: 14.0,
-                fWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const PrivacyPolicy(),
-                  ),
-                );
-              },
-              child: textWidget(
-                text: "Privacy Policy",
                 fSize: 14.0,
                 fWeight: FontWeight.w600,
                 color: Colors.black,
