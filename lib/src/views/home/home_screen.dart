@@ -13,6 +13,7 @@ import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
+import 'package:appointment_management/src/views/Appointments/appointments.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/appointment_widget.dart';
 import 'package:appointment_management/src/views/Home/widgets/appointment_count_widget.dart';
@@ -143,8 +144,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => const Appointments(),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.sp, horizontal: 5.sp),
+                              child: textWidget(
+                                text: 'View All Appointments',
+                                fWeight: FontWeight.w500,
+                              ),
+                            )),
+                      ],
                     ),
                     Expanded(
                       flex: 7,

@@ -58,9 +58,8 @@ class _AppointmentsState extends State<Appointments> {
         leadingIcon: IconButton(
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
           ),
         ),
