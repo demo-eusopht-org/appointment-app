@@ -16,6 +16,7 @@ import 'package:appointment_management/src/views/widgets/custom_container_patien
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -492,9 +493,11 @@ class _CustomerDetailsState extends State<CustomerDetails>
             ),
           SizedBox(
             height: 75.sp,
+            width: MediaQuery.sizeOf(context).width,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
+              dragStartBehavior: DragStartBehavior.start,
               itemCount: customerAppointments!.length,
               itemBuilder: (context, index) {
                 sortAppointmentList();
