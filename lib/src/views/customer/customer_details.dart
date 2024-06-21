@@ -17,6 +17,7 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../resources/app_colors.dart';
@@ -30,9 +31,8 @@ class CustomerDetails extends StatefulWidget {
   State<CustomerDetails> createState() => _CustomerDetailsState();
 }
 
-class _CustomerDetailsState extends State<CustomerDetails> {
-  // int selectedDateIndex = 0;
-  // int selectedTimeIndex = 0;
+class _CustomerDetailsState extends State<CustomerDetails>
+    with SingleTickerProviderStateMixin {
   DateTime? selectedDate;
 
   late Customer customer;
@@ -40,6 +40,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   dynamic user, businessId;
 
   List<Appointment>? customerAppointments;
+  List<Appointment>? allAppointments;
 
   bool isLoading = false;
 
@@ -52,13 +53,16 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     'Conducted': 2,
     'Cancelled': 3,
   };
+  int selectedIndex = 0;
 
   @override
   void initState() {
+    _tabController = TabController(length: 3, vsync: this);
     _init();
     super.initState();
   }
 
+  late TabController _tabController;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -341,15 +345,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       ],
                     ),
                   ),
-                  isLoading ? Loader() : SizedBox(),
-                  if (customerAppointments != null &&
-                      customerAppointments!.isEmpty)
-                    textWidget(
-                      text: 'No appointments schedule',
-                    ),
-                  if (customerAppointments != null &&
-                      customerAppointments!.isNotEmpty)
-                    appointmentsSchedule(),
+                  isLoading ? const Loader() : const SizedBox(),
+                  if (customerAppointments != null) appointmentsSchedule(),
                 ],
               ),
             ),
@@ -380,57 +377,119 @@ class _CustomerDetailsState extends State<CustomerDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  textWidget(
-                    text: 'Schedule',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.primary,
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    selectedIndex = 0;
+                    log('allAppointments ${allAppointments!.length}');
+                    customerAppointments = allAppointments!
+                        .where(
+                          (element) =>
+                              element.status!.toLowerCase() == 'booked',
+                        )
+                        .toList();
+                    log('allAppointments ${allAppointments!.length}');
+                    setState(() {});
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selectedIndex == 0
+                          ? AppColors.primary
+                          : AppColors.white,
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                    child: textWidget(
+                      text: 'Schedule',
+                      fWeight: FontWeight.w500,
+                      color: selectedIndex == 0
+                          ? AppColors.white
+                          : AppColors.primary,
+                    ),
                   ),
-                  SizedBox(
-                    width: 5.sp,
-                  ),
-                  CircleAvatar(
-                    radius: 5.sp,
-                    backgroundColor: AppColors.primary,
-                  ),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  textWidget(
-                    text: 'Conducted',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.success,
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    selectedIndex = 1;
+                    customerAppointments = allAppointments!
+                        .where((element) =>
+                            element.status!.toLowerCase() == 'conducted')
+                        .toList();
+                    setState(() {});
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selectedIndex == 1
+                          ? AppColors.success
+                          : AppColors.white,
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                    child: textWidget(
+                      text: 'Conducted',
+                      fWeight: FontWeight.w500,
+                      color: selectedIndex == 1
+                          ? AppColors.white
+                          : AppColors.primary,
+                    ),
                   ),
-                  SizedBox(
-                    width: 5.sp,
-                  ),
-                  CircleAvatar(
-                    radius: 5.sp,
-                    backgroundColor: AppColors.success,
-                  ),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  textWidget(
-                    text: 'Cancelled',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.danger,
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    selectedIndex = 2;
+                    customerAppointments = allAppointments!
+                        .where((element) =>
+                            element.status!.toLowerCase() == 'cancelled')
+                        .toList();
+                    setState(() {});
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selectedIndex == 2
+                          ? AppColors.danger
+                          : AppColors.white,
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                    child: textWidget(
+                      text: 'Cancelled',
+                      fWeight: FontWeight.w500,
+                      color: selectedIndex == 2
+                          ? AppColors.white
+                          : AppColors.primary,
+                    ),
                   ),
-                  SizedBox(
-                    width: 5.sp,
-                  ),
-                  CircleAvatar(
-                    radius: 5.sp,
-                    backgroundColor: AppColors.danger,
-                  ),
-                ],
+                ),
               )
             ],
           ),
           SizedBox(height: 10.sp),
+          if (customerAppointments != null && customerAppointments!.isEmpty)
+            textWidget(
+              text: 'No appointments schedule',
+            ),
           SizedBox(
             height: 75.sp,
             child: ListView.builder(
@@ -438,8 +497,6 @@ class _CustomerDetailsState extends State<CustomerDetails> {
               shrinkWrap: true,
               itemCount: customerAppointments!.length,
               itemBuilder: (context, index) {
-                // bool isSelected = (index == selectedDateIndex);
-
                 sortAppointmentList();
                 Appointment appointmentSchedule = customerAppointments![index];
 
@@ -469,14 +526,11 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.black),
-                        color:
-                            // isSelected ?
-                            isBooked
-                                ? AppColors.primary
-                                : isConducted
-                                    ? AppColors.success
-                                    : AppColors.danger,
-                        // :   AppColors.ratingbarColor,
+                        color: isBooked
+                            ? AppColors.primary
+                            : isConducted
+                                ? AppColors.success
+                                : AppColors.danger,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Column(
@@ -485,10 +539,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           textWidget(
                             text: appointmentSchedule.appointmentDate!
                                 .toPkFormattedDate(),
-                            color:
-                                // isSelected ?
-                                Colors.white,
-                            // : Colors.black,
+                            color: Colors.white,
                             fWeight: FontWeight.w700,
                           ),
                           SizedBox(
@@ -497,10 +548,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           textWidget(
                             text: appointmentSchedule.scheduleTime!
                                 .fromStringtoFormattedTime(),
-                            color:
-                                //  isSelected     ?
-                                Colors.white,
-                            // : Colors.black,
+                            color: Colors.white,
                             fWeight: FontWeight.w700,
                           ),
                         ],
@@ -526,8 +574,12 @@ class _CustomerDetailsState extends State<CustomerDetails> {
 
       if (res != null) {
         if (res.appointments!.isNotEmpty) {
-          customerAppointments = res.appointments!
+          allAppointments = res.appointments!
               .where((element) => element.customerId == customer.id)
+              .toList();
+
+          customerAppointments = allAppointments!
+              .where((element) => element.status!.toLowerCase() == 'booked')
               .toList();
         }
       }
