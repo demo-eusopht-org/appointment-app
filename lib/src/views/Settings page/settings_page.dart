@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/views/Auth/widgets/change_password.dart';
 import 'package:appointment_management/src/views/Settings/privacy_policy.dart';
+import 'package:appointment_management/src/views/Settings/update_arrival_time.dart';
 import 'package:appointment_management/src/views/Verify%20Email/verify_email.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
@@ -99,6 +100,28 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 title: textWidget(
                   text: 'Change Password',
+                  color: AppColors.white,
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+            child: Card(
+              color: AppColors.primary,
+              child: ListTile(
+                onTap: () {
+                  final route = CupertinoPageRoute(
+                    builder: (context) => const UpdateArrivalTimePage(),
+                  );
+                  Navigator.push(context, route);
+                },
+                title: textWidget(
+                  text: 'Update Arrival time',
                   color: AppColors.white,
                 ),
                 trailing: const Icon(

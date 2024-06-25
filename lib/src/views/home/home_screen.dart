@@ -95,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
       key: scaffoldKey,
       appBar: customAppBar(
         context: context,
-        title: 'Hi, ${user!['user']['name'].toString().toUpperCaseFirst()}!',
+        title:
+            'Hi, ${user!['user']['username'].toString().toUpperCaseFirst()}!',
         leadingIcon: Image.asset(
           AppImages.menuIcon,
         ),

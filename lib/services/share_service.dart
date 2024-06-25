@@ -66,7 +66,7 @@ Date: $appointmentData
 Time: $startTime to $endTime
 Address: $branch
 
-Please arrive 10 minutes early.
+Please arrive ${business.arrivalTime!} early.
 
 For any concerns, contact us at ${business.phoneNumber}.
 

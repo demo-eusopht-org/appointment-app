@@ -52,4 +52,6 @@ abstract class Api {
   Future<dynamic> updateConsultantProfile(@Body() Map<String, dynamic> body);
   @POST('/customer/update-customer')
   Future<dynamic> updateCustomerProfile(@Body() Map<String, dynamic> body);
+  @POST('/onboarding/update-arrival-time')
+  Future<dynamic> updateArrivalTime(@Body() Map<String, dynamic> body);
 }

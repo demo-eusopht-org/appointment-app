@@ -403,7 +403,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     userData = GetLocalData.getUser();
-    business = GetLocalData.getBusiness();
+    business = GetLocalData.getBusiness(); 
+    
 
     setState(() {
       isLoading = false;
