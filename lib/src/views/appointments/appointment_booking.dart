@@ -504,8 +504,16 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                                   message:
                                                       'You cannot change the date');
                                             } else {
-                                              selectedDate = await utils
-                                                  .selectDate(context);
+                                              if (selectedDay != null) {
+                                                selectedDate = await utils
+                                                    .customDatePicker(
+                                                        context, selectedDay!);
+                                              } else {
+                                                CustomDialogue.message(
+                                                    context: context,
+                                                    message:
+                                                        'Please select day');
+                                              }
 
                                               setState(() {});
                                             }

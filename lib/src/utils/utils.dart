@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -82,6 +84,29 @@ class utils {
     if (picked != null) {
       return picked;
     }
+    return null;
+  }
+
+  static Future<DateTime?> customDatePicker(
+    BuildContext context,
+    String day,
+  ) async {
+    int selectedDayNo = getDayNumber(day);
+    DateTime initialDate = getNextDay(selectedDayNo);
+
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      selectableDayPredicate: (day) {
+        return day.weekday == selectedDayNo;
+      },
+    );
+    if (picked != null) {
+      return picked;
+    }
+    return null;
   }
 
   static DateTime mergingDateTime(Appointment appointment) {
@@ -144,5 +169,33 @@ class utils {
       key: 'user',
       value: user.toJson(),
     );
+  }
+
+  static DateTime getNextDay(int selectedDayNo) {
+    DateTime date = DateTime.now();
+
+    while (date.weekday != selectedDayNo) {
+      date = date.add(const Duration(days: 1));
+    }
+    return date;
+  }
+
+  static int getDayNumber(String day) {
+    if (day.toLowerCase() == 'monday') {
+      return 1;
+    } else if (day.toLowerCase() == 'tuesday') {
+      return 2;
+    } else if (day.toLowerCase() == 'wednesday') {
+      return 3;
+    } else if (day.toLowerCase() == 'thursday') {
+      return 4;
+    } else if (day.toLowerCase() == 'friday') {
+      return 5;
+    } else if (day.toLowerCase() == 'saturday') {
+      return 6;
+    } else if (day.toLowerCase() == 'sunday') {
+      return 7;
+    }
+    return 1;
   }
 }
