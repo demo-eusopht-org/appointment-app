@@ -411,17 +411,19 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                             onChanged: (String? value) {
                                               if (value != null) {
                                                 selectedDay = value;
-                                                if (multipleDays
-                                                    .value.isEmpty) {
-                                                  multipleDays.value
-                                                      .add(selectedDay);
-                                                } else {
-                                                  if (!multipleDays.value.any(
-                                                      (element) => element!
-                                                          .contains(
-                                                              selectedDay!))) {
+                                                if (!isEdit) {
+                                                  if (multipleDays
+                                                      .value.isEmpty) {
                                                     multipleDays.value
                                                         .add(selectedDay);
+                                                  } else {
+                                                    if (!multipleDays.value.any(
+                                                        (element) => element!
+                                                            .contains(
+                                                                selectedDay!))) {
+                                                      multipleDays.value
+                                                          .add(selectedDay);
+                                                    }
                                                   }
                                                 }
                                                 setState(() {});
@@ -522,8 +524,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                 selectedBranch != null &&
                                                 selectedStartTime != null &&
                                                 selectedEndTime != null &&
-                                                // selectedDay != null &&
-                                                multipleDays.value.isNotEmpty) {
+                                                selectedDay != null) {
                                               if (formKey.currentState!
                                                   .validate()) {
                                                 assignConsultantBranch();
@@ -539,8 +540,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   context: context,
                                                   message:
                                                       'Please Select Branch');
-                                            } else if (multipleDays
-                                                .value.isEmpty) {
+                                            } else if (selectedDay == null) {
                                               CustomDialogue.message(
                                                   context: context,
                                                   message: 'Please Select Day');
@@ -597,13 +597,20 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
 
       if (selectedConsultantBranch != null) {
         dynamic res;
-        final days = multipleDays.value
-            .map((e) => '$e ')
-            .toList()
-            .toString()
-            .replaceAll('[', ' ')
-            .replaceAll(']', ' ');
+        String days;
+        if (!isEdit) {
+          days = multipleDays.value
+              .map((e) => '$e')
+              .toList()
+              .toString()
+              .replaceAll(',', '')
+              .replaceAll('[', '')
+              .replaceAll(']', '');
+        } else {
+          days = selectedDay!;
+        }
         log('days ${days}');
+
         if (isEdit) {
           res = await api!.updateConsultantSchedule(
             {

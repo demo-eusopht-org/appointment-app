@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:appointment_management/api/auth_api/api.dart';
@@ -649,7 +651,6 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
 
                                               if (result ?? false) {
                                                 deleteSchedule(
-                                                  // ignore: use_build_context_synchronously
                                                   context,
                                                   consultantSchedule
                                                       .scheduledId!,
@@ -916,7 +917,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
     setState(() {});
   }
 
-  static Future<void> deleteSchedule(
+  Future<void> deleteSchedule(
     BuildContext context,
     int scheduleId,
     int consultantId,
@@ -935,27 +936,23 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
       );
 
       if (res['status'] == 200) {
-        // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(builder: (_) => const HomeScreen()),
+        // );
+        _init();
       } else {
         if (res.toString().contains('message')) {
-          // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['message']);
         } else {
-          // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['error']);
         }
       }
     } catch (e) {
       log('Something went wrong in Delete Schedule api $e');
       CustomDialogue.message(
-          // ignore: use_build_context_synchronously
-          context: context,
-          message: 'Schedule not Deleted $e');
+          context: context, message: 'Schedule not Deleted $e');
     }
   }
 
