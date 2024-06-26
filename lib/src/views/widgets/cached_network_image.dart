@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomNetworkImage extends StatelessWidget {
+class CustomCustomNetworkImage extends StatelessWidget {
   final String image;
   final String errorImage;
   final double? width;
-  const CustomNetworkImage(
+  const CustomCustomNetworkImage(
       {super.key, required this.image, required this.errorImage, this.width});
 
   @override

@@ -15,6 +15,7 @@ class AppColors {
   static const Color danger = Color.fromARGB(255, 204, 16, 16);
   static const Color white = Color(0xffFFFFFF);
   static const Color ratingbarColor = Color(0xffF0EFEF);
+  static const Color grey = Colors.grey;
   static const Color starColor = Color(0xffFFFF00);
   static const Color borderColor = Color(0xffF0EFEF);
   static const Color todayBoxColor = Color(0xffD9D9D9);

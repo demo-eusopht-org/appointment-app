@@ -118,6 +118,7 @@ class _CreateBranchState extends State<CreateBranch> {
                           CustomTextField(
                             hintText: "Name",
                             controller: nameController,
+                            
                             validatorCondition: (String? value) {
                               if (value == null || value == '') {
                                 return 'Please fill Name field';

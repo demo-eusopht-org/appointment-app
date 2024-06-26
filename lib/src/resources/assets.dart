@@ -14,7 +14,8 @@ class AppImages {
   static String right = "assets/images/Right.png";
   static String left = "assets/images/Left.png";
   static String doctor1 = "assets/images/doctor1.png";
-  static String noImage = "assets/images/no-image.jpg";
+  // static String noImage = "assets/images/no-image.jpg";
+  static String noImage = "assets/images/no-person.png";
 
   static String vectorBox = "assets/images/vector_box.png";
   static String patient = "assets/images/patient.png";

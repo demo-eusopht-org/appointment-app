@@ -50,7 +50,7 @@ class CustomDrawer extends StatelessWidget {
                   Image.asset('assets/images/Male User.png'),
                   SizedBox(width: 5),
                   textWidget(
-                    text: '${user!['user']['username']}',
+                    text: '${user!['user']['name']}',
                     fSize: 20.0,
                     fWeight: FontWeight.w700,
                   ),

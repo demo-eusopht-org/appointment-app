@@ -20,7 +20,7 @@ class AppointmentCountWidget extends StatelessWidget {
         margin: EdgeInsets.only(left: 5.sp, right: 5.sp, top: 5.sp),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: AppColors.primary,
+          color: AppColors.black,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

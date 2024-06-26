@@ -8,13 +8,16 @@ import 'package:appointment_management/model/get_customer_model/get_customer_mod
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/share_service.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
+import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
+import 'package:appointment_management/src/views/widgets/cached_network_image.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,11 +103,12 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     return Stack(
       children: [
         Card(
-          color: isBooked
-              ? AppColors.primary.withOpacity(0.5)
-              : isConducted
-                  ? AppColors.success.withOpacity(0.5)
-                  : AppColors.danger.withOpacity(0.5),
+          color: AppColors.white,
+          // color: isBooked
+          //     ? AppColors.primary.withOpacity(0.5)
+          //     : isConducted
+          //         ? AppColors.success.withOpacity(0.5)
+          //         : AppColors.danger.withOpacity(0.5),
           elevation: 5,
           margin: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 15.sp),
           shape: RoundedRectangleBorder(
@@ -115,207 +119,269 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                textWidget(
-                  text: 'Appointment ID: ${appointment.appointmentId}',
-                  fWeight: FontWeight.bold,
-                  color: AppColors.white,
-                ),
+                if (consultant != null)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 20.sp,
+                            backgroundImage: consultant.imageName != null
+                                ? CachedNetworkImageProvider(
+                                    '${Constants.consultantImageBaseUrl}${consultant.imageName}',
+                                  )
+                                : AssetImage(AppImages.noImage)
+                                    as ImageProvider<Object>,
+                          ),
+                          SizedBox(
+                            width: 10.sp,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textWidget(
+                                text: consultant.name!.toUpperCaseFirst(),
+                                fWeight: FontWeight.w500,
+                                color: AppColors.black.withOpacity(0.9),
+                              ),
+                              textWidget(
+                                text: '${consultant.email}',
+                                isUpperCase: false,
+                                fWeight: FontWeight.w500,
+                                color: AppColors.black.withOpacity(0.9),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      textWidget(
+                        text: '${appointment.status}',
+                        isUpperCase: false,
+                        fWeight: FontWeight.w500,
+                        color: isBooked
+                            ? AppColors.primary
+                            : isCancelled
+                                ? AppColors.danger
+                                : AppColors.success,
+                      ),
+                    ],
+                  ),
                 SizedBox(height: 5.sp),
                 if (customer != null)
                   textWidget(
                     text: 'Customer Name: ${customer.name!.toUpperCaseFirst()}',
                     fWeight: FontWeight.w500,
-                    color: AppColors.white,
+                    color: AppColors.black.withOpacity(0.9),
                   ),
                 SizedBox(height: 5.sp),
-                if (consultant != null)
+                if (branch != null)
                   textWidget(
-                    text:
-                        'Consultant Name: ${consultant.name!.toUpperCaseFirst()}',
+                    text: 'Address: ${branch.address!.toUpperCaseFirst()}',
                     fWeight: FontWeight.w500,
-                    color: AppColors.white,
+                    color: AppColors.black.withOpacity(0.9),
+                  ),
+                // SizedBox(height: 5.sp),
+                // if (business != null)
+                //   textWidget(
+                //     text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
+                //     fWeight: FontWeight.w500,
+                //     color: AppColors.black.withOpacity(0.9),
+                //   ),
+                if (appointment.appointmentNote != null) SizedBox(height: 5.sp),
+                if (appointment.appointmentNote != null)
+                  textWidget(
+                    text: 'Appointment Note: ${appointment.appointmentNote}',
+                    fWeight: FontWeight.w500,
+                    color: AppColors.black.withOpacity(0.9),
                   ),
                 SizedBox(height: 5.sp),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      text: 'Status: ${appointment.status!.toUpperCaseFirst()}',
+                      text:
+                          'Date: ${appointment.appointmentDate!.toPkFormattedDate()}',
                       fWeight: FontWeight.w500,
-                      color: AppColors.white,
+                      color: AppColors.black.withOpacity(0.9),
                     ),
-                    // Icon(
-                    //   isBooked
-                    //       ? Icons.calendar_month
-                    //       : isConducted
-                    //           ? Icons.check_box
-                    //           : Icons.cancel,
-                    //   color: AppColors.white,
-                    //   size: 20.sp,
-                    // )
+                    textWidget(
+                      text:
+                          'Time: ${appointment.start.toString().split(' ').last.fromStringtoFormattedTime()}',
+                      fWeight: FontWeight.w500,
+                      color: AppColors.black.withOpacity(0.9),
+                    ),
                   ],
                 ),
-                SizedBox(height: 5.sp),
-                if (branch != null)
-                  textWidget(
-                    text: 'Address: ${branch.address!.toUpperCaseFirst()}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.white,
-                  ),
-                SizedBox(height: 5.sp),
-                if (business != null)
-                  textWidget(
-                    text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.white,
-                  ),
-                if (appointment.appointmentNote != null) SizedBox(height: 5.sp),
-                if (appointment.appointmentNote != null)
-                  textWidget(
-                    text: 'Appointment Note: ${appointment.appointmentNote}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.white,
-                  ),
-                SizedBox(height: 5.sp),
-                textWidget(
-                  text:
-                      'Date: ${appointment.appointmentDate!.toPkFormattedDate()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
-                SizedBox(height: 5.sp),
-                textWidget(
-                  text:
-                      'Start: ${appointment.start.toString().split(' ').last.fromStringtoFormattedTime()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
-                SizedBox(
-                  height: 5.sp,
-                ),
-                textWidget(
-                  text:
-                      'End: ${appointment.end.toString().split(' ').last.fromStringtoFormattedTime()}',
-                  fWeight: FontWeight.w500,
-                  color: AppColors.white,
-                ),
+
+                // SizedBox(
+                //   height: 5.sp,
+                // ),
+                // textWidget(
+                //   text:
+                //       'End: ${appointment.end.toString().split(' ').last.fromStringtoFormattedTime()}',
+                //   fWeight: FontWeight.w500,
+                //   color: AppColors.black.withOpacity(0.9),
+                // ),
+                if (isBooked)
+                  Column(
+                    children: [
+                      const Divider(
+                        color: AppColors.grey,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CustomButtons(
+                            title: 'Update',
+                            icon: Icons.update,
+                            onTap: () {
+                              CustomDialogue.showUpdateDialog(
+                                context,
+                                appointment: appointment,
+                                onUpdate: widget.onUpdate,
+                              );
+                            },
+                          ),
+                          CustomButtons(
+                            title: 'Reschedule',
+                            icon: Icons.calendar_month,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => AppointmentBooking(
+                                    reSchedule: true,
+                                    appointment: appointment,
+                                    customer: customer,
+                                    consultant: consultant,
+                                    branch: branch,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          CustomButtons(
+                            title: 'Share',
+                            icon: Icons.share,
+                            onTap: () {
+                              MySharePlus.onShare(
+                                context,
+                                appointment,
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ],
+                  )
               ],
             ),
           ),
         ),
-        if (isBooked)
-          Positioned(
-            top: 10.sp,
-            right: 10.sp,
-            child: PopupMenuButton(
-              iconColor: AppColors.white,
-              onSelected: (value) {
-                if (value == 'update') {
-                  CustomDialogue.showUpdateDialog(
-                    context,
-                    appointment: appointment,
-                    onUpdate: widget.onUpdate,
-                  );
-                } else if (value == 'reSchedule') {
-                  // CustomDialogue.showRecheduleDialogue(
-                  //   context,
-                  //   appointment,
-                  //   onUpdate: (Map<String, dynamic> selectedValue) {
-                  //     reScheduleAppointment(
-                  //         context,
-                  //         appointment,
-                  //         selectedValue['selectedDate'],
-                  //         selectedValue['selectedTime']);
-                  //   },
-                  // );
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => AppointmentBooking(
-                        reSchedule: true,
-                        appointment: appointment,
-                        customer: customer,
-                        consultant: consultant,
-                        branch: branch,
-                      ),
-                    ),
-                  );
-                } else if (value == 'share') {
-                  MySharePlus.onShare(
-                    context,
-                    appointment,
-                  );
-                }
-              },
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    value: 'update',
-                    child: textWidget(text: 'Update'),
-                  ),
-                  PopupMenuItem(
-                    value: 'reSchedule',
-                    child: textWidget(text: 'Reschedule'),
-                  ),
-                  PopupMenuItem(
-                    value: 'share',
-                    child: textWidget(text: 'Share'),
-                  ),
-                ];
-              },
-            ),
-          )
+        // if (isBooked)
+        //   Positioned(
+        //     top: 10.sp,
+        //     right: 10.sp,
+        //     child: PopupMenuButton(
+        //       iconColor: AppColors.white,
+        //       onSelected: (value) {
+        //         if (value == 'update') {
+        //           CustomDialogue.showUpdateDialog(
+        //             context,
+        //             appointment: appointment,
+        //             onUpdate: widget.onUpdate,
+        //           );
+        //         } else if (value == 'reSchedule') {
+        //           Navigator.push(
+        //             context,
+        //             CupertinoPageRoute(
+        //               builder: (context) => AppointmentBooking(
+        //                 reSchedule: true,
+        //                 appointment: appointment,
+        //                 customer: customer,
+        //                 consultant: consultant,
+        //                 branch: branch,
+        //               ),
+        //             ),
+        //           );
+        //         } else if (value == 'share') {
+        //           MySharePlus.onShare(
+        //             context,
+        //             appointment,
+        //           );
+        //         }
+        //       },
+        //       itemBuilder: (context) {
+        //         return [
+        //           PopupMenuItem(
+        //             value: 'update',
+        //             child: textWidget(text: 'Update'),
+        //           ),
+        //           PopupMenuItem(
+        //             value: 'reSchedule',
+        //             child: textWidget(text: 'Reschedule'),
+        //           ),
+        //           PopupMenuItem(
+        //             value: 'share',
+        //             child: textWidget(text: 'Share'),
+        //           ),
+        //         ];
+        //       },
+        //     ),
+        //   )
       ],
     );
   }
 
-  static Future<void> reScheduleAppointment(
-    BuildContext context,
-    Appointment appointment,
-    String date,
-    String time,
-  ) async {
-    try {
-      Api api = Api(
-        dio,
-        baseUrl: Constants.baseUrl,
-      );
+  // static Future<void> reScheduleAppointment(
+  //   BuildContext context,
+  //   Appointment appointment,
+  //   String date,
+  //   String time,
+  // ) async {
+  //   try {
+  //     Api api = Api(
+  //       dio,
+  //       baseUrl: Constants.baseUrl,
+  //     );
 
-      dynamic res = await api.reScheduleAppointment({
-        "consultant_id": appointment.consultantId,
-        "customer_id": appointment.customerId,
-        "business_id": appointment.businessId,
-        "schedule_time": time,
-        "appointment_date": date,
-        "id": appointment.appointmentId,
-        "branch_id": appointment.branchId,
-      });
+  //     dynamic res = await api.reScheduleAppointment({
+  //       "consultant_id": appointment.consultantId,
+  //       "customer_id": appointment.customerId,
+  //       "business_id": appointment.businessId,
+  //       "schedule_time": time,
+  //       "appointment_date": date,
+  //       "id": appointment.appointmentId,
+  //       "branch_id": appointment.branchId,
+  //     });
 
-      if (res['status'] == 200) {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-        CustomDialogue.message(context: context, message: res['message']);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-        // onUpdate();
-      } else {
-        if (res.toString().contains('message')) {
-          // ignore: use_build_context_synchronously
-          CustomDialogue.message(context: context, message: res['message']);
-        } else {
-          // ignore: use_build_context_synchronously
-          CustomDialogue.message(context: context, message: res['error']);
-        }
-      }
-    } catch (e) {
-      log('Something went wrong in Reschedule Appointment api $e');
-      CustomDialogue.message(
-          // ignore: use_build_context_synchronously
-          context: context,
-          message: 'Appointment not Rescheduled $e');
-    }
-  }
+  //     if (res['status'] == 200) {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.of(context).pop();
+  //       CustomDialogue.message(context: context, message: res['message']);
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(builder: (_) => const HomeScreen()),
+  //       );
+  //       // onUpdate();
+  //     } else {
+  //       if (res.toString().contains('message')) {
+  //         // ignore: use_build_context_synchronously
+  //         CustomDialogue.message(context: context, message: res['message']);
+  //       } else {
+  //         // ignore: use_build_context_synchronously
+  //         CustomDialogue.message(context: context, message: res['error']);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     log('Something went wrong in Reschedule Appointment api $e');
+  //     CustomDialogue.message(
+  //         // ignore: use_build_context_synchronously
+  //         context: context,
+  //         message: 'Appointment not Rescheduled $e');
+  //   }
+  // }
 
   Map<String, dynamic> getUsersData(Appointment appointment) {
     final branches = GetLocalData.getBranches();
@@ -370,5 +436,41 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
       'business': business,
     };
     return usersData;
+  }
+}
+
+class CustomButtons extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Function onTap;
+  const CustomButtons({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onTap.call();
+      },
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: AppColors.black,
+          ),
+          SizedBox(
+            width: 5.sp,
+          ),
+          textWidget(
+            text: title,
+            fWeight: FontWeight.w600,
+          ),
+        ],
+      ),
+    );
   }
 }

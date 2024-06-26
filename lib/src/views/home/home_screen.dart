@@ -17,7 +17,6 @@ import 'package:appointment_management/src/views/Appointments/appointments.dart'
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/appointment_widget.dart';
 import 'package:appointment_management/src/views/Home/widgets/appointment_count_widget.dart';
-import 'package:appointment_management/src/views/Timetable/widgets/time_table.dart';
 import 'package:appointment_management/src/views/notifications/notification_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
@@ -25,11 +24,8 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:timetable/timetable.dart';
 
 import '../../resources/app_colors.dart';
@@ -91,81 +87,52 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: customAppBar(
-        context: context,
-        title:
-            'Hi, ${user!['user']['username'].toString().toUpperCaseFirst()}!',
-        leadingIcon: Image.asset(
-          AppImages.menuIcon,
-        ),
-        leadingIconOnTap: () {
-          scaffoldKey.currentState!.openDrawer();
-        },
-        action: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const NotificationScreen(),
-                ),
-              );
-            },
-            child: Image.asset(
-              AppImages.notification,
-              width: 50,
-            ),
-          ),
-        ],
-      ),
-      drawer: const CustomDrawer(),
-      body: isLoading
-          ? const Loader()
-          : PopScope(
-              canPop: false,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.sp),
+    return SafeArea(
+      child: Scaffold(
+        key: scaffoldKey,
+        // appBar: customAppBar(
+        //   context: context,
+        //   title: 'Hi, ${user!['user']['name'].toString().toUpperCaseFirst()}!',
+        //   leadingIcon: Image.asset(
+        //     AppImages.menuIcon,
+        //   ),
+        //   leadingIconOnTap: () {
+        //     scaffoldKey.currentState!.openDrawer();
+        //   },
+        //   action: [
+        //     GestureDetector(
+        //       onTap: () {
+        //         Navigator.push(
+        //           context,
+        //           CupertinoPageRoute(
+        //             builder: (context) => const NotificationScreen(),
+        //           ),
+        //         );
+        //       },
+        //       child: Image.asset(
+        //         AppImages.notification,
+        //         width: 50,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        drawer: const CustomDrawer(),
+        body: isLoading
+            ? const Loader()
+            : PopScope(
+                canPop: false,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppointmentCountWidget(
-                            title: 'Total Appointments',
-                            totalappointments: isAdmin!
-                                ? totalappointments.toString()
-                                : allAppointments!.length.toString()),
-                        AppointmentCountWidget(
-                          title: 'Monthly Appointments',
-                          totalappointments:
-                              currentMonthAppointments.toString(),
-                        ),
-                      ],
+                    Header(
+                      totalappointments: totalappointments,
+                      allAppointments: allAppointments,
+                      currentMonthAppointments: currentMonthAppointments,
+                      user: user,
+                      scaffoldKey: scaffoldKey,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => const Appointments(),
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.sp, horizontal: 5.sp),
-                              child: textWidget(
-                                text: 'View All Appointments',
-                                fWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ],
+                    SizedBox(
+                      height: 10.sp,
                     ),
                     Expanded(
                       flex: 7,
@@ -479,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-            ),
+      ),
     );
   }
 
@@ -550,6 +517,121 @@ class _HomeScreenState extends State<HomeScreen> {
     isCancelledList = allAppointments!
         .where((element) => element.status!.toLowerCase() == 'cancelled')
         .toList();
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({
+    super.key,
+    required this.totalappointments,
+    required this.allAppointments,
+    required this.currentMonthAppointments,
+    required this.user,
+    required this.scaffoldKey,
+  });
+
+  final int totalappointments;
+  final List<Appointment>? allAppointments;
+  final int currentMonthAppointments;
+  final dynamic user;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 5.sp,
+        vertical: 5.sp,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30.sp),
+        ),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(5.sp),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Icon(
+                    Icons.menu,
+                    color: AppColors.white,
+                    size: 25.sp,
+                  ),
+                ),
+                textWidget(
+                  text:
+                      'Hi, ${user!['user']['name'].toString().toUpperCaseFirst()}!',
+                  color: AppColors.white,
+                  fSize: 17.sp,
+                  fWeight: FontWeight.bold,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const NotificationScreen(),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.notifications_active,
+                    color: AppColors.white,
+                    size: 25.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppointmentCountWidget(
+                  title: 'Total Appointments',
+                  totalappointments: isAdmin!
+                      ? totalappointments.toString()
+                      : allAppointments!.length.toString()),
+              AppointmentCountWidget(
+                title: 'Monthly Appointments',
+                totalappointments: currentMonthAppointments.toString(),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const Appointments(),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.sp, horizontal: 5.sp),
+                  child: textWidget(
+                    text: 'View All Appointments',
+                    fWeight: FontWeight.w600,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

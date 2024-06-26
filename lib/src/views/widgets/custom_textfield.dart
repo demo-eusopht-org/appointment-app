@@ -1,3 +1,4 @@
+import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -36,6 +37,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validatorCondition,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        // filled: true,
+        // fillColor: Color.fromARGB(255, 235, 234, 234),
+        // border: InputBorder.none,
         suffixIcon: widget.showPasswordIcon && widget.obscureText
             ? IconButton(
                 icon: Icon(
