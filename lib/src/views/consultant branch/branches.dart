@@ -99,10 +99,21 @@ class _BranchesPageState extends State<BranchesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            textWidget(
-              text: branch.address!,
-              fSize: 15.sp,
-              color: AppColors.white,
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on,
+                  color: AppColors.white,
+                ),
+                SizedBox(
+                  width: 5.sp,
+                ),
+                textWidget(
+                  text: branch.address!,
+                  fSize: 15.sp,
+                  color: AppColors.white,
+                ),
+              ],
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.sp),

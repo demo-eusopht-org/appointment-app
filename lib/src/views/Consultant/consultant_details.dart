@@ -24,6 +24,7 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
@@ -384,10 +385,13 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              textWidget(
-                                text: getAbout(),
-                                fSize: 15.0,
-                                color: Colors.black,
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width - 50,
+                                child: textWidget(
+                                  text: getAbout(),
+                                  fSize: 15.0,
+                                  color: Colors.black,
+                                ),
                               ),
                               const SizedBox(
                                 height: 10,
