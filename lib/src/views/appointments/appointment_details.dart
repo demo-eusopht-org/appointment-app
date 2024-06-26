@@ -20,6 +20,7 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
@@ -103,183 +104,196 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     return Stack(
       children: [
         Card(
-          color: AppColors.white,
-          // color: isBooked
-          //     ? AppColors.primary.withOpacity(0.5)
-          //     : isConducted
-          //         ? AppColors.success.withOpacity(0.5)
-          //         : AppColors.danger.withOpacity(0.5),
+          color: AppColors.primary,
           elevation: 5,
           margin: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 15.sp),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (consultant != null)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (consultant != null)
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            radius: 20.sp,
-                            backgroundImage: consultant.imageName != null
-                                ? CachedNetworkImageProvider(
-                                    '${Constants.consultantImageBaseUrl}${consultant.imageName}',
-                                  )
-                                : AssetImage(AppImages.noImage)
-                                    as ImageProvider<Object>,
-                          ),
-                          SizedBox(
-                            width: 10.sp,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
-                              textWidget(
-                                text: consultant.name!.toUpperCaseFirst(),
-                                fWeight: FontWeight.w500,
-                                color: AppColors.black.withOpacity(0.9),
+                              CircleAvatar(
+                                radius: 20.sp,
+                                backgroundImage: consultant.imageName != null
+                                    ? CachedNetworkImageProvider(
+                                        '${Constants.consultantImageBaseUrl}${consultant.imageName}',
+                                      )
+                                    : AssetImage(AppImages.noImage)
+                                        as ImageProvider<Object>,
                               ),
-                              textWidget(
-                                text: '${consultant.email}',
-                                isUpperCase: false,
-                                fWeight: FontWeight.w500,
-                                color: AppColors.black.withOpacity(0.9),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  textWidget(
+                                    text: consultant.name!.toUpperCaseFirst(),
+                                    fWeight: FontWeight.w500,
+                                    color: AppColors.white,
+                                  ),
+                                  textWidget(
+                                    text: '${consultant.email}',
+                                    isUpperCase: false,
+                                    fWeight: FontWeight.w500,
+                                    color: AppColors.white,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+                          textWidget(
+                            text: '${appointment.status}',
+                            isUpperCase: false,
+                            fWeight: FontWeight.w500,
+                            color: isBooked
+                                ? AppColors.white
+                                : isCancelled
+                                    ? AppColors.danger
+                                    : AppColors.success,
+                          ),
                         ],
                       ),
+                    SizedBox(height: 5.sp),
+                    if (customer != null)
                       textWidget(
-                        text: '${appointment.status}',
-                        isUpperCase: false,
+                        text:
+                            'Customer Name: ${customer.name!.toUpperCaseFirst()}',
                         fWeight: FontWeight.w500,
-                        color: isBooked
-                            ? AppColors.primary
-                            : isCancelled
-                                ? AppColors.danger
-                                : AppColors.success,
+                        color: AppColors.white,
                       ),
-                    ],
-                  ),
-                SizedBox(height: 5.sp),
-                if (customer != null)
-                  textWidget(
-                    text: 'Customer Name: ${customer.name!.toUpperCaseFirst()}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.black.withOpacity(0.9),
-                  ),
-                SizedBox(height: 5.sp),
-                if (branch != null)
-                  textWidget(
-                    text: 'Address: ${branch.address!.toUpperCaseFirst()}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.black.withOpacity(0.9),
-                  ),
-                // SizedBox(height: 5.sp),
-                // if (business != null)
-                //   textWidget(
-                //     text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
-                //     fWeight: FontWeight.w500,
-                //     color: AppColors.black.withOpacity(0.9),
-                //   ),
-                if (appointment.appointmentNote != null) SizedBox(height: 5.sp),
-                if (appointment.appointmentNote != null)
-                  textWidget(
-                    text: 'Appointment Note: ${appointment.appointmentNote}',
-                    fWeight: FontWeight.w500,
-                    color: AppColors.black.withOpacity(0.9),
-                  ),
-                SizedBox(height: 5.sp),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    textWidget(
-                      text:
-                          'Date: ${appointment.appointmentDate!.toPkFormattedDate()}',
-                      fWeight: FontWeight.w500,
-                      color: AppColors.black.withOpacity(0.9),
+                    SizedBox(height: 5.sp),
+                    if (branch != null)
+                      textWidget(
+                        text: 'Address: ${branch.address!.toUpperCaseFirst()}',
+                        fWeight: FontWeight.w500,
+                        color: AppColors.white,
+                      ),
+                    // SizedBox(height: 5.sp),
+                    // if (business != null)
+                    //   textWidget(
+                    //     text: 'Business Name: ${business.name!.toUpperCaseFirst()}',
+                    //     fWeight: FontWeight.w500,
+                    //     color: AppColors.white,
+                    //   ),
+                    if (appointment.appointmentNote != null)
+                      SizedBox(height: 5.sp),
+                    if (appointment.appointmentNote != null)
+                      textWidget(
+                        text:
+                            'Appointment Note: ${appointment.appointmentNote}',
+                        fWeight: FontWeight.w500,
+                        color: AppColors.white,
+                      ),
+                    SizedBox(height: 5.sp),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textWidget(
+                          text:
+                              'Date: ${appointment.appointmentDate!.toPkFormattedDate()}',
+                          fWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
+                        textWidget(
+                          text:
+                              'Time: ${appointment.start.toString().split(' ').last.fromStringtoFormattedTime()}',
+                          fWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
+                      ],
                     ),
-                    textWidget(
-                      text:
-                          'Time: ${appointment.start.toString().split(' ').last.fromStringtoFormattedTime()}',
-                      fWeight: FontWeight.w500,
-                      color: AppColors.black.withOpacity(0.9),
-                    ),
+
+                    // SizedBox(
+                    //   height: 5.sp,
+                    // ),
+                    // textWidget(
+                    //   text:
+                    //       'End: ${appointment.end.toString().split(' ').last.fromStringtoFormattedTime()}',
+                    //   fWeight: FontWeight.w500,
+                    //   color: AppColors.white,
+                    // ),
+                    if (isBooked)
+                      Column(
+                        children: [
+                          const Divider(
+                            color: AppColors.white,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CustomButtons(
+                                title: 'Update',
+                                icon: Icons.update,
+                                onTap: () {
+                                  CustomDialogue.showUpdateDialog(
+                                    context,
+                                    appointment: appointment,
+                                    onUpdate: widget.onUpdate,
+                                  );
+                                },
+                              ),
+                              CustomButtons(
+                                title: 'Reschedule',
+                                icon: Icons.calendar_month,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => AppointmentBooking(
+                                        reSchedule: true,
+                                        appointment: appointment,
+                                        customer: customer,
+                                        consultant: consultant,
+                                        branch: branch,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              CustomButtons(
+                                title: 'Share',
+                                icon: Icons.share,
+                                onTap: () {
+                                  MySharePlus.onShare(
+                                    context,
+                                    appointment,
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ],
+                      )
                   ],
                 ),
-
-                // SizedBox(
-                //   height: 5.sp,
-                // ),
-                // textWidget(
-                //   text:
-                //       'End: ${appointment.end.toString().split(' ').last.fromStringtoFormattedTime()}',
-                //   fWeight: FontWeight.w500,
-                //   color: AppColors.black.withOpacity(0.9),
-                // ),
-                if (isBooked)
-                  Column(
-                    children: [
-                      const Divider(
-                        color: AppColors.grey,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          CustomButtons(
-                            title: 'Update',
-                            icon: Icons.update,
-                            onTap: () {
-                              CustomDialogue.showUpdateDialog(
-                                context,
-                                appointment: appointment,
-                                onUpdate: widget.onUpdate,
-                              );
-                            },
-                          ),
-                          CustomButtons(
-                            title: 'Reschedule',
-                            icon: Icons.calendar_month,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => AppointmentBooking(
-                                    reSchedule: true,
-                                    appointment: appointment,
-                                    customer: customer,
-                                    consultant: consultant,
-                                    branch: branch,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          CustomButtons(
-                            title: 'Share',
-                            icon: Icons.share,
-                            onTap: () {
-                              MySharePlus.onShare(
-                                context,
-                                appointment,
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ],
-                  )
-              ],
-            ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Image.asset('assets/images/Vector 1.png'),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Image.asset('assets/images/Vector 2.png'),
+              ),
+            ],
           ),
         ),
+
         // if (isBooked)
         //   Positioned(
         //     top: 10.sp,
@@ -460,7 +474,7 @@ class CustomButtons extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: AppColors.black,
+            color: AppColors.white,
           ),
           SizedBox(
             width: 5.sp,
@@ -468,6 +482,7 @@ class CustomButtons extends StatelessWidget {
           textWidget(
             text: title,
             fWeight: FontWeight.w600,
+            color: AppColors.white,
           ),
         ],
       ),

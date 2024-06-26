@@ -463,7 +463,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               textWidget(
-                                text: 'Schedule',
+                                text: 'Working Hours',
                                 fSize: 15.sp,
                                 fWeight: FontWeight.w700,
                                 color: Colors.black,
@@ -476,193 +476,204 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                               text: 'No Schedule found',
                               fWeight: FontWeight.w500,
                             ),
-                          SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.18,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: consultantSchedules!.length,
-                              itemBuilder: (context, index) {
-                                Branch? consultantBranch;
-                                ConsultantSchedule consultantSchedule =
-                                    consultantSchedules![index];
-                                final tempConsultantBranches = branches
-                                    .where((element) =>
-                                        element.id ==
-                                        consultantSchedule.branchId)
-                                    .toList();
+                          SingleChildScrollView(
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.55,
+                              child: ListView.builder(
+                                // scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: consultantSchedules!.length,
+                                itemBuilder: (context, index) {
+                                  Branch? consultantBranch;
+                                  ConsultantSchedule consultantSchedule =
+                                      consultantSchedules![index];
+                                  final tempConsultantBranches = branches
+                                      .where((element) =>
+                                          element.id ==
+                                          consultantSchedule.branchId)
+                                      .toList();
 
-                                if (tempConsultantBranches.isNotEmpty) {
-                                  consultantBranch =
-                                      tempConsultantBranches.first;
-                                }
+                                  if (tempConsultantBranches.isNotEmpty) {
+                                    consultantBranch =
+                                        tempConsultantBranches.first;
+                                  }
 
-                                return Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0,
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.sp,
-                                          vertical: 10.sp,
+                                  return Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0,
                                         ),
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.6,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: AppColors.black),
-                                          color: AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (consultantBranch != null)
-                                              textWidget(
-                                                text:
-                                                    '${consultantBranch.address}',
-                                                maxline: 2,
-                                                textOverFlow:
-                                                    TextOverflow.ellipsis,
-                                                color: Colors.white,
-                                                fWeight: FontWeight.w700,
-                                              ),
-                                            SizedBox(
-                                              height: 5.sp,
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.calendar_month,
-                                                  color: AppColors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 5.sp,
-                                                ),
-                                                textWidget(
-                                                  text: consultantSchedule.day
-                                                      .toString(),
-                                                  color:
-                                                      // isSelected ?
-                                                      Colors.white,
-                                                  // : Colors.black,
-                                                  fWeight: FontWeight.w500,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.sp,
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.schedule,
-                                                  color: AppColors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 5.sp,
-                                                ),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.sp,
+                                            vertical: 10.sp,
+                                          ),
+                                          margin: EdgeInsets.symmetric(
+                                            vertical: 5.sp,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColors.black),
+                                            color: AppColors.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (consultantBranch != null)
                                                 textWidget(
                                                   text:
-                                                      'Start: ${consultantSchedule.startTime!.fromStringtoFormattedTime()}',
-                                                  color:
-                                                      // isSelected ?
-                                                      Colors.white,
-                                                  // : Colors.black,
-                                                  fWeight: FontWeight.w500,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.sp,
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.schedule,
-                                                  color: AppColors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 5.sp,
-                                                ),
-                                                textWidget(
-                                                  text:
-                                                      'End: ${consultantSchedule.endTime!.fromStringtoFormattedTime()}',
+                                                      '${consultantBranch.address}',
+                                                  maxline: 2,
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
                                                   color: Colors.white,
-                                                  fWeight: FontWeight.w500,
+                                                  fWeight: FontWeight.w700,
                                                 ),
-                                              ],
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                height: 5.sp,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.calendar_month,
+                                                    color: AppColors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5.sp,
+                                                  ),
+                                                  textWidget(
+                                                    text: consultantSchedule.day
+                                                        .toString(),
+                                                    color:
+                                                        // isSelected ?
+                                                        Colors.white,
+                                                    // : Colors.black,
+                                                    fWeight: FontWeight.w500,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5.sp,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.schedule,
+                                                        color: AppColors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.sp,
+                                                      ),
+                                                      textWidget(
+                                                        text:
+                                                            'Start: ${consultantSchedule.startTime!.fromStringtoFormattedTime()}',
+                                                        color:
+                                                            // isSelected ?
+                                                            Colors.white,
+                                                        // : Colors.black,
+                                                        fWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.schedule,
+                                                        color: AppColors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.sp,
+                                                      ),
+                                                      textWidget(
+                                                        text:
+                                                            'End: ${consultantSchedule.endTime!.fromStringtoFormattedTime()}',
+                                                        color: Colors.white,
+                                                        fWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: PopupMenuButton<String>(
-                                        iconColor: AppColors.white,
-                                        onSelected:
-                                            (String selectedValue) async {
-                                          if (selectedValue == 'update') {
-                                            final route = CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  AssignConsultantSchedule(
-                                                updateSchedule: true,
-                                                consultantSchedule:
-                                                    consultantSchedule,
-                                                consultantId: consultant!.id,
-                                              ),
-                                            );
-                                            Navigator.push(context, route);
-                                          } else if (selectedValue ==
-                                              'delete') {
-                                            final result =
-                                                await showModalBottomSheet(
-                                              enableDrag: true,
-                                              context: context,
-                                              builder: (context) {
-                                                return const ConfirmationDialogue(
-                                                  message:
-                                                      'Are you sure you want to delete your schedule?',
-                                                );
-                                              },
-                                            );
-
-                                            if (result ?? false) {
-                                              deleteSchedule(
-                                                // ignore: use_build_context_synchronously
-                                                context,
-                                                consultantSchedule.scheduledId!,
-                                                consultant!.id!,
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: PopupMenuButton<String>(
+                                          iconColor: AppColors.white,
+                                          onSelected:
+                                              (String selectedValue) async {
+                                            if (selectedValue == 'update') {
+                                              final route = CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    AssignConsultantSchedule(
+                                                  updateSchedule: true,
+                                                  consultantSchedule:
+                                                      consultantSchedule,
+                                                  consultantId: consultant!.id,
+                                                ),
                                               );
+                                              Navigator.push(context, route);
+                                            } else if (selectedValue ==
+                                                'delete') {
+                                              final result =
+                                                  await showModalBottomSheet(
+                                                enableDrag: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return const ConfirmationDialogue(
+                                                    message:
+                                                        'Are you sure you want to delete your schedule?',
+                                                  );
+                                                },
+                                              );
+
+                                              if (result ?? false) {
+                                                deleteSchedule(
+                                                  // ignore: use_build_context_synchronously
+                                                  context,
+                                                  consultantSchedule
+                                                      .scheduledId!,
+                                                  consultant!.id!,
+                                                );
+                                              }
                                             }
-                                          }
-                                        },
-                                        itemBuilder: (context) {
-                                          return [
-                                            PopupMenuItem(
-                                              value: 'update',
-                                              child: textWidget(text: 'Update'),
-                                            ),
-                                            PopupMenuItem(
-                                              value: 'delete',
-                                              child: textWidget(text: 'Delete'),
-                                            ),
-                                          ];
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
+                                          },
+                                          itemBuilder: (context) {
+                                            return [
+                                              PopupMenuItem(
+                                                value: 'update',
+                                                child:
+                                                    textWidget(text: 'Update'),
+                                              ),
+                                              PopupMenuItem(
+                                                value: 'delete',
+                                                child:
+                                                    textWidget(text: 'Delete'),
+                                              ),
+                                            ];
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           // Container(

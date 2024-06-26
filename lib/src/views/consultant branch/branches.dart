@@ -109,28 +109,55 @@ class _BranchesPageState extends State<BranchesPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      textWidget(
-                        text: 'Start',
-                        fSize: 15.sp,
-                        color: AppColors.white,
-                      ),
-                      textWidget(
-                        text: branch.startTime!.fromHourMintoFormattedTime(),
-                        fSize: 15.sp,
-                        color: AppColors.white,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.schedule,
+                                color: AppColors.white,
+                              ),
+                              SizedBox(
+                                width: 5.sp,
+                              ),
+                              textWidget(
+                                text: 'Start',
+                                fSize: 15.sp,
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                          textWidget(
+                            text:
+                                branch.startTime!.fromHourMintoFormattedTime(),
+                            fSize: 15.sp,
+                            color: AppColors.white,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      textWidget(
-                        text: 'End',
-                        fSize: 15.sp,
-                        color: AppColors.white,
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.schedule,
+                            color: AppColors.white,
+                          ),
+                          SizedBox(
+                            width: 5.sp,
+                          ),
+                          textWidget(
+                            text: 'End',
+                            fSize: 15.sp,
+                            color: AppColors.white,
+                          ),
+                        ],
                       ),
                       textWidget(
                         text: branch.endTime!.fromHourMintoFormattedTime(),
@@ -145,10 +172,21 @@ class _BranchesPageState extends State<BranchesPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                textWidget(
-                  text: 'CreatedAt',
-                  fSize: 15.sp,
-                  color: AppColors.white,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_month,
+                      color: AppColors.white,
+                    ),
+                    SizedBox(
+                      width: 5.sp,
+                    ),
+                    textWidget(
+                      text: 'CreatedAt',
+                      fSize: 15.sp,
+                      color: AppColors.white,
+                    ),
+                  ],
                 ),
                 textWidget(
                   text: branch.createdAt!.toFormattedDate(),

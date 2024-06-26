@@ -120,7 +120,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     textWidget(
-                                      text: '${userData!.name ?? 'No name'}',
+                                      text: userData!.name ?? 'No name',
                                       fSize: 15.sp,
                                       fWeight: FontWeight.w800,
                                       color: Colors.white,
