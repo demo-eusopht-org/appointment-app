@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
 import 'package:appointment_management/api/auth_api/dio.dart';
-import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/auth_model/auth_model.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
@@ -14,7 +13,6 @@ import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
-import 'package:appointment_management/src/views/Appointments/appointment_booking_doctor.dart';
 import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
@@ -26,10 +24,7 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 
@@ -134,138 +129,145 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(5.sp),
-                          child: CircleAvatar(
-                            radius: 45.sp,
-                            backgroundImage: consultant!.imageName != null
-                                ? CachedNetworkImageProvider(
-                                    '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
-                                  )
-                                : AssetImage(AppImages.noImage)
-                                    as ImageProvider<Object>,
+                    Container(
+                      padding: EdgeInsets.all(10.sp),
+                      margin: EdgeInsets.symmetric(horizontal: 10.sp),
+                      decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(5.sp),
+                            child: CircleAvatar(
+                              radius: 45.sp,
+                              backgroundImage: consultant!.imageName != null
+                                  ? CachedNetworkImageProvider(
+                                      '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
+                                    )
+                                  : AssetImage(AppImages.noImage)
+                                      as ImageProvider<Object>,
+                            ),
                           ),
-                        ),
-                        // CachedNetworkImage(
-                        //   imageUrl:
-                        //       '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
-                        //   fit: BoxFit.cover,
-                        //   width: MediaQuery.sizeOf(context).width * 0.4,
-                        //   height: MediaQuery.sizeOf(context).height * 0.18,
-                        //   errorWidget: (context, url, error) {
-                        //     return Container(
-                        //       height:
-                        //           MediaQuery.sizeOf(context).height * 0.18,
-                        //       decoration: BoxDecoration(
-                        //         border:
-                        //             Border.all(color: Colors.grey.shade100),
-                        //       ),
-                        //       child: Image.asset(
-                        //         fit: BoxFit.contain,
-                        //         AppImages.noImage,
-                        //         width:
-                        //             MediaQuery.sizeOf(context).width * 0.4,
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
-                        SizedBox(
-                          width: 10.sp,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            textWidget(
-                              text: consultant!.name!.toUpperCaseFirst(),
-                              fSize: 15.sp,
-                              fWeight: FontWeight.w700,
-                            ),
-                            textWidget(
-                              text: '${consultant!.field}',
-                              fWeight: FontWeight.w700,
-                            ),
-                            SizedBox(
-                              height: 15.sp,
-                            ),
-                            Row(
-                              children: [
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     color: AppColors.primary,
-                                //     borderRadius: BorderRadius.circular(6),
-                                //   ),
-                                //   width: 66,
-                                //   height: 47,
-                                //   child: Column(
-                                //     mainAxisAlignment:
-                                //         MainAxisAlignment.center,
-                                //     children: [
-                                //       Column(
-                                //         children: [
-                                //           textWidget(
-                                //             text: 'Patients',
-                                //
-                                //             fWeight: FontWeight.w600,
-                                //             color: Colors.white,
-                                //           ),
-                                //           SizedBox(
-                                //             height: 5,
-                                //           ),
-                                //           textWidget(
-                                //             text: '2.5K',
-                                //
-                                //             fWeight: FontWeight.w700,
-                                //             color: Colors.white,
-                                //           ),
-                                //         ],
-                                //       )
-                                //     ],
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   width: 15,
-                                // ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10.sp,
-                                    vertical: 5.sp,
+                          // CachedNetworkImage(
+                          //   imageUrl:
+                          //       '${Constants.consultantImageBaseUrl}${consultant!.imageName}',
+                          //   fit: BoxFit.cover,
+                          //   width: MediaQuery.sizeOf(context).width * 0.4,
+                          //   height: MediaQuery.sizeOf(context).height * 0.18,
+                          //   errorWidget: (context, url, error) {
+                          //     return Container(
+                          //       height:
+                          //           MediaQuery.sizeOf(context).height * 0.18,
+                          //       decoration: BoxDecoration(
+                          //         border:
+                          //             Border.all(color: Colors.grey.shade100),
+                          //       ),
+                          //       child: Image.asset(
+                          //         fit: BoxFit.contain,
+                          //         AppImages.noImage,
+                          //         width:
+                          //             MediaQuery.sizeOf(context).width * 0.4,
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
+                          SizedBox(
+                            width: 10.sp,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textWidget(
+                                text: consultant!.name!.toUpperCaseFirst(),
+                                fSize: 15.sp,
+                                fWeight: FontWeight.w700,
+                              ),
+                              textWidget(
+                                text: '${consultant!.email}',
+                                isUpperCase: false,
+                                fWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 15.sp,
+                              ),
+                              Row(
+                                children: [
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //     color: AppColors.primary,
+                                  //     borderRadius: BorderRadius.circular(6),
+                                  //   ),
+                                  //   width: 66,
+                                  //   height: 47,
+                                  //   child: Column(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       Column(
+                                  //         children: [
+                                  //           textWidget(
+                                  //             text: 'Patients',
+                                  //
+                                  //             fWeight: FontWeight.w600,
+                                  //             color: Colors.white,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             height: 5,
+                                  //           ),
+                                  //           textWidget(
+                                  //             text: '2.5K',
+                                  //
+                                  //             fWeight: FontWeight.w700,
+                                  //             color: Colors.white,
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   width: 15,
+                                  // ),
+                                  Container(
+                                    // padding: EdgeInsets.symmetric(
+                                    //   horizontal: 10.sp,
+                                    //   vertical: 5.sp,
+                                    // ),
+                                    // decoration: BoxDecoration(
+                                    //   color: AppColors.primary,
+                                    //   borderRadius: BorderRadius.circular(6),
+                                    // ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            textWidget(
+                                              text: 'Experience',
+                                              fWeight: FontWeight.w600,
+                                            ),
+                                            SizedBox(
+                                              height: 5.sp,
+                                            ),
+                                            textWidget(
+                                              text: getExperience(),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          textWidget(
-                                            text: 'Experience ',
-                                            fWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          textWidget(
-                                            text:
-                                                '${consultant!.experience ?? '0'}',
-                                            fWeight: FontWeight.w700,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -365,89 +367,92 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
                     //     ],
                     //   ),
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 18, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          textWidget(
-                            text: 'About Consultant',
-                            fSize: 18.0,
-                            fWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          textWidget(
-                            text: getAbout(),
-                            fSize: 15.0,
-                            fWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          if (services.isEmpty)
-                            Center(
-                              child: textWidget(
-                                text: 'No services found',
-                                fWeight: FontWeight.w500,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textWidget(
+                                text: 'About Consultant',
+                                fSize: 18.0,
+                                fWeight: FontWeight.w700,
+                                color: Colors.black,
                               ),
-                            )
-                          else
-                            textWidget(
-                              text: 'Services',
-                              fSize: 18.0,
-                              fWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                          if (services.isNotEmpty)
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          for (int i = 0; i < services.length; i++)
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.fiber_manual_record,
-                                  size: 10,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 5.sp,
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: textWidget(
-                                          text: '${services[i].serviceName}',
-                                          fSize: 15.sp,
-                                          textOverFlow: TextOverflow.ellipsis,
-                                          fWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5.sp,
-                                      ),
-                                      textWidget(
-                                        text: 'Rs: ${services[i].price}',
-                                        fSize: 15.sp,
-                                        fWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                        ],
-                      ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              textWidget(
+                                text: getAbout(),
+                                fSize: 15.0,
+                                color: Colors.black,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              // if (services.isEmpty)
+                              //   Center(
+                              //     child: textWidget(
+                              //       text: 'No services found',
+                              //       fWeight: FontWeight.w500,
+                              //     ),
+                              //   )
+                              // else
+                              //   textWidget(
+                              //     text: 'Services',
+                              //     fSize: 18.0,
+                              //     fWeight: FontWeight.w700,
+                              //     color: Colors.black,
+                              //   ),
+                              // if (services.isNotEmpty)
+                              //   const SizedBox(
+                              //     height: 10,
+                              //   ),
+                              // for (int i = 0; i < services.length; i++)
+                              //   Row(
+                              //     children: [
+                              //       const Icon(
+                              //         Icons.fiber_manual_record,
+                              //         size: 10,
+                              //         color: Colors.black,
+                              //       ),
+                              //       SizedBox(
+                              //         width: 5.sp,
+                              //       ),
+                              //       Expanded(
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             Expanded(
+                              //               child: textWidget(
+                              //                 text: '${services[i].serviceName}',
+                              //                 fSize: 15.sp,
+                              //                 textOverFlow: TextOverflow.ellipsis,
+                              //                 fWeight: FontWeight.w500,
+                              //                 color: Colors.black,
+                              //               ),
+                              //             ),
+                              //             SizedBox(
+                              //               width: 5.sp,
+                              //             ),
+                              //             textWidget(
+                              //               text: 'Rs: ${services[i].price}',
+                              //               fSize: 15.sp,
+                              //               fWeight: FontWeight.w500,
+                              //               color: Colors.black,
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -852,7 +857,7 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
 
   getAbout() {
     if (consultant!.about != null && consultant!.about!.isNotEmpty) {
-      return '${consultant!.about}';
+      return '${consultant!.about} and my field is ${consultant!.field}';
     }
     return '--';
   }
@@ -937,5 +942,13 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
           context: context,
           message: 'Schedule not Deleted $e');
     }
+  }
+
+  String getExperience() {
+    if (consultant!.experience != null) {
+      final yearString = consultant!.experience!.contains('year');
+      return '${consultant!.experience} ${yearString ? '' : 'Year'}${int.parse(consultant!.experience!) > 1 ? 's' : ''}';
+    }
+    return '0 year';
   }
 }

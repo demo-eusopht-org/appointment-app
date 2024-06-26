@@ -1,8 +1,7 @@
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/src/utils/enums.dart';
-import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
-import 'package:appointment_management/src/views/Assign%20branch/assign_branch.dart';
+import 'package:appointment_management/src/views/Consultant%20Branch/branches.dart';
 import 'package:appointment_management/src/views/Consultant/add_consultant.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/Appointments/appointments.dart';
@@ -35,9 +34,6 @@ class CustomDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.05,
-            ),
             GestureDetector(
               onTap: () {
                 final route = CupertinoPageRoute(
@@ -95,23 +91,23 @@ class CustomDrawer extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => const CreateBranch(),
-                        ),
-                      );
-                    },
-                    child: textWidget(
-                      text: 'Create Branch',
-                      fSize: 14.0,
-                      fWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
+                  // SizedBox(height: 20),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       CupertinoPageRoute(
+                  //         builder: (context) => const CreateBranch(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: textWidget(
+                  //     text: 'Create Branch',
+                  //     fSize: 14.0,
+                  //     fWeight: FontWeight.w600,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
                   // SizedBox(height: 20),
                   // InkWell(
                   //   onTap: () {
@@ -208,7 +204,24 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => ProcedureList(),
+                          builder: (context) => const BranchesPage(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      text: 'Branches',
+                      fSize: 14.0,
+                      fWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const ProcedureList(),
                         ),
                       );
                     },

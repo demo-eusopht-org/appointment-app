@@ -81,7 +81,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
             SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: 42,
               width: MediaQuery.of(context).size.width * 0.8,
               child: RoundedElevatedButton(

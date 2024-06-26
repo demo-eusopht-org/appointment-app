@@ -23,13 +23,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AssignConsultantSchedule extends StatefulWidget {
-   
   final int? consultantId;
   final ConsultantSchedule? consultantSchedule;
   final bool updateSchedule;
   const AssignConsultantSchedule({
     super.key,
-     
     this.consultantId,
     this.consultantSchedule,
     required this.updateSchedule,
@@ -82,9 +80,11 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
   void dispose() {
     nameController.dispose();
     addressController.dispose();
+    multipleDays.value.clear();
     super.dispose();
   }
 
+  final multipleDays = ValueNotifier<List<String?>>([]);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -290,15 +290,94 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                           ],
                                         ),
                                       ),
-                                    SizedBox(
-                                      height: 10.sp,
-                                    ),
+                                    if (multipleDays.value.isNotEmpty)
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: ValueListenableBuilder(
+                                          valueListenable: multipleDays,
+                                          builder: (context,
+                                              List<String?> value, child) {
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5.sp),
+                                              child: Row(
+                                                children: [
+                                                  Wrap(
+                                                    alignment:
+                                                        WrapAlignment.center,
+                                                    children: value
+                                                        .map((String? e) =>
+                                                            Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal: 5
+                                                                            .sp,
+                                                                        vertical: 5
+                                                                            .sp),
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal: 5
+                                                                            .sp,
+                                                                        vertical: 5
+                                                                            .sp),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  color: AppColors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.2),
+                                                                ),
+                                                                child: Wrap(
+                                                                  children: [
+                                                                    textWidget(
+                                                                        text:
+                                                                            e!),
+                                                                    SizedBox(
+                                                                      width:
+                                                                          5.sp,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        List<String?>
+                                                                            tempMultipleAssignee =
+                                                                            List.from(multipleDays.value);
+                                                                        tempMultipleAssignee.removeWhere((element) =>
+                                                                            element ==
+                                                                            e);
+                                                                        multipleDays.value =
+                                                                            tempMultipleAssignee;
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .clear,
+                                                                        size: 20
+                                                                            .sp,
+                                                                        color: AppColors
+                                                                            .black,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                )))
+                                                        .toList(),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         textWidget(
-                                          text: "Date",
+                                          text: "Days",
                                           fSize: 14.sp,
                                         ),
                                         SizedBox(
@@ -332,7 +411,19 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                             onChanged: (String? value) {
                                               if (value != null) {
                                                 selectedDay = value;
-
+                                                if (multipleDays
+                                                    .value.isEmpty) {
+                                                  multipleDays.value
+                                                      .add(selectedDay);
+                                                } else {
+                                                  if (!multipleDays.value.any(
+                                                      (element) => element!
+                                                          .contains(
+                                                              selectedDay!))) {
+                                                    multipleDays.value
+                                                        .add(selectedDay);
+                                                  }
+                                                }
                                                 setState(() {});
                                               }
                                             },
@@ -422,7 +513,7 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                           ),
                                         );
                                       }
-                                      return Container(
+                                      return SizedBox(
                                         height: 40,
                                         child: RoundedElevatedButton(
                                           borderRadius: 6,
@@ -431,7 +522,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                 selectedBranch != null &&
                                                 selectedStartTime != null &&
                                                 selectedEndTime != null &&
-                                                selectedDay != null) {
+                                                // selectedDay != null &&
+                                                multipleDays.value.isNotEmpty) {
                                               if (formKey.currentState!
                                                   .validate()) {
                                                 assignConsultantBranch();
@@ -447,6 +539,11 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   context: context,
                                                   message:
                                                       'Please Select Branch');
+                                            } else if (multipleDays
+                                                .value.isEmpty) {
+                                              CustomDialogue.message(
+                                                  context: context,
+                                                  message: 'Please Select Day');
                                             } else if (selectedStartTime ==
                                                 null) {
                                               CustomDialogue.message(
@@ -459,10 +556,6 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
                                                   context: context,
                                                   message:
                                                       'Please Select End Time');
-                                            } else if (selectedDay == null) {
-                                              CustomDialogue.message(
-                                                  context: context,
-                                                  message: 'Please Select Day');
                                             }
                                           },
                                           text:
@@ -504,13 +597,21 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
 
       if (selectedConsultantBranch != null) {
         dynamic res;
+        final days = multipleDays.value
+            .map((e) => '$e ')
+            .toList()
+            .toString()
+            .replaceAll('[', ' ')
+            .replaceAll(']', ' ');
+        log('days ${days}');
         if (isEdit) {
           res = await api!.updateConsultantSchedule(
             {
               "branch_id": selectedBranch!.id.toString(),
               "start_time": selectedStartTime!.toFormatted12Hours(),
               "end_time": selectedEndTime!.toFormatted12Hours(),
-              "day": selectedDay,
+              // "day": selectedDay,
+              "day": days,
               "consultant_id": selectedConsultant!.id.toString(),
               "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
               "schedule_id": widget.consultantSchedule!.scheduledId,
@@ -522,7 +623,8 @@ class AssigneBranchState extends State<AssignConsultantSchedule> {
               "branch_id": selectedBranch!.id.toString(),
               "start_time": selectedStartTime!.toFormatted12Hours(),
               "end_time": selectedEndTime!.toFormatted12Hours(),
-              "day": selectedDay,
+              // "day": selectedDay,
+              "day": days,
               "consultant_id": selectedConsultant!.id.toString(),
               "consultant_branch_id": selectedConsultantBranch!.cbid.toString(),
             },

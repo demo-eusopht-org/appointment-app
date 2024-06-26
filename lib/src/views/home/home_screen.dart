@@ -12,6 +12,7 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/enums.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
+import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_details.dart';
 import 'package:appointment_management/src/views/Appointments/appointments.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
@@ -544,7 +545,8 @@ class Header extends StatelessWidget {
         vertical: 5.sp,
       ),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        // color: AppColors.primary.withOpacity(0.4),
+        color: AppColors.grey.withOpacity(0.4),
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(30.sp),
         ),
@@ -562,14 +564,14 @@ class Header extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.menu,
-                    color: AppColors.white,
+                    color: AppColors.black,
                     size: 25.sp,
                   ),
                 ),
                 textWidget(
                   text:
                       'Hi, ${user!['user']['name'].toString().toUpperCaseFirst()}!',
-                  color: AppColors.white,
+                  color: AppColors.black,
                   fSize: 17.sp,
                   fWeight: FontWeight.bold,
                 ),
@@ -584,7 +586,7 @@ class Header extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.notifications_active,
-                    color: AppColors.white,
+                    color: AppColors.black,
                     size: 25.sp,
                   ),
                 ),
@@ -606,8 +608,29 @@ class Header extends StatelessWidget {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const AppointmentBooking(
+                        reSchedule: false,
+                      ),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.sp, horizontal: 5.sp),
+                  child: textWidget(
+                    text: 'Create Appointments',
+                    fWeight: FontWeight.w600,
+                    color: AppColors.black,
+                  ),
+                ),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -623,7 +646,7 @@ class Header extends StatelessWidget {
                   child: textWidget(
                     text: 'View All Appointments',
                     fWeight: FontWeight.w600,
-                    color: AppColors.white,
+                    color: AppColors.black,
                   ),
                 ),
               ),

@@ -300,7 +300,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             height: 10,
                           ),
                           CustomTextField(
-                            hintText: "address",
+                            hintText: "Address",
                             controller: addressController,
                           ),
                           CustomTextField(

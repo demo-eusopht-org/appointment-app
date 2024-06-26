@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -13,19 +15,10 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
-import 'package:appointment_management/src/views/home/home_screen.dart';
 import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/custom_textfield.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:appointment_management/theme/light/light_theme.dart'
-    as Appcolors;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 import 'package:appointment_management/src/utils/extensions.dart';
 
 class CreateBranch extends StatefulWidget {
@@ -36,7 +29,6 @@ class CreateBranch extends StatefulWidget {
 }
 
 class _CreateBranchState extends State<CreateBranch> {
-  final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
   bool isLoading = false;
@@ -59,7 +51,6 @@ class _CreateBranchState extends State<CreateBranch> {
 
   @override
   void dispose() {
-    nameController.dispose();
     addressController.dispose();
     super.dispose();
   }
@@ -83,7 +74,6 @@ class _CreateBranchState extends State<CreateBranch> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
                 Navigator.pop(context);
               },
               icon: Icon(
@@ -116,17 +106,10 @@ class _CreateBranchState extends State<CreateBranch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CustomTextField(
-                            hintText: "Name",
-                            controller: nameController,
-                            
-                            validatorCondition: (String? value) {
-                              if (value == null || value == '') {
-                                return 'Please fill Name field';
-                              }
-                              return null;
-                            },
+                            hintText: "Address",
+                            controller: addressController,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           GestureDetector(
@@ -184,13 +167,6 @@ class _CreateBranchState extends State<CreateBranch> {
                                   )
                                 ],
                               )),
-                          CustomTextField(
-                            hintText: "address",
-                            controller: addressController,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
                           Builder(builder: (context) {
                             if (isLoading) {
                               return const Center(
@@ -221,13 +197,6 @@ class _CreateBranchState extends State<CreateBranch> {
                                         context: context,
                                         message: 'Add Branch end time');
                                   }
-
-                                  // }
-                                  // else {
-                                  //   CustomDialogue.message(
-                                  //       context: context,
-                                  //       message: 'Please select consultant');
-                                  // }
                                 },
                                 text: 'Create branch',
                               ),
@@ -272,24 +241,14 @@ class _CreateBranchState extends State<CreateBranch> {
           "address": addressController.text,
         },
       );
-      log('res service ${res}');
-      log('res service ${res['status']}');
 
       if (res['status'] == 200) {
-        // ignore: use_build_context_synchronously
-        CustomDialogue.message(context: context, message: res['message']);
-
-        selectedStartTime = null;
-        selectedEndTime = null;
-        nameController.clear();
-        addressController.clear();
         await getBusinessBranch();
+        Navigator.pop(context, true);
       } else {
         if (res.toString().contains('message')) {
-          // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['message']);
         } else {
-          // ignore: use_build_context_synchronously
           CustomDialogue.message(context: context, message: res['error']);
         }
       }

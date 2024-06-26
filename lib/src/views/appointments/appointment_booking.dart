@@ -19,8 +19,7 @@ import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
-import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
-import 'package:appointment_management/src/views/widgets/custom_button.dart';
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart'; 
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -100,12 +99,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
           Icons.arrow_back_outlined,
         ),
         leadingIconOnTap: () {
-          if (widget.reSchedule) {
-            Navigator.pop(context);
-          } else {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          }
+          Navigator.pop(context);
         },
       ),
       drawer: const CustomDrawer(),

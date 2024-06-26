@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
+import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/email_validator.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
@@ -12,8 +13,7 @@ import 'package:appointment_management/src/views/common_widgets/custom_dialogue.
 import 'package:appointment_management/src/views/splash.dart';
 import 'package:appointment_management/src/views/widgets/cached_network_image.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:appointment_management/theme/light/light_theme.dart'
-    as Appcolors;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,9 +50,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final TextEditingController websiteController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
-  final TextEditingController feesController = TextEditingController();
-  final TextEditingController whatsappNoteController = TextEditingController();
-  final TextEditingController quotationController = TextEditingController();
+  // final TextEditingController feesController = TextEditingController();
+  final TextEditingController noteController = TextEditingController();
+  // final TextEditingController quotationController = TextEditingController();
 
   // String? selectedLanguage;
   // String? selectedCountryCode;
@@ -127,9 +127,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
                           height: MediaQuery.of(context).size.width * 0.3,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Appcolors.lightTheme.primaryColor,
+                            color: AppColors.primaryTheme,
                           ),
                           child: _selectedImage != null
                               ? SizedBox(
@@ -287,15 +287,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         alignment: Alignment.bottomRight,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              backgroundColor:
-                                  Appcolors.lightTheme.primaryColor),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            backgroundColor: AppColors.primaryTheme,
+                          ),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               _pageController.nextPage(
-                                duration: Duration(milliseconds: 500),
+                                duration: const Duration(milliseconds: 500),
                                 curve: Curves.ease,
                               );
                             }
@@ -320,23 +320,27 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-
-                      // Form Fields
                       TextFormField(
-                          controller: locationController,
-                          decoration: InputDecoration(labelText: 'Location')),
+                        controller: locationController,
+                        decoration:
+                            const InputDecoration(labelText: 'Location'),
+                      ),
+                      // TextFormField(
+                      //     controller: feesController,
+                      //     decoration: InputDecoration(labelText: 'Fees')),
                       TextFormField(
-                          controller: feesController,
-                          decoration: InputDecoration(labelText: 'Fees')),
-                      TextFormField(
-                          controller: whatsappNoteController,
-                          decoration:
-                              InputDecoration(labelText: 'Whatsapp Note')),
-                      TextFormField(
-                          controller: quotationController,
-                          decoration:
-                              InputDecoration(labelText: 'Quotation/Footnote')),
+                        controller: noteController,
+                        decoration: InputDecoration(
+                          labelText: 'Add Note',
+                          // filled: true,
+                          // fillColor: AppColors.grey.withOpacity(0.5),
+                          // border: InputBorder.none,
+                        ),
+                      ),
+                      // TextFormField(
+                      //     controller: quotationController,
+                      //     decoration:
+                      //         InputDecoration(labelText: 'Quotation/Footnote')),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01),
 
@@ -446,8 +450,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  backgroundColor:
-                                      Appcolors.lightTheme.primaryColor),
+                                  backgroundColor: AppColors.primaryTheme),
                               onPressed: () {
                                 if (dateTimeKey.currentState!.validate()) {
                                   onBoarding();
@@ -561,9 +564,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
         request.fields['email'] = emailController.text;
         request.fields['website'] = websiteController.text;
         request.fields['location'] = locationController.text;
-        request.fields['fees'] = feesController.text;
-        request.fields['whatsapp_note'] = whatsappNoteController.text;
-        request.fields['footnote'] = quotationController.text;
+        // request.fields['fees'] = feesController.text;
+        request.fields['whatsapp_note'] = noteController.text;
+        // request.fields['footnote'] = quotationController.text;
         request.fields['user_id'] = user['user']['id'].toString();
         request.fields['start_time'] = selectedStartTime.toString();
         request.fields['end_time'] = selectedEndTime.toString();
@@ -667,13 +670,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
       locationController.text = business!.location!;
     }
     if (business!.fees != null) {
-      feesController.text = business!.fees.toString();
+      // feesController.text = business!.fees.toString();
     }
     if (business!.whatsappNote != null) {
-      whatsappNoteController.text = business!.whatsappNote!;
+      noteController.text = business!.whatsappNote!;
     }
     if (business!.footNote != null) {
-      quotationController.text = business!.footNote!;
+      // quotationController.text = business!.footNote!;
     }
 
     if (business!.startTime != null) {
