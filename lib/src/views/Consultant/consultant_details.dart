@@ -958,8 +958,9 @@ class _ConsultantDetailsState extends State<ConsultantDetails> {
 
   String getExperience() {
     if (consultant!.experience != null) {
-      final yearString = consultant!.experience!.contains('year');
-      return '${consultant!.experience} ${yearString ? '' : 'Year'}${int.parse(consultant!.experience!) > 1 ? 's' : ''}';
+      // final yearString = consultant!.experience!.contains('year');
+      // return '${consultant!.experience} ${yearString ? '' : 'Year'}${int.parse(consultant!.experience!) > 1 ? 's' : ''}';
+      return consultant!.experience!;
     }
     return '0 year';
   }
