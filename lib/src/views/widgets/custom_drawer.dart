@@ -18,6 +18,7 @@ import 'package:appointment_management/src/views/widgets/custom_button.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key});
@@ -45,10 +46,12 @@ class CustomDrawer extends StatelessWidget {
                 children: [
                   Image.asset('assets/images/Male User.png'),
                   SizedBox(width: 5),
-                  textWidget(
-                    text: '${user!['user']['name']}',
-                    fSize: 20.0,
-                    fWeight: FontWeight.w700,
+                  Flexible(
+                    child: textWidget(
+                      text: '${user!['user']['name']}',
+                      fSize: 20.0,
+                      fWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
