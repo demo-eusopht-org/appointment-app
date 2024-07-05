@@ -193,7 +193,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 ? null
                                 : 'Please fill correct email format';
                           }
+
                           return null;
+                        },
+                        onChanged: (value) {
+                          emailController.value = TextEditingValue(
+                              text: value.trim(),
+                              selection: emailController.selection);
                         },
                       ),
                       TextFormField(

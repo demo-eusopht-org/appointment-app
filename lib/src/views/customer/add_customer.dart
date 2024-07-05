@@ -232,6 +232,7 @@ class _AddCustomerState extends State<AddCustomer> {
                               }
                               return null;
                             },
+                            
                           ),
                           SizedBox(
                             height: 10,

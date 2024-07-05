@@ -208,6 +208,11 @@ class _AddConsultantState extends State<AddConsultant> {
                                   ? null
                                   : 'Please fill correct email format';
                             },
+                            onChanged: (value) {
+                              emailController.value = TextEditingValue(
+                                  text: value.trim(),
+                                  selection: emailController.selection);
+                            },
                           ),
                           SizedBox(
                             height: 10,

@@ -127,6 +127,11 @@ class _SignupPageState extends State<SignupPage> {
                                 ? null
                                 : 'Please fill correct email format';
                           },
+                          onChanged: (value) {
+                            emailController.value = TextEditingValue(
+                                text: value.trim(),
+                                selection: emailController.selection);
+                          },
                         ),
                         TextFormField(
                           controller: passwordController,

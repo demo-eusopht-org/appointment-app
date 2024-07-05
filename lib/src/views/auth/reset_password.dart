@@ -106,19 +106,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       height: 5,
                     ),
                     TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.visibility),
-                        hintStyle: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.visibility),
+                          hintStyle: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
+                        onChanged: (value) {
+                          emailController.value = TextEditingValue(
+                              text: value.trim(),
+                              selection: emailController.selection);
+                        }),
                     SizedBox(
                       height: 20,
                     ),

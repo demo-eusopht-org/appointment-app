@@ -174,6 +174,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+                        onChanged: (value) {
+                          emailController.value = TextEditingValue(
+                              text: value.trim(),
+                              selection: emailController.selection);
+                        },
                       ),
                       SizedBox(height: 10.sp),
                       Row(
