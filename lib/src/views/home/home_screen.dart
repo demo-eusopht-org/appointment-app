@@ -335,94 +335,97 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: MediaQuery.sizeOf(context).width * 0.6,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(5.sp),
-                                          child: CircleAvatar(
-                                            radius: 40.sp,
-                                            backgroundImage: consultant
-                                                        .imageName !=
-                                                    null
-                                                ? CachedNetworkImageProvider(
-                                                    '${Constants.consultantImageBaseUrl}${consultant.imageName}',
-                                                  )
-                                                : AssetImage(AppImages.noImage)
-                                                    as ImageProvider<Object>,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              textWidget(
-                                                text: consultant.name!
-                                                    .toUpperCaseFirst(),
-                                                fSize: 15.0,
-                                                fWeight: FontWeight.w800,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              textWidget(
-                                                text: '${consultant.field}',
-                                                fSize: 10.sp,
-                                                fWeight: FontWeight.w800,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              // const RatingWidget(
-                                              //   initialRating: 2.0,
-                                              // ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.sp,
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                ConsultantDetails(
-                                              consultant: consultant,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.all(5.sp),
+                                            child: CircleAvatar(
+                                              radius: 40.sp,
+                                              backgroundImage: consultant
+                                                          .imageName !=
+                                                      null
+                                                  ? CachedNetworkImageProvider(
+                                                      '${Constants.consultantImageBaseUrl}${consultant.imageName}',
+                                                    )
+                                                  : AssetImage(
+                                                          AppImages.noImage)
+                                                      as ImageProvider<Object>,
                                             ),
                                           ),
-                                        );
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: textWidget(
-                                                text: 'Details', fSize: 13.0),
+                                          const SizedBox(
+                                            width: 10,
                                           ),
-                                          const Icon(Icons.arrow_forward_ios)
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                textWidget(
+                                                  text: consultant.name!
+                                                      .toUpperCaseFirst(),
+                                                  fSize: 15.0,
+                                                  fWeight: FontWeight.w800,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                textWidget(
+                                                  text: '${consultant.field}',
+                                                  fSize: 10.sp,
+                                                  fWeight: FontWeight.w800,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                // const RatingWidget(
+                                                //   initialRating: 2.0,
+                                                // ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 5.sp,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  ConsultantDetails(
+                                                consultant: consultant,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: textWidget(
+                                                  text: 'Details', fSize: 13.0),
+                                            ),
+                                            const Icon(Icons.arrow_forward_ios)
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
