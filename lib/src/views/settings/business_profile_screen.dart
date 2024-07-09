@@ -204,21 +204,28 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             SizedBox(
                               height: 10,
                             ),
-                            BusinessItem(
-                              name: '${business![i].name}',
-                              imagePath: AppImages.hospital,
-                            ),
+                            if (business![i].name != null ||
+                                business![i].name!.isEmpty)
+                              BusinessItem(
+                                name: '${business![i].name}',
+                                imagePath: AppImages.hospital,
+                              ),
+                            if (business![i].completeAddress != null &&
+                                business![i].completeAddress != '')
+                              Column(
+                                children: [
+                                  BusinessItem(
+                                    name:
+                                        business![i].completeAddress.toString(),
+                                    imagePath: AppImages.location,
+                                  ),
+                                ],
+                              ),
                             SizedBox(
                               height: 10,
                             ),
-                            BusinessItem(
-                              name: business![i].completeAddress.toString(),
-                              imagePath: AppImages.location,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            if (business![i].phoneNumber != null)
+                            if (business![i].phoneNumber != null &&
+                                business![i].phoneNumber != '')
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -245,7 +252,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             SizedBox(
                               height: 10.sp,
                             ),
-                            if (business![i].email != null)
+                            if (business![i].email != null &&
+                                business![i].email != '')
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -271,7 +279,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             SizedBox(
                               height: 10.sp,
                             ),
-                            if (business![i].website != null)
+                            if (business![i].website != null &&
+                                business![i].website != '')
                               InkWell(
                                 onTap: () {
                                   _launchUrl(
@@ -292,7 +301,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      if (business![i].website != null)
+                                      if (business![i].website != null &&
+                                          business![i].website != '')
                                         textWidget(
                                           text: '${business![i].website}',
                                           fSize: 14.0,
@@ -403,8 +413,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     user = locator<LocalStorageService>().getData(key: 'user');
     businessId = locator<LocalStorageService>().getData(key: 'businessId');
     userData = GetLocalData.getUser();
-    business = GetLocalData.getBusiness(); 
-    
+    business = GetLocalData.getBusiness();
 
     setState(() {
       isLoading = false;
