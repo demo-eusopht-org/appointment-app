@@ -210,6 +210,9 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                 name: '${business![i].name}',
                                 imagePath: AppImages.hospital,
                               ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             if (business![i].completeAddress != null &&
                                 business![i].completeAddress != '')
                               Column(

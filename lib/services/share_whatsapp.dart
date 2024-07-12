@@ -1,22 +1,20 @@
 import 'dart:developer';
-
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp_share/whatsapp_share.dart';
 
-import 'package:share_plus/share_plus.dart';
-
-class MySharePlus {
+class MyWhatsAppShare {
   static Future<bool> onShare(
     BuildContext context,
     Appointment appointment,
   ) async {
     final branches = GetLocalData.getBranches();
-    final customer = GetLocalData.getCustomers();
-    final consultant = GetLocalData.getConsultants();
+    final customers = GetLocalData.getCustomers();
+    final consultants = GetLocalData.getConsultants();
     final businessData = GetLocalData.getBusiness();
 
     String appointmentData = appointment.appointmentDate!.toPkFormattedDate();
@@ -34,14 +32,16 @@ class MySharePlus {
         )
         .first
         .address!;
-    String customerName = customer
+    var customer = customers
         .where(
           (element) =>
               element.id.toString() == appointment.customerId.toString(),
         )
-        .first
-        .name!;
-    String consultantName = consultant
+        .first;
+    String customerName = customer.name!;
+    String customerPhone =
+        customer.mobile!; // Assuming phone is a field in customer
+    String consultantName = consultants
         .where(
           (element) =>
               element.id.toString() == appointment.consultantId.toString(),
@@ -73,9 +73,10 @@ For any concerns, contact us at ${business.phoneNumber}.
 Best Regards,
 ${business.name!.toUpperCaseFirst()}''';
 
-      await Share.share(
-        appointmentText,
-        subject: "Appointment Schedule",
+      await WhatsappShare.share(
+        phone: customerPhone,
+        text: appointmentText,
+        package: Package.whatsapp, // or Package.businessWhatsapp for business
       );
 
       return true;
@@ -86,4 +87,3 @@ ${business.name!.toUpperCaseFirst()}''';
     }
   }
 }
-

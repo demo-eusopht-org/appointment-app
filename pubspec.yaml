@@ -62,6 +62,7 @@ dependencies:
   url_launcher_windows: ^3.1.1
   http: ^1.2.1
   share_plus: ^9.0.0
+  whatsapp_share: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -90,7 +91,7 @@ flutter:
   uses-material-design: true
     
   assets:
-      - assets/images/appointment_app_logo.png
+      - assets/images/appointment_app_newlogo.png
       - assets/images/
   # To add assets to your application, add an assets section, like this:
   # assets:

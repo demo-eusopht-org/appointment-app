@@ -326,7 +326,7 @@ class _AppointmentBookingDoctorState extends State<AppointmentBookingDoctor> {
                       ),
                     );
                   },
-                  text: "Add Appoitment",
+                  text: "Add Appointment",
                 ),
               )
             ],

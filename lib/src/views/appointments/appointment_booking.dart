@@ -12,6 +12,7 @@ import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
 import 'package:appointment_management/services/share_service.dart';
+import 'package:appointment_management/services/share_whatsapp.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
@@ -19,7 +20,7 @@ import 'package:appointment_management/src/utils/utils.dart';
 import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/customer/add_customer.dart';
-import 'package:appointment_management/src/views/widgets/custom_appbar.dart'; 
+import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/custom_drawer.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -869,7 +870,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
 
     final endTime = startTime.add(const Duration(minutes: 30));
 
-    MySharePlus.onShare(
+    MyWhatsAppShare.onShare(
       context,
       Appointment(
         start: startTime,
