@@ -628,7 +628,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
                                           width: 10,
                                         ),
                                         textWidget(
-                                          text: "Share Appointment",
+                                          text: "Share Appointment on whatsapp",
                                           fSize: 14.sp,
                                           fWeight: FontWeight.bold,
                                         ),
