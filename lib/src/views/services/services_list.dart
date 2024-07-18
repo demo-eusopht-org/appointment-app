@@ -217,15 +217,23 @@ class _ProcedureListState extends State<ProcedureList> {
                                     children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Text(
-                                          service.serviceName!
-                                              .toUpperCaseFirst(),
-                                          style: MyTextStyles.normalBlacktext
-                                              .copyWith(
-                                            fontSize: 12.sp,
-                                            overflow: TextOverflow.ellipsis,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: AppColors.primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(6)),
+                                          padding: EdgeInsets.all(1.0),
+                                          child: Text(
+                                            service.serviceName!
+                                                .toUpperCaseFirst(),
+                                            style: MyTextStyles.normalWhitetext
+                                                .copyWith(
+                                              fontSize: 12.sp,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            maxLines: 2,
+                                            textAlign: TextAlign.center,
                                           ),
-                                          maxLines: 2,
                                         ),
                                         // child: Container(
                                         //   alignment: Alignment.center,
