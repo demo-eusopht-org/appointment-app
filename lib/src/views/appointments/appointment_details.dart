@@ -1,29 +1,23 @@
-import 'dart:developer';
-
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/model/get_business/get_business_branch.dart';
 import 'package:appointment_management/model/get_business/get_business_data.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
 import 'package:appointment_management/services/get_services.dart';
-import 'package:appointment_management/services/share_service.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
 import 'package:appointment_management/src/resources/assets.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Appointments/appointment_booking.dart';
-import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
-import 'package:appointment_management/src/views/widgets/cached_network_image.dart';
 import 'package:appointment_management/src/views/widgets/custom_appbar.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:appointment_management/api/auth_api/api.dart';
-import 'package:appointment_management/api/auth_api/dio.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppointmentDetails extends StatefulWidget {
   final List<Appointment>? appointments;
@@ -100,6 +94,71 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     Consultant? consultant = usersData['consultant'];
     Branch? branch = usersData['branch'];
     Business? business = usersData['business'];
+    void _shareViaWhatsApp(String appointmentText, String phoneNumber) async {
+      String encodedText = Uri.encodeComponent(appointmentText);
+      String url = "https://wa.me/$phoneNumber?text=$encodedText";
+
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw "Could not launch $url";
+      }
+    }
+
+    void _shareViaSms(String appointmentText, String phoneNumber) async {
+      String encodedText = Uri.encodeComponent(appointmentText);
+      String smsUrl = "sms:$phoneNumber?body=$encodedText";
+
+      if (await canLaunch(smsUrl)) {
+        await launch(smsUrl);
+      } else {
+        throw "Could not launch $smsUrl";
+      }
+    }
+
+    void _shareViaNative(String appointmentText) {
+      Share.share(appointmentText);
+    }
+
+    void showShareOptionsDialog(
+        BuildContext context, String appointmentText, String phoneNumber) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: textWidget(
+                text: 'Share Appointment',
+                fSize: 20.0,
+                fWeight: FontWeight.w600),
+            content: textWidget(
+                text: 'Choose how you want to share the appointment details.'),
+            actions: [
+              customTextButton(
+                text: 'WhatsApp',
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  _shareViaWhatsApp(appointmentText, phoneNumber);
+                },
+              ),
+              customTextButton(
+                text: "SMS",
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  _shareViaSms(appointmentText, phoneNumber);
+                },
+              ),
+              customTextButton(
+                text: "Share",
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  _shareViaNative(appointmentText);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Stack(
       children: [
@@ -267,12 +326,36 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                                 title: 'Share',
                                 icon: Icons.share,
                                 onTap: () {
-                                  MySharePlus.onShare(
-                                    context,
-                                    appointment,
-                                  );
+                                  String appointmentText =
+                                      '''Hi ${customer!.name!.toUpperCaseFirst()},
+
+Your appointment with consultant ${consultant!.name!.toUpperCaseFirst()} is scheduled as follows:
+
+Date: ${appointment.appointmentDate?.toPkFormattedDate()}
+Time: ${appointment.start.toString().split(" ").last.fromStringtoFormattedTime()} to ${appointment.end.toString().split(" ").last.fromStringtoFormattedTime()}
+Address: ${branch?.address ?? ''}
+
+Please arrive ${business!.arrivalTime!} early.
+
+For any concerns, contact us at ${business.phoneNumber}.
+
+Best Regards,
+${business.name!.toUpperCaseFirst()}''';
+
+                                  showShareOptionsDialog(context,
+                                      appointmentText, customer!.mobile!);
                                 },
                               )
+                              // CustomButtons(
+                              //   title: 'Share',
+                              //   icon: Icons.share,
+                              //   onTap: () {
+                              //     MySharePlus.onShare(
+                              //       context,
+                              //       appointment,
+                              //     );
+                              //   },
+                              // )
                             ],
                           ),
                         ],
@@ -450,6 +533,37 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
       'business': business,
     };
     return usersData;
+  }
+
+  Widget customTextButton({
+    required String text,
+    required VoidCallback onPressed,
+  }) {
+    return TextButton(
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        foregroundColor: MaterialStateProperty.all<Color>(
+          Colors.white,
+        ), // Text color
+        backgroundColor: MaterialStateProperty.all<Color>(
+          AppColors.primaryTheme,
+        ), // Background color
+
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+            side: BorderSide(
+              color: Colors.blueAccent,
+            ), // Border color
+          ),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: textWidget(text: text),
+      ),
+    );
   }
 }
 
