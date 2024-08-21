@@ -121,38 +121,54 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     }
 
     void showShareOptionsDialog(
-        BuildContext context, String appointmentText, String phoneNumber) {
+      BuildContext context,
+      String appointmentText,
+      String phoneNumber,
+    ) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: textWidget(
-                text: 'Share Appointment',
-                fSize: 20.0,
-                fWeight: FontWeight.w600),
+              text: 'Share Appointment',
+              fSize: 20.0,
+              fWeight: FontWeight.w600,
+              textAlign: TextAlign.center,
+            ),
             content: textWidget(
-                text: 'Choose how you want to share the appointment details.'),
+              text: 'Choose how you want to share the appointment details.',
+            ),
             actions: [
-              customTextButton(
-                text: 'WhatsApp',
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  _shareViaWhatsApp(appointmentText, phoneNumber);
-                },
-              ),
-              customTextButton(
-                text: "SMS",
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  _shareViaSms(appointmentText, phoneNumber);
-                },
-              ),
-              customTextButton(
-                text: "Share",
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                  _shareViaNative(appointmentText);
-                },
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    customTextButton(
+                      text: 'WhatsApp',
+                      onPressed: () {
+                        Navigator.pop(context); // Close the dialog
+                        _shareViaWhatsApp(appointmentText, phoneNumber);
+                      },
+                    ),
+                    SizedBox(width: 10), // Space between buttons
+                    customTextButton(
+                      text: 'SMS',
+                      onPressed: () {
+                        Navigator.pop(context); // Close the dialog
+                        _shareViaSms(appointmentText, phoneNumber);
+                      },
+                    ),
+                    SizedBox(width: 10), // Space between buttons
+                    customTextButton(
+                      text: 'Share',
+                      onPressed: () {
+                        Navigator.pop(context); // Close the dialog
+                        _shareViaNative(appointmentText);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           );
