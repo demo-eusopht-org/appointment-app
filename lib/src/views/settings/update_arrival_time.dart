@@ -42,7 +42,12 @@ class _UpdateArrivalTimePage extends State<UpdateArrivalTimePage> {
   @override
   void initState() {
     business = GetLocalData.getBusiness();
-    arrivalTime.text = business.first.arrivalTime!.split(' ').first;
+    if (business.isNotEmpty) {
+      arrivalTime.text = business.first.arrivalTime!.split(' ').first;
+    } else {
+      arrivalTime.text = '';
+    }
+
     api = Api(
       dio,
       baseUrl: Constants.baseUrl,

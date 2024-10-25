@@ -17,7 +17,6 @@ import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/views/Assign%20Consultant%20Schedule/assign_consultant_schedule.dart';
 import 'package:appointment_management/src/views/Customer/add_customer.dart';
-import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/User%20Profile/update_consultant_profile.dart';
 import 'package:appointment_management/src/views/common_widgets/custom_dialogue.dart';
 import 'package:appointment_management/src/views/widgets/confirmation_dialogue.dart';
@@ -26,8 +25,8 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../resources/app_colors.dart';
 import '../../resources/assets.dart';
 
