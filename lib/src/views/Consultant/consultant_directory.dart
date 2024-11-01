@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
@@ -16,6 +17,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../resources/assets.dart';
 
 class ConsultantDirectory extends StatefulWidget {
@@ -230,6 +232,34 @@ class _ConsultantDirectoryState extends State<ConsultantDirectory> {
                                                             ),
                                                           );
                                                         }),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ConsultantDetails(
+                                                              consultant:
+                                                                  consultant,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.remove_red_eye,
+                                                        color:
+                                                            AppColors.primary,
+                                                      ),
+                                                    )
+
+                                                    // IconButton(
+                                                    //   onPressed: () {},
+                                                    //   icon:
+                                                    // )
                                                   ],
                                                 ),
                                               ],

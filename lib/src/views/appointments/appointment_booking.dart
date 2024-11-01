@@ -8,11 +8,10 @@ import 'package:appointment_management/model/get_business/get_business_branch.da
 import 'package:appointment_management/model/get_consultant_model/get_consultant_model.dart';
 import 'package:appointment_management/model/get_consultant_model/get_consultant_schedule.dart';
 import 'package:appointment_management/model/get_customer_model/get_customer_model.dart';
+import 'package:appointment_management/model/get_services/get_services_model.dart';
 import 'package:appointment_management/services/get_services.dart';
 import 'package:appointment_management/services/local_storage_service.dart';
 import 'package:appointment_management/services/locator.dart';
-import 'package:appointment_management/services/share_service.dart';
-import 'package:appointment_management/services/share_whatsapp.dart';
 import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/resources/textstyle.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
@@ -26,9 +25,10 @@ import 'package:appointment_management/src/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../resources/app_colors.dart';
-import 'package:appointment_management/model/get_services/get_services_model.dart';
 
 class AppointmentBooking extends StatefulWidget {
   final bool reSchedule;
@@ -55,6 +55,7 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
   TimeOfDay? selectedTime;
   String? selectProcedure;
   bool isChecked = false;
+  Appointment? appointment;
 
   dynamic user, businessId;
 
@@ -804,16 +805,41 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
       }
 
       if (res['status'] == 200) {
+        final startTime =
+            utils.mergeTime(selectedDate!, selectedTime!.toFormatted24Hours());
+        final endTime = startTime.add(const Duration(minutes: 30));
         // ignore: use_build_context_synchronously
         CustomDialogue.message(context: context, message: res['message']);
         await Future.delayed(const Duration(seconds: 1));
         if (isChecked) {
-          shareAppointment();
+          // shareAppointment();
+
+          String appointmentText = '''
+  Hi ${selectedCustomer!.name!.toUpperCaseFirst()},
+  
+  Your appointment with consultant ${selectedConsultant!.name!.toUpperCaseFirst()} is scheduled as follows:
+  
+  Date: ${selectedDate?.toPkFormattedDate()}
+  
+  Start Time: ${selectedTime!.toFormatted24Hours()},
+  
+  End Time: ${endTime},
+   
+  Address: ${selectedBranch?.address ?? ''}
+  
+  
+  
+ ''';
+
+          // Show the sharing options dialog with the generated text
+          showShareOptionsDialog(
+              context, appointmentText, selectedCustomer!.mobile!);
+        } else {
+          final route = CupertinoPageRoute(
+            builder: (context) => const HomeScreen(),
+          );
+          Navigator.push(context, route);
         }
-        final route = CupertinoPageRoute(
-          builder: (context) => const HomeScreen(),
-        );
-        Navigator.push(context, route);
       } else {
         if (res.toString().contains('message')) {
           // ignore: use_build_context_synchronously
@@ -864,23 +890,135 @@ class _AppointmentBookingState extends State<AppointmentBooking> {
     setState(() {});
   }
 
-  void shareAppointment() {
-    final startTime =
-        utils.mergeTime(selectedDate!, selectedTime!.toFormatted24Hours());
+  // void shareAppointment() {
+  //   final startTime =
+  //       utils.mergeTime(selectedDate!, selectedTime!.toFormatted24Hours());
+  //
+  //   final endTime = startTime.add(const Duration(minutes: 30));
+  //
+  //   MyWhatsAppShare.onShare(
+  //     context,
+  //     Appointment(
+  //       start: startTime,
+  //       end: endTime,
+  //       consultantId: selectedConsultant!.id,
+  //       customerId: selectedCustomer!.id,
+  //       businessId: businessId,
+  //       branchId: selectedBranch!.id.toString(),
+  //       appointmentDate: selectedDate!,
+  //     ),
+  //   );
+  // }
+  void _shareViaSms(String appointmentText, String phoneNumber) async {
+    String encodedText = Uri.encodeComponent(appointmentText);
+    String smsUrl = "sms:$phoneNumber?body=$encodedText";
 
-    final endTime = startTime.add(const Duration(minutes: 30));
+    if (await canLaunch(smsUrl)) {
+      await launch(smsUrl);
+    } else {
+      throw "Could not launch $smsUrl";
+    }
+  }
 
-    MyWhatsAppShare.onShare(
-      context,
-      Appointment(
-        start: startTime,
-        end: endTime,
-        consultantId: selectedConsultant!.id,
-        customerId: selectedCustomer!.id,
-        businessId: businessId,
-        branchId: selectedBranch!.id.toString(),
-        appointmentDate: selectedDate!,
+  void _shareViaNative(String appointmentText) {
+    Share.share(appointmentText);
+  }
+
+  void showShareOptionsDialog(
+    BuildContext context,
+    String appointmentText,
+    String phoneNumber,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: textWidget(
+            text: 'Share Appointment',
+            fSize: 20.0,
+            fWeight: FontWeight.w600,
+            textAlign: TextAlign.center,
+          ),
+          content: textWidget(
+            text: 'Choose how you want to share the appointment details.',
+          ),
+          actions: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  customTextButton(
+                    text: 'WhatsApp',
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                      _shareViaWhatsApp(appointmentText, phoneNumber);
+                    },
+                  ),
+                  SizedBox(width: 10), // Space between buttons
+                  customTextButton(
+                    text: 'SMS',
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                      _shareViaSms(appointmentText, phoneNumber);
+                    },
+                  ),
+                  SizedBox(width: 10), // Space between buttons
+                  customTextButton(
+                    text: 'Share',
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                      _shareViaNative(appointmentText);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget customTextButton({
+    required String text,
+    required VoidCallback onPressed,
+  }) {
+    return TextButton(
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        foregroundColor: MaterialStateProperty.all<Color>(
+          Colors.white,
+        ), // Text color
+        backgroundColor: MaterialStateProperty.all<Color>(
+          AppColors.primaryTheme,
+        ), // Background color
+
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+            side: BorderSide(
+              color: Colors.blueAccent,
+            ), // Border color
+          ),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: textWidget(text: text),
       ),
     );
+  }
+
+  void _shareViaWhatsApp(String appointmentText, String phoneNumber) async {
+    String encodedText = Uri.encodeComponent(appointmentText);
+    String url = "https://wa.me/$phoneNumber?text=$encodedText";
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "Could not launch $url";
+    }
   }
 }

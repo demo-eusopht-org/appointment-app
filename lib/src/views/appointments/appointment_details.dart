@@ -344,19 +344,19 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                                 onTap: () {
                                   String appointmentText =
                                       '''Hi ${customer!.name!.toUpperCaseFirst()},
-
-Your appointment with consultant ${consultant!.name!.toUpperCaseFirst()} is scheduled as follows:
-
-Date: ${appointment.appointmentDate?.toPkFormattedDate()}
-Time: ${appointment.start.toString().split(" ").last.fromStringtoFormattedTime()} to ${appointment.end.toString().split(" ").last.fromStringtoFormattedTime()}
-Address: ${branch?.address ?? ''}
-
-Please arrive ${business!.arrivalTime!} early.
-
-For any concerns, contact us at ${business.phoneNumber}.
-
-Best Regards,
-${business.name!.toUpperCaseFirst()}''';
+  
+  Your appointment with consultant ${consultant!.name!.toUpperCaseFirst()} is scheduled as follows:
+  
+  Date: ${appointment.appointmentDate?.toPkFormattedDate()}
+  Time: ${appointment.start.toString().split(" ").last.fromStringtoFormattedTime()} to ${appointment.end.toString().split(" ").last.fromStringtoFormattedTime()}
+  Address: ${branch?.address ?? ''}
+  
+  Please arrive ${business!.arrivalTime!} early.
+  
+  For any concerns, contact us at ${business.phoneNumber}.
+  
+  Best Regards,
+  ${business.name!.toUpperCaseFirst()}''';
 
                                   showShareOptionsDialog(context,
                                       appointmentText, customer!.mobile!);

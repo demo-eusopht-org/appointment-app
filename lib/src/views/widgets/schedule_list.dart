@@ -90,7 +90,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                 bottom: 0,
                                 child: CircleAvatar(
                                   backgroundColor: AppColors.primary,
-                                  radius: 15,
+                                  radius: 18,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -98,7 +98,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                         text: appointment.appointmentDate!
                                             .toMonthNameFormat()
                                             .getMonth(),
-                                        fSize: 7.sp,
+                                        fSize: 6.sp,
                                         color: Colors.white,
                                         fWeight: FontWeight.w800,
                                       ),

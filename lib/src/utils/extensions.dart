@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -64,6 +62,10 @@ extension TimeFormat on TimeOfDay {
     final hour = this.hour.toString().padLeft(2, '0');
     final minute = this.minute.toString().padLeft(2, '0');
     return '$hour:$minute:00';
+  }
+
+  String toFormatted24HourSs() {
+    return "${this.hour.toString().padLeft(2, '0')}:${this.minute.toString().padLeft(2, '0')}";
   }
 }
 
