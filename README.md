@@ -81,7 +81,7 @@ Follow these instructions to set up and run the app locally.
 Ensure the following tools are installed on your system: - **Flutter SDK**: Install the latest version from the [Flutter website](https://flutter.dev/docs/get-started/install). - **Git**: Install Git for version control. - **Code Editor**: Use an editor like **VS Code** or **Android Studio** for development.
 
 ### 🛠️ Installation Steps
-1. **Clone the repository**: ```bash git clone https://github.com/appointment-eusopht-org/mobile-app.git
+1. **Clone the repository**: ```bash git clone https://github.com/your-username/mobile-app.git
 
 2. **Install dependencies**
    Run the following command to fetch and install required packages:
