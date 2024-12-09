@@ -90,7 +90,7 @@ class _ScheduleListState extends State<ScheduleList> {
                                 bottom: 0,
                                 child: CircleAvatar(
                                   backgroundColor: AppColors.primary,
-                                  radius: 18,
+                                  radius: 15,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

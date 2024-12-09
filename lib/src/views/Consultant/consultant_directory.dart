@@ -50,7 +50,7 @@ class _ConsultantDirectoryState extends State<ConsultantDirectory> {
         appBar: customAppBar(
             context: context,
             title: 'Consultant Directory',
-            leadingIcon: Icon(
+            leadingIcon: const Icon(
               Icons.arrow_back_outlined,
             ),
             leadingIconOnTap: () {
@@ -190,12 +190,20 @@ class _ConsultantDirectoryState extends State<ConsultantDirectory> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                textWidget(
-                                                  text: '${consultant.name}',
-                                                  fWeight: FontWeight.w600,
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 5),
+                                                  child: textWidget(
+                                                    text: '${consultant.name}',
+                                                    fWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                                textWidget(
-                                                  text: '${consultant.email}',
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 5),
+                                                  child: textWidget(
+                                                    text: '${consultant.email}',
+                                                  ),
                                                 ),
                                                 Row(
                                                   children: [

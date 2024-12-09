@@ -1,18 +1,10 @@
-import 'dart:developer';
-
-import 'package:appointment_management/api/auth_api/api.dart';
 import 'package:appointment_management/api/auth_api/api_services/api_services.dart';
-import 'package:appointment_management/api/auth_api/dio.dart';
 import 'package:appointment_management/model/appointment/get_all_appointment.dart';
 import 'package:appointment_management/src/resources/app_colors.dart';
-import 'package:appointment_management/src/resources/constants.dart';
 import 'package:appointment_management/src/utils/extensions.dart';
 import 'package:appointment_management/src/utils/utils.dart';
-import 'package:appointment_management/src/views/Home/home_screen.dart';
 import 'package:appointment_management/src/views/widgets/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDialogue {
@@ -123,17 +115,21 @@ class CustomDialogue {
             children: [
               DropdownButtonFormField<String>(
                 value: status,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Status',
                 ),
                 items: [
                   DropdownMenuItem(
                     value: 'cancelled',
-                    child: textWidget(text: 'Cancel'),
+                    child: textWidget(
+                      text: 'Cancel',
+                    ),
                   ),
                   DropdownMenuItem(
                     value: 'conducted',
-                    child: textWidget(text: 'Completed'),
+                    child: textWidget(
+                      text: 'Completed',
+                    ),
                   ),
                 ],
                 onChanged: (value) {
@@ -147,7 +143,7 @@ class CustomDialogue {
                   labelText: 'Add Note',
                   alignLabelWithHint: true,
                 ),
-                maxLines: 10,
+                maxLines: 8,
               ),
             ],
           ),
@@ -156,7 +152,10 @@ class CustomDialogue {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: textWidget(text: 'Cancel', color: Colors.red),
+              child: textWidget(
+                text: 'Cancel',
+                color: Colors.red,
+              ),
             ),
             TextButton(
               onPressed: () async {
@@ -168,7 +167,10 @@ class CustomDialogue {
                   onUpdate,
                 );
               },
-              child: textWidget(text: 'Update', color: Colors.green),
+              child: textWidget(
+                text: 'Update',
+                color: Colors.green,
+              ),
             ),
           ],
         );
